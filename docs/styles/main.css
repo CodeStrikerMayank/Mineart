@@ -131,6 +131,26 @@ code, .mono-text {
   gap: 0.75rem;
 }
 
+.brand-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-steel);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-graphite);
+  flex-shrink: 0;
+}
+
+.brand-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .brand-symbol {
   width: 28px;
   height: 28px;
@@ -441,6 +461,94 @@ section {
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--color-steel-light), transparent);
+}
+
+.telemetry-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.profile-avatar-wrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border-hover);
+  background: var(--color-graphite);
+  padding: 2px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-md) - 2px);
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-status-pip {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--status-active);
+  border: 2px solid var(--color-obsidian);
+  box-shadow: 0 0 8px var(--status-active);
+}
+
+.profile-identity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.profile-engineer-name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-pure-white);
+  line-height: 1.2;
+}
+
+.profile-engineer-role {
+  font-size: var(--text-xs);
+  color: var(--color-silver);
+  font-weight: 500;
+}
+
+.profile-github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  text-decoration: none;
+  margin-top: 0.2rem;
+  transition: color var(--duration-fast);
+}
+
+.profile-github-link:hover {
+  color: var(--color-pure-white);
+}
+
+.telemetry-email-link {
+  color: var(--color-silver);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.telemetry-email-link:hover {
+  color: var(--color-pure-white);
+  text-decoration: underline;
 }
 
 .telemetry-row {
@@ -827,6 +935,81 @@ section {
   grid-template-columns: 1fr 1fr;
   gap: 3.5rem;
   align-items: start;
+}
+
+.contact-engineer-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--color-obsidian);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-engineer-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-steel-light), transparent);
+}
+
+.contact-avatar-wrapper {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--surface-border-hover);
+  background: var(--color-graphite);
+  padding: 2px;
+}
+
+.contact-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-md) - 2px);
+  object-fit: cover;
+  display: block;
+}
+
+.contact-engineer-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.contact-engineer-name {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-pure-white);
+  line-height: 1.2;
+}
+
+.contact-engineer-title {
+  font-size: var(--text-xs);
+  color: var(--color-silver);
+}
+
+.contact-engineer-email a {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.contact-engineer-email a:hover {
+  color: var(--color-pure-white);
+  text-decoration: underline;
 }
 
 .contact-card {
