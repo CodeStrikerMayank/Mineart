@@ -25,6 +25,8 @@
   const introCanvas = document.getElementById('intro-gear-canvas');
   const skipBtn = document.getElementById('intro-skip-btn');
   const mainContent = document.getElementById('main-content');
+  const encoderTextEl = document.getElementById('intro-encoder-text');
+  const sweepBeamEl = document.getElementById('intro-sweep-beam');
 
   const urlParams = new URLSearchParams(window.location.search);
   const forceIntro = urlParams.has('intro') || urlParams.has('replay_intro') || urlParams.has('intro_hold');
@@ -50,11 +52,65 @@
   let startTime = null;
   let rafId = null;
   let isCompleted = false;
+  let activeScrambleRaf = null;
+  let step1Started = false;
+  let step2Started = false;
 
   const DURATION_TOTAL = 2500; // 2.5 seconds total cinematic sequence
+  const GLYPHS = '0123456789ABCDEF#_></[]*+=§%';
+
+  function runTextEncoder(element, fromText, toText, duration, onComplete) {
+    if (!element) return;
+    if (activeScrambleRaf) {
+      cancelAnimationFrame(activeScrambleRaf);
+      activeScrambleRaf = null;
+    }
+
+    const start = performance.now();
+    const maxLen = Math.max(fromText.length, toText.length);
+
+    function frame(now) {
+      if (isCompleted) return;
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1.0);
+
+      const resolvedCount = Math.floor(progress * (maxLen + 1));
+
+      let result = '';
+      for (let i = 0; i < maxLen; i++) {
+        if (i < resolvedCount) {
+          if (i < toText.length) {
+            result += toText[i];
+          }
+        } else {
+          if (i < toText.length && toText[i] === ' ') {
+            result += ' ';
+          } else {
+            result += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          }
+        }
+      }
+
+      element.textContent = result;
+
+      if (progress < 1.0) {
+        activeScrambleRaf = requestAnimationFrame(frame);
+      } else {
+        element.textContent = toText;
+        activeScrambleRaf = null;
+        if (onComplete) onComplete();
+      }
+    }
+
+    activeScrambleRaf = requestAnimationFrame(frame);
+  }
 
   function instantBypass() {
     isCompleted = true;
+    if (activeScrambleRaf) {
+      cancelAnimationFrame(activeScrambleRaf);
+      activeScrambleRaf = null;
+    }
     document.body.classList.remove('intro-active');
     document.body.classList.add('intro-finished');
     if (introEl) {
@@ -73,6 +129,11 @@
   function finishIntro() {
     if (isCompleted) return;
     isCompleted = true;
+
+    if (activeScrambleRaf) {
+      cancelAnimationFrame(activeScrambleRaf);
+      activeScrambleRaf = null;
+    }
 
     if (rafId) {
       cancelAnimationFrame(rafId);
@@ -317,6 +378,31 @@
     }
 
     ctx.restore();
+
+    // Mechanical Text Encoder Scramble Sequence
+    if (elapsed >= 550 && !step1Started) {
+      step1Started = true;
+      if (encoderTextEl) {
+        encoderTextEl.classList.add('is-active');
+        runTextEncoder(encoderTextEl, '__________', 'CORESHADOW', 520, () => {
+          if (sweepBeamEl) {
+            sweepBeamEl.classList.add('is-sweeping');
+          }
+        });
+      }
+    }
+
+    if (elapsed >= 1350 && !step2Started) {
+      step2Started = true;
+      if (encoderTextEl) {
+        if (sweepBeamEl) {
+          sweepBeamEl.classList.remove('is-sweeping');
+          void sweepBeamEl.offsetWidth; // re-trigger beam sweep
+          sweepBeamEl.classList.add('is-sweeping');
+        }
+        runTextEncoder(encoderTextEl, 'CORESHADOW', 'MAYANK BHATT', 480);
+      }
+    }
 
     // Transition out at 1.9s - 2.5s (unless holdIntro is enabled for inspection)
     if (!holdIntro) {

@@ -214,19 +214,29 @@ body.intro-finished .hero-telemetry-panel {
 .intro-wordmark-wrapper {
   position: relative;
   overflow: hidden;
-  margin-bottom: 0.6rem;
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
 }
 
 .intro-wordmark {
-  font-family: var(--font-display);
-  font-size: clamp(2.2rem, 6.5vw, 4rem);
+  font-family: 'JetBrains Mono', var(--font-mono), var(--font-display), monospace;
+  font-size: clamp(2rem, 5.5vw, 3.6rem);
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--color-pure-white);
-  text-shadow: 0 0 45px rgba(255, 255, 255, 0.22);
+  text-shadow: 0 0 35px rgba(255, 255, 255, 0.4), 0 0 10px rgba(255, 255, 255, 0.2);
   opacity: 0;
-  transform: translateY(14px);
-  animation: introWordmarkReveal 600ms var(--ease-cinematic) 1.25s forwards;
+  transform: scale(0.98);
+  transition: opacity 300ms var(--ease-cinematic), transform 300ms var(--ease-cinematic);
+  display: inline-block;
+  min-width: 10ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.intro-wordmark.is-active {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .intro-sweep-beam {
@@ -235,9 +245,12 @@ body.intro-finished .hero-telemetry-panel {
   left: -120%;
   width: 70%;
   height: 100%;
-  background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.35) 45%, rgba(255, 255, 255, 0.95) 50%, rgba(56, 189, 248, 0.35) 55%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0.2) 55%, transparent 100%);
   pointer-events: none;
-  animation: introBeamSweep 800ms var(--ease-cinematic) 1.35s forwards;
+}
+
+.intro-sweep-beam.is-sweeping {
+  animation: introBeamSweep 750ms var(--ease-cinematic) forwards;
 }
 
 .intro-subline {
