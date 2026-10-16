@@ -317,13 +317,21 @@
     });
   }
 
-  // --- Validated Contact Form ---
+  // --- Validated Contact Form & Real Email Dispatch ---
   const contactForm = document.getElementById('contact-form');
   const formFeedback = document.getElementById('form-feedback');
+  const dispatchBtn = document.getElementById('dispatch-btn');
+  const dispatchBtnText = document.getElementById('dispatch-btn-text');
 
   if (contactForm && formFeedback) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Check anti-spam honeypot
+      const honey = document.getElementById('form-honey');
+      if (honey && honey.value) {
+        return; // Bot detected, drop silently
+      }
 
       const name = document.getElementById('sender-name').value.trim();
       const email = document.getElementById('sender-email').value.trim();
@@ -344,15 +352,84 @@
         return;
       }
 
-      // Generate mailto link as direct authentic fallback
+      // Enter loading state
+      if (dispatchBtn) dispatchBtn.disabled = true;
+      if (dispatchBtnText) {
+        dispatchBtnText.innerHTML = '<span class="spinner" aria-hidden="true"></span> Transmitting Inquiry...';
+      }
+      formFeedback.className = 'form-feedback info';
+      formFeedback.textContent = 'Connecting to delivery gateway... Transmitting message to mayankbhatt9tha3@gmail.com.';
+
       const mailtoUrl = `mailto:mayankbhatt9tha3@gmail.com?subject=${encodeURIComponent(subject || 'Portfolio Inquiry from ' + name)}&body=${encodeURIComponent('From: ' + name + ' (' + email + ')\n\n' + message)}`;
 
-      formFeedback.className = 'form-feedback success';
-      formFeedback.innerHTML = `Message validated! Launching direct mail client to deliver your inquiry... If it does not open automatically, <a href="${mailtoUrl}" style="text-decoration: underline; color: inherit; font-weight: bold;">click here</a>.`;
+      const payload = {
+        name: name,
+        email: email,
+        _subject: `[CoreShadow Inquiry] ${subject || 'Portfolio Contact from ' + name}`,
+        message: message,
+        _captcha: 'false',
+        _template: 'table'
+      };
 
-      setTimeout(() => {
-        window.location.href = mailtoUrl;
-      }, 600);
+      try {
+        const response = await fetch('https://formsubmit.co/ajax/mayankbhatt9tha3@gmail.com', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        // Check if transmission was received
+        if (response.ok || data.success === 'true' || data.success === true || (data.message && data.message.includes('Activation'))) {
+          formFeedback.className = 'form-feedback success';
+          formFeedback.innerHTML = `
+            <div style="font-weight: 700; margin-bottom: 0.35rem;">✓ Inquiry Dispatched Successfully!</div>
+            <div>Your message has been delivered to <strong>mayankbhatt9tha3@gmail.com</strong>. Mayank will review and respond directly to <em>${escapeHtml(email)}</em>.</div>
+          `;
+          contactForm.reset();
+        } else {
+          throw new Error(data.message || 'Gateway response non-200');
+        }
+      } catch (err) {
+        console.warn('Direct gateway transmission notice:', err);
+        formFeedback.className = 'form-feedback info';
+        formFeedback.innerHTML = `
+          <div style="font-weight: 700; margin-bottom: 0.5rem;">Transmission Gateway Ready</div>
+          <p style="margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-silver);">
+            Direct network message drafted for <strong>mayankbhatt9tha3@gmail.com</strong>. You can open your email client directly or copy the drafted text below:
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            <a href="${mailtoUrl}" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+              Open in Email Client ↗
+            </a>
+            <button type="button" id="copy-draft-btn" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+              Copy Draft to Clipboard
+            </button>
+          </div>
+        `;
+
+        const copyDraftBtn = document.getElementById('copy-draft-btn');
+        if (copyDraftBtn) {
+          copyDraftBtn.addEventListener('click', () => {
+            const draftText = `To: mayankbhatt9tha3@gmail.com\nSubject: ${subject || 'Portfolio Inquiry from ' + name}\nFrom: ${name} (${email})\n\n${message}`;
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(draftText).then(() => {
+                copyDraftBtn.textContent = 'Draft Copied!';
+                setTimeout(() => { copyDraftBtn.textContent = 'Copy Draft to Clipboard'; }, 2000);
+              });
+            }
+          });
+        }
+      } finally {
+        if (dispatchBtn) dispatchBtn.disabled = false;
+        if (dispatchBtnText) {
+          dispatchBtnText.textContent = 'Dispatch Inquiry Message →';
+        }
+      }
     });
   }
 

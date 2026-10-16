@@ -750,6 +750,9 @@
 
           <div class="contact-card">
             <form id="contact-form" class="contact-form" novalidate>
+              <!-- Anti-Spam Honeypot Field -->
+              <input type="text" name="_honey" id="form-honey" style="display:none !important;" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
               <div class="form-group">
                 <label for="sender-name" class="form-label">Full Name *</label>
                 <input type="text" id="sender-name" name="name" class="form-input" placeholder="e.g. Alex Chen" required />
@@ -772,8 +775,8 @@
 
               <div id="form-feedback" class="form-feedback" role="alert"></div>
 
-              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
-                Dispatch Inquiry Message →
+              <button type="submit" id="dispatch-btn" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">
+                <span id="dispatch-btn-text">Dispatch Inquiry Message →</span>
               </button>
             </form>
           </div>
