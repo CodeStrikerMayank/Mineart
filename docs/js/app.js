@@ -389,6 +389,71 @@
         _template: 'table'
       };
 
+      function triggerFailSafe(noticeTitle, noticeDesc) {
+        // Automatically unhide/reveal email in the Direct Channel box
+        if (verifiedEmailEl) {
+          verifiedEmailEl.textContent = resolvedEmail;
+          verifiedEmailEl.style.color = 'var(--color-pure-white)';
+        }
+        if (copyEmailBtn) {
+          copyEmailBtn.textContent = 'Copy Email';
+        }
+
+        formFeedback.className = 'form-feedback info';
+        formFeedback.innerHTML = `
+          <div style="font-weight: 700; margin-bottom: 0.4rem; color: var(--color-pure-white); font-size: 0.9rem;">
+            ${escapeHtml(noticeTitle || 'Direct Contact Fail-Safe Activated')}
+          </div>
+          <p style="margin-bottom: 0.75rem; font-size: 0.825rem; color: var(--color-silver); line-height: 1.4;">
+            ${noticeDesc || 'The automated gateway encountered an issue. Mayank\'s verified email address is revealed below so you can connect directly without delay:'}
+          </p>
+
+          <div style="background: var(--color-void); border: 1px solid var(--color-steel); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;">
+            <div>
+              <div style="font-size: 0.65rem; color: var(--color-muted); font-family: var(--font-mono); text-transform: uppercase;">Direct Contact Email</div>
+              <div style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--color-pure-white); font-weight: 600;">${resolvedEmail}</div>
+            </div>
+            <button type="button" id="copy-revealed-email-btn" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
+              Copy Email Address
+            </button>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            <a href="${mailtoUrl}" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.45rem 0.9rem;">
+              Send via Email App ↗
+            </a>
+            <button type="button" id="copy-draft-btn" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.45rem 0.9rem;">
+              Copy Drafted Message
+            </button>
+          </div>
+        `;
+
+        const copyRevealedBtn = document.getElementById('copy-revealed-email-btn');
+        if (copyRevealedBtn) {
+          copyRevealedBtn.addEventListener('click', () => {
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(resolvedEmail).then(() => {
+                copyRevealedBtn.textContent = 'Email Copied!';
+                setTimeout(() => { copyRevealedBtn.textContent = 'Copy Email Address'; }, 2000);
+              });
+            }
+          });
+        }
+
+        const copyDraftBtn = document.getElementById('copy-draft-btn');
+        if (copyDraftBtn) {
+          copyDraftBtn.addEventListener('click', () => {
+            const draftText = `To: ${resolvedEmail}\nSubject: ${subject || 'Portfolio Inquiry from ' + name}\nFrom: ${name} (${email})\n\n${message}`;
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(draftText).then(() => {
+                copyDraftBtn.textContent = 'Draft Copied!';
+                setTimeout(() => { copyDraftBtn.textContent = 'Copy Drafted Message'; }, 2000);
+              });
+            }
+          });
+        }
+      }
+
       try {
         const response = await fetch('https://formsubmit.co/ajax/9bcee9c40b2236a2fd2ca7f2c60b32bd', {
           method: 'POST',
@@ -403,13 +468,11 @@
 
         // Check if transmission was received
         if (data.message && data.message.toLowerCase().includes('activation')) {
-          formFeedback.className = 'form-feedback info';
-          formFeedback.innerHTML = `
-            <div style="font-weight: 700; margin-bottom: 0.35rem; color: var(--color-pure-white);">⚠️ One-Time Form Activation Required</div>
-            <div style="margin-bottom: 0.5rem;">FormSubmit has sent an activation link to your registered address.</div>
-            <div style="font-size: 0.8rem; color: var(--color-silver);">Please open your inbox and click the <strong>"Activate Form"</strong> button. Once activated, all inquiries sent from this site arrive instantly in your inbox!</div>
-          `;
-          contactForm.reset();
+          // Fail-safe: reveal direct email so visitor is never blocked
+          triggerFailSafe(
+            '⚡ Direct Email Revealed // Gateway Notice',
+            'The form gateway is currently awaiting one-time confirmation. To ensure your inquiry reaches Mayank right now, his direct email is unlocked below:'
+          );
         } else if (data.success === 'true' || data.success === true) {
           formFeedback.className = 'form-feedback success';
           formFeedback.innerHTML = `
@@ -418,38 +481,17 @@
           `;
           contactForm.reset();
         } else {
-          throw new Error(data.message || 'Gateway response non-200');
+          triggerFailSafe(
+            '⚡ Fail-Safe Activated // Direct Email Revealed',
+            'The form gateway returned a notice. Mayank\'s verified email is unlocked below so you can reach him directly:'
+          );
         }
       } catch (err) {
         console.warn('Direct gateway transmission notice:', err);
-        formFeedback.className = 'form-feedback info';
-        formFeedback.innerHTML = `
-          <div style="font-weight: 700; margin-bottom: 0.5rem;">Transmission Gateway Ready</div>
-          <p style="margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-silver);">
-            Direct network message prepared for Mayank. You can open your email client directly or copy the drafted text below:
-          </p>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-            <a href="${mailtoUrl}" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
-              Open in Email Client ↗
-            </a>
-            <button type="button" id="copy-draft-btn" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
-              Copy Draft to Clipboard
-            </button>
-          </div>
-        `;
-
-        const copyDraftBtn = document.getElementById('copy-draft-btn');
-        if (copyDraftBtn) {
-          copyDraftBtn.addEventListener('click', () => {
-            const draftText = `To: mayankoriginal711@gmail.com\nSubject: ${subject || 'Portfolio Inquiry from ' + name}\nFrom: ${name} (${email})\n\n${message}`;
-            if (navigator.clipboard) {
-              navigator.clipboard.writeText(draftText).then(() => {
-                copyDraftBtn.textContent = 'Draft Copied!';
-                setTimeout(() => { copyDraftBtn.textContent = 'Copy Draft to Clipboard'; }, 2000);
-              });
-            }
-          });
-        }
+        triggerFailSafe(
+          '⚡ Fail-Safe Activated // Direct Email Revealed',
+          'The automated network gateway is unreachable or blocked. Your message has been preserved and Mayank\'s direct email address is unlocked below:'
+        );
       } finally {
         if (dispatchBtn) dispatchBtn.disabled = false;
         if (dispatchBtnText) {
