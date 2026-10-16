@@ -368,9 +368,9 @@
         dispatchBtnText.innerHTML = '<span class="spinner" aria-hidden="true"></span> Transmitting Inquiry...';
       }
       formFeedback.className = 'form-feedback info';
-      formFeedback.textContent = 'Connecting to delivery gateway... Transmitting message to mayankbhatt9tha3@gmail.com.';
+      formFeedback.textContent = 'Connecting to delivery gateway... Transmitting message to mayankoriginal711@gmail.com.';
 
-      const mailtoUrl = `mailto:mayankbhatt9tha3@gmail.com?subject=${encodeURIComponent(subject || 'Portfolio Inquiry from ' + name)}&body=${encodeURIComponent('From: ' + name + ' (' + email + ')\n\n' + message)}`;
+      const mailtoUrl = `mailto:mayankoriginal711@gmail.com?subject=${encodeURIComponent(subject || 'Portfolio Inquiry from ' + name)}&body=${encodeURIComponent('From: ' + name + ' (' + email + ')\n\n' + message)}`;
 
       const payload = {
         name: name,
@@ -382,7 +382,7 @@
       };
 
       try {
-        const response = await fetch('https://formsubmit.co/ajax/mayankbhatt9tha3@gmail.com', {
+        const response = await fetch('https://formsubmit.co/ajax/mayankoriginal711@gmail.com', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -398,7 +398,7 @@
           formFeedback.className = 'form-feedback success';
           formFeedback.innerHTML = `
             <div style="font-weight: 700; margin-bottom: 0.35rem;">✓ Inquiry Dispatched Successfully!</div>
-            <div>Your message has been delivered to <strong>mayankbhatt9tha3@gmail.com</strong>. Mayank will review and respond directly to <em>${escapeHtml(email)}</em>.</div>
+            <div>Your message has been delivered to <strong>mayankoriginal711@gmail.com</strong>. Mayank will review and respond directly to <em>${escapeHtml(email)}</em>.</div>
           `;
           contactForm.reset();
         } else {
@@ -410,7 +410,7 @@
         formFeedback.innerHTML = `
           <div style="font-weight: 700; margin-bottom: 0.5rem;">Transmission Gateway Ready</div>
           <p style="margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-silver);">
-            Direct network message drafted for <strong>mayankbhatt9tha3@gmail.com</strong>. You can open your email client directly or copy the drafted text below:
+            Direct network message drafted for <strong>mayankoriginal711@gmail.com</strong>. You can open your email client directly or copy the drafted text below:
           </p>
           <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
             <a href="${mailtoUrl}" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">
@@ -425,7 +425,7 @@
         const copyDraftBtn = document.getElementById('copy-draft-btn');
         if (copyDraftBtn) {
           copyDraftBtn.addEventListener('click', () => {
-            const draftText = `To: mayankbhatt9tha3@gmail.com\nSubject: ${subject || 'Portfolio Inquiry from ' + name}\nFrom: ${name} (${email})\n\n${message}`;
+            const draftText = `To: mayankoriginal711@gmail.com\nSubject: ${subject || 'Portfolio Inquiry from ' + name}\nFrom: ${name} (${email})\n\n${message}`;
             if (navigator.clipboard) {
               navigator.clipboard.writeText(draftText).then(() => {
                 copyDraftBtn.textContent = 'Draft Copied!';

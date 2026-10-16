@@ -81,7 +81,7 @@ npx serve .
 
 - **Engineer:** Mayank Bhatt
 - **GitHub:** [@CodeStrikerMayank](https://github.com/CodeStrikerMayank)
-- **Email:** [mayankbhatt9tha3@gmail.com](mailto:mayankbhatt9tha3@gmail.com)
+- **Email:** [mayankoriginal711@gmail.com](mailto:mayankoriginal711@gmail.com)
 - **Timezone:** UTC+5:30 (IST)
 
 ---
