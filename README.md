@@ -25,10 +25,13 @@ CoreShadow represents an engineered digital environment combining:
 
 | Project | Domain | Architecture & Highlights | Repository |
 | :--- | :--- | :--- | :--- |
-| **Mineart** | Graphics & Simulation | Procedural voxel generator and real-time canvas rendering system combining lightweight 3D coordinate math with low-overhead canvas geometry rasterization. | [CodeStrikerMayank/Mineart](https://github.com/CodeStrikerMayank/Mineart) |
-| **AgentShield** | AI Security & Governance | Active Model Context Protocol (MCP) interception firewall preventing catastrophic terminal commands, secret leaks, and race conditions across multi-agent AI coding sessions. | [CodeStrikerMayank](https://github.com/CodeStrikerMayank) |
-| **CoreLex VM** | Systems & Compilers | Stack-based bytecode virtual machine exploring instruction dispatch optimizations, register allocation, and garbage collection invariants. | [CodeStrikerMayank](https://github.com/CodeStrikerMayank) |
-| **GraphTopology** | Algorithms & Data Structures | High-density interactive graph network layout engine utilizing Barnes-Hut quadtree n-body force simulation to layout large topological graphs in real time. | [CodeStrikerMayank](https://github.com/CodeStrikerMayank) |
+| **ControlProtocol** | Systems & CLI Architecture | Python-based interactive CLI system for deep directory inspection (tree & X-ray view), network file transfer, system telemetry insights, and controlled file operations. | [controlprotocol](https://github.com/CodeStrikerMayank/controlprotocol) |
+| **Arise** | Geospatial & 3D Visualization | Interactive lunar surface 3D mapping and topographic terrain visualization system rendering planetary elevation models directly in the web browser. | [Arise](https://github.com/CodeStrikerMayank/Arise) |
+| **Mineart** | Graphics & Simulation | Procedural voxel generator and real-time canvas rendering system combining lightweight 3D coordinate math with low-overhead canvas geometry rasterization. | [Mineart](https://github.com/CodeStrikerMayank/Mineart) |
+| **HistoryWorld** | Terminal Analytics & Dashboards | Python terminal-based incident analytics engine and historical event tracker delivering telemetry dashboards, timeline reconstruction, and trend visualization. | [Historyworld](https://github.com/CodeStrikerMayank/Historyworld) |
+| **TicketML** | Machine Learning & NLP | Supervised machine learning pipeline for automated ticket triage, incident category classification, priority scoring, and resolution routing. | [TicketML](https://github.com/CodeStrikerMayank/TicketML) |
+| **FirstMLModel** | Machine Learning Foundations | Ground-up predictive modeling system exploring mathematical optimization, regression boundaries, loss minimization, and model evaluation metrics. | [FirstMLModel](https://github.com/CodeStrikerMayank/FirstMLModel) |
+| **TkinterSkillset** | Desktop UI & Systems | Modular desktop interface architecture and GUI tool suite showcasing event-driven state management, custom widget design, and native desktop workflows. | [tkinterskillset](https://github.com/CodeStrikerMayank/tkinterskillset) |
 
 ---
 

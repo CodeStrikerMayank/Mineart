@@ -6,8 +6,42 @@
 (function () {
   'use strict';
 
-  // --- Project Showcase Data (Verified Engineering Proofs) ---
+  // --- Project Showcase Data (Verified Engineering Proofs by Mayank Bhatt) ---
   const PROJECTS = [
+    {
+      id: 'controlprotocol',
+      title: 'ControlProtocol Interactive CLI',
+      category: 'Systems & CLI Architecture',
+      summary: 'A Python-based interactive CLI system for deep directory inspection (tree & X-ray view), network file transfer, system telemetry insights, and controlled file operations.',
+      featured: true,
+      repo: 'https://github.com/CodeStrikerMayank/controlprotocol',
+      demo: 'https://github.com/CodeStrikerMayank/controlprotocol',
+      technologies: ['Python 3', 'Systems I/O', 'CLI Engine', 'Filesystem Telemetry'],
+      specs: {
+        'Architecture': 'Interactive Terminal Control & X-Ray Visualizer',
+        'Inspection Mode': 'Recursive Tree & In-depth Metadata Analysis',
+        'File Handling': 'High-integrity stream copy with verification checks',
+        'Licensing': 'Open Source (GitHub)'
+      },
+      deepDive: 'Engineered as an interactive command-line environment for developers and systems operators. Delivers real-time directory tree visualization, recursive directory statistics, permission scanning, and secure local/remote transfer routines with zero unnecessary runtime dependencies.'
+    },
+    {
+      id: 'arise',
+      title: 'Arise Lunar Surface 3D Mapper',
+      category: 'Geospatial & 3D Visualization',
+      summary: 'Interactive lunar surface 3D mapping and topographic terrain visualization system rendering planetary elevation models directly in the web browser.',
+      featured: true,
+      repo: 'https://github.com/CodeStrikerMayank/Arise',
+      demo: 'https://github.com/CodeStrikerMayank/Arise',
+      technologies: ['JavaScript', '3D Graphics', 'Topographic Mapping', 'WebGL / Canvas'],
+      specs: {
+        'Domain': 'Lunar Elevation Topography & Orbital Mapping',
+        'Mesh Synthesis': 'Heightmap displacement to 3D surface geometry',
+        'Render Budget': 'Real-time hardware-accelerated 60 FPS viewport',
+        'Community Star': '★ 1 Stargazer on GitHub'
+      },
+      deepDive: 'Arise translates celestial surface telemetry into an interactive, navigable 3D digital elevation model. Features dynamic lighting simulation to observe shadow transitions across lunar crater rims and high-accuracy geospatial coordinate projection.'
+    },
     {
       id: 'mineart',
       title: 'Mineart Creative Engine',
@@ -15,66 +49,83 @@
       summary: 'Procedural voxel generation and real-time canvas rendering system combining lightweight 3D coordinate math with low-overhead canvas geometry rasterization.',
       featured: true,
       repo: 'https://github.com/CodeStrikerMayank/Mineart',
-      demo: '#',
-      technologies: ['HTML5 Canvas', 'WebGL / 2D Math', 'JavaScript ES6+', 'Procedural Noise'],
+      demo: 'https://github.com/CodeStrikerMayank/Mineart',
+      technologies: ['HTML5 Canvas', '2D/3D Math', 'JavaScript ES6+', 'Procedural Noise'],
       specs: {
         'Architecture': 'Entity-Component Architecture with Typed Arrays',
         'Frame Budget': '< 16.6ms Target (60 FPS solid)',
         'Storage Footprint': 'Zero external heavy libraries, pure algorithmic shaders',
-        'Licensing': 'MIT Open Source'
+        'Repository': 'Official Project Repository'
       },
-      deepDive: 'Mineart is an experimental creative engineering project exploring lightweight real-time voxel synthesis in the browser. It focuses on spatial partitioning, occlusion culling, and mathematical chunk generation without reliance on bloated 3D game engines.'
+      deepDive: 'Mineart is an experimental creative engineering project exploring real-time voxel synthesis in the browser. It focuses on spatial partitioning, occlusion culling, and mathematical chunk generation without reliance on bloated external 3D game engines.'
     },
     {
-      id: 'safety-governance',
-      title: 'AgentShield Zero-Trust Firewall',
-      category: 'AI Security & Runtime Governance',
-      summary: 'Active Model Context Protocol (MCP) interception firewall preventing catastrophic terminal commands, secret leaks, and race conditions across multi-agent AI coding sessions.',
-      featured: true,
-      repo: 'https://github.com/CodeStrikerMayank',
-      demo: '#',
-      technologies: ['TypeScript', 'Model Context Protocol', 'Node.js', 'Deterministic Gates'],
-      specs: {
-        'Interception Latency': '< 1.8ms per command evaluation',
-        'Ruleset': '12 Secret Regex Invariants + Destructive Shell Interceptor',
-        'Concurrency': 'Decentralized TTL Mesh File Locks',
-        'Compatibility': 'Claude Desktop, Cursor, Antigravity, Windsurf'
-      },
-      deepDive: 'Engineered as a pre-execution safety hypervisor for autonomous coding agents. Evaluates shell commands against strict deterministic safety contracts, quarantine leaked API keys before persistence, and synchronizes overlapping file edits across multiple agent processes.'
-    },
-    {
-      id: 'systems-compilers',
-      title: 'CoreLex Bytecode Virtual Machine',
-      category: 'Systems & Compilers',
-      summary: 'Stack-based virtual machine and bytecode interpreter exploring instruction dispatch optimizations, register allocation, and garbage collection invariants.',
+      id: 'historyworld',
+      title: 'HistoryWorld Incident Analytics',
+      category: 'Terminal Analytics & Dashboards',
+      summary: 'Python terminal-based incident analytics engine and historical event tracker delivering telemetry dashboards, timeline reconstruction, and trend visualization.',
       featured: false,
-      repo: 'https://github.com/CodeStrikerMayank',
-      demo: '#',
-      technologies: ['C / C++', 'Assembly', 'Virtual Machines', 'Memory Profiling'],
+      repo: 'https://github.com/CodeStrikerMayank/Historyworld',
+      demo: 'https://github.com/CodeStrikerMayank/Historyworld',
+      technologies: ['Python', 'Terminal UI', 'Time Series Data', 'Event Analytics'],
       specs: {
-        'Dispatch Style': 'Direct Threaded Code Dispatch',
-        'Word Size': '64-bit Uniform Value Representation',
-        'Memory Model': 'Generational Mark-Sweep Collector',
-        'Status': 'Active Research & Benchmark Harness'
+        'Display Interface': 'High-density terminal dashboard layout',
+        'Event Indexing': 'Chronological timeline parsing & categorizing',
+        'Metrics': 'Recurrence frequency, severity index, incident clusters',
+        'Status': 'Open Source Production Tool'
       },
-      deepDive: 'CoreLex investigates minimal interpreter overheads on modern superscalar CPU architectures, analyzing branch prediction miss rates, cache locality of bytecode streams, and memory barrier synchronization.'
+      deepDive: 'HistoryWorld provides systems analysts with a terminal cockpit for inspecting critical events across time. Computes moving averages, identifies incident anomalies, and renders multi-column ASCII charts without launching a heavy web browser.'
     },
     {
-      id: 'algorithmic-viz',
-      title: 'GraphTopology Visualizer',
-      category: 'Algorithms & Data Structures',
-      summary: 'High-density interactive graph network layout engine utilizing Barnes-Hut quadtree n-body force simulation to layout large topological graphs in real time.',
+      id: 'ticketml',
+      title: 'TicketML Predictive Classifier',
+      category: 'Machine Learning & NLP',
+      summary: 'Supervised machine learning pipeline for automated ticket triage, incident category classification, priority scoring, and resolution routing.',
       featured: false,
-      repo: 'https://github.com/CodeStrikerMayank',
-      demo: '#',
-      technologies: ['JavaScript', 'Canvas 2D', 'Barnes-Hut Simulation', 'Spatial Indexing'],
+      repo: 'https://github.com/CodeStrikerMayank/TicketML',
+      demo: 'https://github.com/CodeStrikerMayank/TicketML',
+      technologies: ['Python', 'Machine Learning', 'NLP Feature Extraction', 'Scikit-Learn'],
       specs: {
-        'Complexity': 'O(N log N) N-body force calculation',
-        'Capacity': 'Up to 5,000 live interactive graph nodes',
-        'Physics': 'Verlet numerical integration with velocity damping',
-        'Telemetry': 'Live FPS, node count, and potential energy calculation'
+        'Model Pipeline': 'Text tokenization, TF-IDF vectorization & classifier',
+        'Target Task': 'Multiclass routing and priority level scoring',
+        'Optimization': 'Confusion matrix validation and precision tuning',
+        'Interface': 'Python CLI inference script'
       },
-      deepDive: 'Provides real-time topological analysis of complex software dependencies and network graphs with smooth hardware-accelerated 2D projection and spatial querying.'
+      deepDive: 'Automates customer and engineering ticket triage by parsing text descriptions, stripping noise tokens, and classifying issues into designated department queues with statistical confidence thresholds.'
+    },
+    {
+      id: 'firstmlmodel',
+      title: 'FirstMLModel Foundations',
+      category: 'Machine Learning Foundations',
+      summary: 'Ground-up predictive modeling system exploring mathematical optimization, regression boundaries, loss minimization, and model evaluation metrics.',
+      featured: false,
+      repo: 'https://github.com/CodeStrikerMayank/FirstMLModel',
+      demo: 'https://github.com/CodeStrikerMayank/FirstMLModel',
+      technologies: ['Python', 'NumPy', 'Supervised Learning', 'Loss Optimization'],
+      specs: {
+        'Core Algorithms': 'Linear & polynomial regression from scratch',
+        'Gradient Descent': 'Batch and stochastic convergence routines',
+        'Validation': 'Train/test split, RMSE, R-squared evaluation',
+        'Pedagogical Rigor': 'Explicit mathematical derivation without black-box APIs'
+      },
+      deepDive: 'An exploration of statistical machine learning mechanics. Implements cost functions, numerical derivatives, and parameter optimization from foundational linear algebra principles to guarantee deep conceptual mastery.'
+    },
+    {
+      id: 'tkinterskillset',
+      title: 'Tkinter Desktop Systems Suite',
+      category: 'Desktop UI & Systems',
+      summary: 'Modular desktop interface architecture and GUI tool suite showcasing event-driven state management, custom widget design, and native desktop workflows.',
+      featured: false,
+      repo: 'https://github.com/CodeStrikerMayank/tkinterskillset',
+      demo: 'https://github.com/CodeStrikerMayank/tkinterskillset',
+      technologies: ['Python', 'Tkinter GUI', 'Event-Driven Logic', 'Desktop Systems'],
+      specs: {
+        'Framework': 'Python Tkinter / Tcl/Tk native bindings',
+        'Component Design': 'Custom reusable widget classes and panels',
+        'State Model': 'Event-driven pub/sub signal routing',
+        'Cross-Platform': 'Native desktop execution on Windows, macOS, Linux'
+      },
+      deepDive: 'A modular suite of native desktop applications demonstrating asynchronous event loop integration, reactive component binding, dialog validation, and clean application architecture in Python.'
     }
   ];
 
