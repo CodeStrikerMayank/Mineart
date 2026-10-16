@@ -28,6 +28,15 @@
   const encoderTextEl = document.getElementById('intro-encoder-text');
   const sweepBeamEl = document.getElementById('intro-sweep-beam');
 
+  let startTime = null;
+  let rafId = null;
+  let isCompleted = false;
+  let activeScrambleRaf = null;
+  let step1Started = false;
+  let step2Started = false;
+  const DURATION_TOTAL = 3800; // 3.8 seconds calibrated cinematic sequence
+  const GLYPHS = '0123456789ABCDEF#_></[]*+=§%';
+
   const urlParams = new URLSearchParams(window.location.search);
   const forceIntro = urlParams.has('intro') || urlParams.has('replay_intro') || urlParams.has('intro_hold');
   const holdIntro = urlParams.has('intro_hold');
@@ -48,16 +57,6 @@
   if (introCanvas && introCanvas.getContext) {
     ctx = introCanvas.getContext('2d', { alpha: true });
   }
-
-  let startTime = null;
-  let rafId = null;
-  let isCompleted = false;
-  let activeScrambleRaf = null;
-  let step1Started = false;
-  let step2Started = false;
-
-  const DURATION_TOTAL = 2500; // 2.5 seconds total cinematic sequence
-  const GLYPHS = '0123456789ABCDEF#_></[]*+=§%';
 
   function runTextEncoder(element, fromText, toText, duration, onComplete) {
     if (!element) return;
@@ -167,11 +166,11 @@
     skipBtn.addEventListener('click', finishIntro);
   }
 
-  // Fail-safe circuit breaker: guaranteed completion within 3.2s (disabled in holdIntro inspection mode)
+  // Fail-safe circuit breaker: guaranteed completion within 4.6s (disabled in holdIntro inspection mode)
   if (!holdIntro) {
     setTimeout(() => {
       if (!isCompleted) finishIntro();
-    }, 3200);
+    }, 4600);
   }
 
   // Setup canvas resolution
@@ -319,11 +318,11 @@
     let rotSpeed1 = 0;
     let rotSpeed2 = 0;
 
-    if (elapsed > 600) {
-      const rotProgress = Math.min((elapsed - 600) / 1400, 1.0);
+    if (elapsed > 500) {
+      const rotProgress = Math.min((elapsed - 500) / 2700, 1.0);
       const easedRot = easeOutCubic(rotProgress);
-      rotSpeed1 = easedRot * 0.42;  // Outer ring rotation
-      rotSpeed2 = -easedRot * 0.84; // Inner pinion rotation (2x counter-rotation)
+      rotSpeed1 = easedRot * 0.68;  // Outer ring rotation
+      rotSpeed2 = -easedRot * 1.36; // Inner pinion rotation (2x counter-rotation)
     }
 
     // Outer Planetary Ring Gear (Teeth facing inward/outward)
@@ -392,11 +391,12 @@
     ctx.restore();
 
     // Mechanical Text Encoder Scramble Sequence
-    if (elapsed >= 550 && !step1Started) {
+    // Phase 1: Scramble into CORESHADOW at 500ms -> resolves at ~1050ms
+    if (elapsed >= 500 && !step1Started) {
       step1Started = true;
       if (encoderTextEl) {
         encoderTextEl.classList.add('is-active');
-        runTextEncoder(encoderTextEl, '__________', 'CORESHADOW', 520, () => {
+        runTextEncoder(encoderTextEl, '__________', 'CORESHADOW', 550, () => {
           if (sweepBeamEl) {
             sweepBeamEl.classList.add('is-sweeping');
           }
@@ -404,7 +404,8 @@
       }
     }
 
-    if (elapsed >= 1350 && !step2Started) {
+    // Phase 2: Dwells on CORESHADOW until 1850ms, then scrambles into MAYANK BHATT -> resolves at ~2400ms
+    if (elapsed >= 1850 && !step2Started) {
       step2Started = true;
       if (encoderTextEl) {
         if (sweepBeamEl) {
@@ -412,13 +413,13 @@
           void sweepBeamEl.offsetWidth; // re-trigger beam sweep
           sweepBeamEl.classList.add('is-sweeping');
         }
-        runTextEncoder(encoderTextEl, 'CORESHADOW', 'MAYANK BHATT', 480);
+        runTextEncoder(encoderTextEl, 'CORESHADOW', 'MAYANK BHATT', 550);
       }
     }
 
-    // Transition out at 1.9s - 2.5s (unless holdIntro is enabled for inspection)
+    // Phase 3: Dwells on MAYANK BHATT until 3200ms, then iris expands and transitions into hero
     if (!holdIntro) {
-      if (elapsed >= 1900 && !introEl.classList.contains('intro-transitioning')) {
+      if (elapsed >= 3200 && !introEl.classList.contains('intro-transitioning')) {
         introEl.classList.add('intro-transitioning');
       }
 
