@@ -382,7 +382,7 @@
       };
 
       try {
-        const response = await fetch('https://formsubmit.co/ajax/mayankoriginal711@gmail.com', {
+        const response = await fetch('https://formsubmit.co/ajax/9bcee9c40b2236a2fd2ca7f2c60b32bd', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
