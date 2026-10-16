@@ -1,6 +1,13 @@
 /**
- * CoreShadow Portfolio Application Logic
+ * CoreShadow Portfolio Application Logic (v2 - Cinematic Edition)
  * Author: Mayank Bhatt (CodeStrikerMayank)
+ * 
+ * Features:
+ * - Signature GPU-accelerated card-to-modal FLIP morph
+ * - Coordinated scroll-reveal observer with staggered children
+ * - Active scroll-spy with fluid indicator transitions
+ * - Bot-scraper immune deconstructed email representation
+ * - FormSubmit secure gateway with automatic fail-safe email reveal
  */
 
 (function () {
@@ -181,7 +188,7 @@
   const navLinks = document.querySelectorAll('.nav-link');
 
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
+    const navObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -196,10 +203,35 @@
           }
         });
       },
-      { rootMargin: '-20% 0px -70% 0px' }
+      { rootMargin: '-20% 0px -65% 0px' }
     );
 
-    sections.forEach((s) => observer.observe(s));
+    sections.forEach((s) => navObserver.observe(s));
+  }
+
+  // --- Coordinated Section & Staggered Children Reveal Observer ---
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if ('IntersectionObserver' in window && !prefersReduced) {
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -6% 0px',
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.reveal-init, .stagger-parent').forEach(el => {
+      revealObserver.observe(el);
+    });
+  } else {
+    document.querySelectorAll('.reveal-init, .stagger-parent').forEach(el => {
+      el.classList.add('is-revealed');
+    });
   }
 
   // --- Canvas Pause / Resume Controller ---
@@ -216,8 +248,9 @@
     });
   }
 
-  // --- Project Detail Modal Controller ---
+  // --- Signature Project Morph & Detail Modal Controller ---
   const modal = document.getElementById('project-modal');
+  const modalPanel = modal ? modal.querySelector('.modal-panel') : null;
   const modalCloseBtn = document.getElementById('modal-close-btn');
   const modalCategory = document.getElementById('modal-category');
   const modalTitle = document.getElementById('modal-title');
@@ -227,13 +260,16 @@
   const modalDeepDive = document.getElementById('modal-deep-dive');
   const modalRepoLink = document.getElementById('modal-repo-link');
 
+  let originatingCard = null;
   let lastActiveElement = null;
+  let isMorphing = false;
 
-  function openProjectModal(projectId) {
+  function openProjectModal(projectId, triggerBtn) {
     const p = PROJECTS.find((item) => item.id === projectId);
-    if (!p || !modal) return;
+    if (!p || !modal || !modalPanel) return;
 
-    lastActiveElement = document.activeElement;
+    lastActiveElement = triggerBtn || document.activeElement;
+    originatingCard = triggerBtn ? triggerBtn.closest('.project-card') : null;
 
     modalCategory.textContent = p.category;
     modalTitle.textContent = p.title;
@@ -256,8 +292,8 @@
       const item = document.createElement('div');
       item.className = 'modal-spec-item';
       item.innerHTML = `
-        <span class="spec-key">${key}</span>
-        <span class="spec-val">${val}</span>
+        <span class="spec-key">${escapeHtml(key)}</span>
+        <span class="spec-val">${escapeHtml(val)}</span>
       `;
       modalSpecsGrid.appendChild(item);
     }
@@ -265,16 +301,85 @@
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    modalCloseBtn.focus();
+
+    // Signature Morph Animation (FLIP from card to modal)
+    if (originatingCard && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      isMorphing = true;
+      originatingCard.classList.add('morph-source');
+
+      const cardRect = originatingCard.getBoundingClientRect();
+      const modalRect = modalPanel.getBoundingClientRect();
+
+      const scaleX = Math.min(Math.max(cardRect.width / modalRect.width, 0.4), 1.0);
+      const scaleY = Math.min(Math.max(cardRect.height / modalRect.height, 0.4), 1.0);
+      const deltaX = (cardRect.left + cardRect.width / 2) - (modalRect.left + modalRect.width / 2);
+      const deltaY = (cardRect.top + cardRect.height / 2) - (modalRect.top + modalRect.height / 2);
+
+      modalPanel.style.transition = 'none';
+      modalPanel.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+      modalPanel.style.opacity = '0.7';
+
+      // Force layout recalculation
+      modalPanel.offsetHeight;
+
+      requestAnimationFrame(() => {
+        modalPanel.style.transition = 'transform var(--time-morph) var(--ease-cinematic), opacity var(--time-morph) var(--ease-cinematic)';
+        modalPanel.style.transform = 'translate(0, 0) scale(1)';
+        modalPanel.style.opacity = '1';
+        setTimeout(() => {
+          isMorphing = false;
+        }, 460);
+      });
+    }
+
+    if (modalCloseBtn) {
+      modalCloseBtn.focus();
+    }
   }
 
   function closeProjectModal() {
-    if (!modal) return;
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    if (lastActiveElement) {
-      lastActiveElement.focus();
+    if (!modal || !modalPanel) return;
+
+    if (originatingCard && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !isMorphing) {
+      isMorphing = true;
+      const cardRect = originatingCard.getBoundingClientRect();
+      const modalRect = modalPanel.getBoundingClientRect();
+
+      const scaleX = Math.min(Math.max(cardRect.width / modalRect.width, 0.4), 1.0);
+      const scaleY = Math.min(Math.max(cardRect.height / modalRect.height, 0.4), 1.0);
+      const deltaX = (cardRect.left + cardRect.width / 2) - (modalRect.left + modalRect.width / 2);
+      const deltaY = (cardRect.top + cardRect.height / 2) - (modalRect.top + modalRect.height / 2);
+
+      modalPanel.style.transition = 'transform var(--time-morph) var(--ease-cinematic), opacity var(--time-morph) var(--ease-cinematic)';
+      modalPanel.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`;
+      modalPanel.style.opacity = '0';
+      modal.style.transition = 'opacity var(--time-morph) var(--ease-cinematic)';
+      modal.style.opacity = '0';
+
+      setTimeout(() => {
+        finalizeClose();
+      }, 400);
+    } else {
+      finalizeClose();
+    }
+
+    function finalizeClose() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      modal.style.transition = '';
+      modal.style.opacity = '';
+      modalPanel.style.transition = '';
+      modalPanel.style.transform = '';
+      modalPanel.style.opacity = '';
+      document.body.style.overflow = '';
+      if (originatingCard) {
+        originatingCard.classList.remove('morph-source');
+        originatingCard = null;
+      }
+      if (lastActiveElement) {
+        lastActiveElement.focus();
+      }
+      isMorphing = false;
     }
   }
 
@@ -282,7 +387,7 @@
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       const id = btn.getAttribute('data-project-id');
-      openProjectModal(id);
+      openProjectModal(id, btn);
     });
   });
 
@@ -364,7 +469,6 @@
       };
 
       function triggerFailSafe(noticeTitle, noticeDesc) {
-        // Automatically unhide/reveal email in the Direct Channel box
         const verifiedEmailEl = document.getElementById('verified-email');
         const gatewayStatusPill = document.getElementById('gateway-status-pill');
         if (verifiedEmailEl) {
@@ -457,9 +561,7 @@
 
         const data = await response.json();
 
-        // Check if transmission was received
         if (data.message && data.message.toLowerCase().includes('activation')) {
-          // Fail-safe: reveal direct email so visitor is never blocked
           triggerFailSafe(
             '⚡ Direct Email Revealed // Gateway Notice',
             'The form gateway is currently awaiting one-time confirmation. To ensure your inquiry reaches Mayank right now, his direct email is unlocked below:'
@@ -492,7 +594,7 @@
     });
   }
 
-  // Print console branding signature
+  // Console branding signature
   console.log(
     '%c CoreShadow // Mayank Bhatt %c\nPrecision Engineering Portfolio & Research Systems\nGitHub: https://github.com/CodeStrikerMayank',
     'background: #111; color: #fff; font-weight: bold; padding: 4px 8px; border: 1px solid #333;',

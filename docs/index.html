@@ -179,17 +179,52 @@
 
     <!-- Selected Projects Showcase -->
     <section id="projects" class="projects-section" aria-labelledby="projects-heading">
-      <div class="container">
+      <div class="container reveal-init">
         <div class="section-kicker">Proof of Craft</div>
         <h2 id="projects-heading" class="section-title">Selected Projects</h2>
         <p class="section-subtitle">
           Engineered solutions across graphics engines, AI runtime security hypervisors, compilers, and algorithmic graph simulations.
         </p>
 
-        <div class="projects-grid">
+        <div class="projects-grid stagger-parent">
           <!-- Project: APEX -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <span class="project-featured-badge">FLAGSHIP // AI &amp; SYSTEMS</span>
+            
+            <!-- Architectural Schematic Preview -->
+            <div class="project-preview-media">
+              <svg viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="APEX 7-Tier Cascade &amp; DAG Architecture Diagram">
+                <line x1="20" y1="45" x2="380" y2="45" stroke="#222" stroke-width="1.5" stroke-dasharray="4 4"></line>
+                <!-- 7 Cascade Nodes -->
+                <circle cx="50" cy="45" r="9" fill="#141414" stroke="#444" stroke-width="1.5"></circle>
+                <circle cx="50" cy="45" r="3" fill="#38bdf8"></circle>
+                <line x1="59" y1="45" x2="95" y2="45" stroke="#38bdf8" stroke-width="1.5"></line>
+                <circle cx="105" cy="45" r="9" fill="#141414" stroke="#444" stroke-width="1.5"></circle>
+                <circle cx="105" cy="45" r="3" fill="#555"></circle>
+                <line x1="114" y1="45" x2="150" y2="45" stroke="#333" stroke-width="1.5"></line>
+                <circle cx="160" cy="45" r="9" fill="#141414" stroke="#444" stroke-width="1.5"></circle>
+                <circle cx="160" cy="45" r="3" fill="#555"></circle>
+                <line x1="169" y1="45" x2="205" y2="45" stroke="#333" stroke-width="1.5"></line>
+                <circle cx="215" cy="45" r="9" fill="#141414" stroke="#444" stroke-width="1.5"></circle>
+                <circle cx="215" cy="45" r="3" fill="#38bdf8"></circle>
+                <line x1="224" y1="45" x2="260" y2="45" stroke="#38bdf8" stroke-width="1.5"></line>
+                <circle cx="270" cy="45" r="9" fill="#141414" stroke="#444" stroke-width="1.5"></circle>
+                <circle cx="270" cy="45" r="3" fill="#555"></circle>
+                <line x1="279" y1="45" x2="315" y2="45" stroke="#333" stroke-width="1.5"></line>
+                <circle cx="325" cy="45" r="9" fill="#141414" stroke="#444" stroke-width="1.5"></circle>
+                <circle cx="325" cy="45" r="3" fill="#555"></circle>
+                <line x1="334" y1="45" x2="361" y2="45" stroke="#333" stroke-width="1.5"></line>
+                <circle cx="370" cy="45" r="9" fill="#141414" stroke="#38bdf8" stroke-width="1.5"></circle>
+                <circle cx="370" cy="45" r="4" fill="#38bdf8"></circle>
+                <!-- DAG Cross Links -->
+                <path d="M 50 36 C 80 15, 180 15, 215 36" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.2" fill="none" stroke-dasharray="3 3"></path>
+                <path d="M 215 54 C 250 75, 330 75, 370 54" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.2" fill="none" stroke-dasharray="3 3"></path>
+                <text x="50" y="74" fill="#666" font-family="monospace" font-size="9" text-anchor="middle">L1</text>
+                <text x="215" y="74" fill="#38bdf8" font-family="monospace" font-size="9" text-anchor="middle">DAG</text>
+                <text x="370" y="74" fill="#fff" font-family="monospace" font-size="9" text-anchor="middle">L7</text>
+              </svg>
+            </div>
+
             <div>
               <div class="project-category">AI Systems &amp; Adaptive Computing</div>
               <h3 class="project-title">APEX Adaptive Intelligence Platform</h3>
@@ -221,8 +256,27 @@
           </article>
 
           <!-- Project 1: controlprotocol -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <span class="project-featured-badge">SYSTEMS // CLI</span>
+
+            <!-- Architectural Schematic Preview -->
+            <div class="project-preview-media">
+              <svg viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="ControlProtocol Tree &amp; Telemetry Stream Diagram">
+                <path d="M 30 20 L 30 70 M 30 35 L 75 35 M 30 55 L 75 55 M 75 55 L 75 70 M 75 70 L 110 70" stroke="#444" stroke-width="1.5"></path>
+                <rect x="75" y="28" width="40" height="14" rx="2" fill="#171717" stroke="#333"></rect>
+                <text x="82" y="38" fill="#888" font-family="monospace" font-size="8">sys/</text>
+                <rect x="75" y="48" width="45" height="14" rx="2" fill="#171717" stroke="#333"></rect>
+                <text x="82" y="58" fill="#888" font-family="monospace" font-size="8">net/</text>
+                <rect x="110" y="63" width="55" height="14" rx="2" fill="#171717" stroke="#38bdf8"></rect>
+                <text x="117" y="73" fill="#38bdf8" font-family="monospace" font-size="8">x-ray.io</text>
+
+                <path d="M 190 45 L 220 45 L 230 25 L 240 65 L 250 45 L 280 45 L 290 30 L 300 60 L 310 45 L 375 45" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="230" cy="25" r="2.5" fill="#38bdf8"></circle>
+                <circle cx="290" cy="30" r="2.5" fill="#38bdf8"></circle>
+                <text x="280" y="20" fill="#666" font-family="monospace" font-size="8">FS_VERIFIED</text>
+              </svg>
+            </div>
+
             <div>
               <div class="project-category">Systems &amp; CLI Architecture</div>
               <h3 class="project-title">ControlProtocol Interactive CLI</h3>
@@ -254,8 +308,24 @@
           </article>
 
           <!-- Project 2: Arise Lunar 3D Mapping -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <span class="project-featured-badge">GEOSPATIAL // 3D</span>
+
+            <!-- Architectural Schematic Preview -->
+            <div class="project-preview-media">
+              <svg viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Arise Lunar Topography Contour Diagram">
+                <ellipse cx="200" cy="45" rx="140" ry="34" stroke="#262626" stroke-width="1"></ellipse>
+                <ellipse cx="195" cy="45" rx="100" ry="25" stroke="#383838" stroke-width="1.2" stroke-dasharray="3 3"></ellipse>
+                <ellipse cx="190" cy="46" rx="65" ry="17" stroke="#38bdf8" stroke-width="1.2"></ellipse>
+                <ellipse cx="186" cy="47" rx="35" ry="9" fill="#101010" stroke="#555" stroke-width="1"></ellipse>
+                <circle cx="186" cy="47" r="2.5" fill="#38bdf8"></circle>
+                <line x1="50" y1="45" x2="350" y2="45" stroke="rgba(255,255,255,0.06)" stroke-width="1"></line>
+                <line x1="200" y1="10" x2="200" y2="80" stroke="rgba(255,255,255,0.06)" stroke-width="1"></line>
+                <text x="32" y="50" fill="#555" font-family="monospace" font-size="8">0.67°N</text>
+                <text x="330" y="50" fill="#38bdf8" font-family="monospace" font-size="8">23.47°E</text>
+              </svg>
+            </div>
+
             <div>
               <div class="project-category">Geospatial &amp; 3D Visualization</div>
               <h3 class="project-title">Arise Lunar Surface 3D Mapper</h3>
@@ -287,8 +357,25 @@
           </article>
 
           <!-- Project 3: Mineart Creative Engine -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <span class="project-featured-badge">FLAGSHIP // SIMULATION</span>
+
+            <!-- Architectural Schematic Preview -->
+            <div class="project-preview-media">
+              <svg viewBox="0 0 400 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Mineart Isometric Voxel Lattice Diagram">
+                <path d="M 200 25 L 225 38 L 200 51 L 175 38 Z" fill="#202020" stroke="#444" stroke-width="1"></path>
+                <path d="M 175 38 L 200 51 L 200 75 L 175 62 Z" fill="#141414" stroke="#444" stroke-width="1"></path>
+                <path d="M 225 38 L 200 51 L 200 75 L 225 62 Z" fill="#181818" stroke="#444" stroke-width="1"></path>
+                <path d="M 230 40 L 255 53 L 230 66 L 205 53 Z" fill="#2a2a2a" stroke="#38bdf8" stroke-width="1.2"></path>
+                <path d="M 205 53 L 230 66 L 230 84 L 205 71 Z" fill="#161616" stroke="#38bdf8" stroke-width="1.2"></path>
+                <path d="M 255 53 L 230 66 L 230 84 L 255 71 Z" fill="#1c1c1c" stroke="#38bdf8" stroke-width="1.2"></path>
+                <line x1="80" y1="45" x2="160" y2="45" stroke="#333" stroke-width="1" stroke-dasharray="2 4"></line>
+                <line x1="260" y1="45" x2="340" y2="45" stroke="#38bdf8" stroke-width="1" stroke-dasharray="2 4"></line>
+                <text x="95" y="40" fill="#666" font-family="monospace" font-size="8">CHUNK[16x16x256]</text>
+                <text x="275" y="40" fill="#38bdf8" font-family="monospace" font-size="8">RASTER // 60FPS</text>
+              </svg>
+            </div>
+
             <div>
               <div class="project-category">Graphics &amp; Simulation</div>
               <h3 class="project-title">Mineart Creative Engine</h3>
@@ -320,7 +407,7 @@
           </article>
 
           <!-- Project 4: HistoryWorld Incident Analytics -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <div>
               <div class="project-category">Terminal Analytics &amp; Dashboards</div>
               <h3 class="project-title">HistoryWorld Incident Analytics</h3>
@@ -352,7 +439,7 @@
           </article>
 
           <!-- Project 5: TicketML -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <div>
               <div class="project-category">Machine Learning &amp; NLP</div>
               <h3 class="project-title">TicketML Predictive Classifier</h3>
@@ -384,7 +471,7 @@
           </article>
 
           <!-- Project 6: FirstMLModel -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <div>
               <div class="project-category">Machine Learning Foundations</div>
               <h3 class="project-title">FirstMLModel Foundations</h3>
@@ -416,7 +503,7 @@
           </article>
 
           <!-- Project 7: tkinterskillset -->
-          <article class="project-card">
+          <article class="project-card reveal-child">
             <div>
               <div class="project-category">Desktop UI &amp; Systems</div>
               <h3 class="project-title">Tkinter Desktop Systems Suite</h3>
@@ -452,15 +539,15 @@
 
     <!-- Technical Capabilities Matrix -->
     <section id="capabilities" class="capabilities-section" aria-labelledby="capabilities-heading">
-      <div class="container">
+      <div class="container reveal-init">
         <div class="section-kicker">Core Domains</div>
         <h2 id="capabilities-heading" class="section-title">Technical Capabilities</h2>
         <p class="section-subtitle">
           Structured disciplines grounded in low-level engineering, deterministic guarantees, and computational performance.
         </p>
 
-        <div class="capabilities-matrix">
-          <div class="capability-card">
+        <div class="capabilities-matrix stagger-parent">
+          <div class="capability-card reveal-child">
             <span class="capability-index">01 // DOMAIN</span>
             <h3 class="capability-title">Systems Programming &amp; Architecture</h3>
             <p class="capability-desc">
@@ -474,7 +561,7 @@
             </ul>
           </div>
 
-          <div class="capability-card">
+          <div class="capability-card reveal-child">
             <span class="capability-index">02 // DOMAIN</span>
             <h3 class="capability-title">AI Governance &amp; Runtime Security</h3>
             <p class="capability-desc">
@@ -488,7 +575,7 @@
             </ul>
           </div>
 
-          <div class="capability-card">
+          <div class="capability-card reveal-child">
             <span class="capability-index">03 // DOMAIN</span>
             <h3 class="capability-title">Computer Graphics &amp; Simulation</h3>
             <p class="capability-desc">
@@ -502,7 +589,7 @@
             </ul>
           </div>
 
-          <div class="capability-card">
+          <div class="capability-card reveal-child">
             <span class="capability-index">04 // DOMAIN</span>
             <h3 class="capability-title">Algorithmic Problem Solving</h3>
             <p class="capability-desc">
@@ -516,7 +603,7 @@
             </ul>
           </div>
 
-          <div class="capability-card">
+          <div class="capability-card reveal-child">
             <span class="capability-index">05 // DOMAIN</span>
             <h3 class="capability-title">Frontend Architecture &amp; Motion</h3>
             <p class="capability-desc">
@@ -530,7 +617,7 @@
             </ul>
           </div>
 
-          <div class="capability-card">
+          <div class="capability-card reveal-child">
             <span class="capability-index">06 // DOMAIN</span>
             <h3 class="capability-title">Tooling &amp; Quality Engineering</h3>
             <p class="capability-desc">
@@ -549,7 +636,7 @@
 
     <!-- Profile & Working Principles -->
     <section id="profile" class="profile-section" aria-labelledby="profile-heading">
-      <div class="container">
+      <div class="container reveal-init">
         <div class="section-kicker">Philosophy</div>
         <h2 id="profile-heading" class="section-title">Profile &amp; Working Principles</h2>
         <p class="section-subtitle">
@@ -557,7 +644,7 @@
         </p>
 
         <div class="profile-editorial">
-          <div class="profile-narrative">
+          <div class="profile-narrative reveal-child">
             <h3>Engineering With Deliberate Restraint</h3>
             <p>
               I am Mayank Bhatt, an engineer focused on software systems that value mathematical precision, minimal footprint, and enduring quality over generic trends.
@@ -570,29 +657,29 @@
             </p>
           </div>
 
-          <div class="principles-grid">
-            <div class="principle-item">
+          <div class="principles-grid stagger-parent">
+            <div class="principle-item reveal-child">
               <h4 class="principle-title">01. Precision</h4>
               <p class="principle-body">
                 Every calculation, memory layout, and interface boundary is deliberate. No arbitrary values or approximations where exact constraints can be defined.
               </p>
             </div>
 
-            <div class="principle-item">
+            <div class="principle-item reveal-child">
               <h4 class="principle-title">02. Depth</h4>
               <p class="principle-body">
                 True engineering solves root causes rather than symptoms. Codebases are architected for longevity, maintainability, and deep technical rigor.
               </p>
             </div>
 
-            <div class="principle-item">
+            <div class="principle-item reveal-child">
               <h4 class="principle-title">03. Restraint</h4>
               <p class="principle-body">
                 Resisting unnecessary dependencies, decorative noise, and premature complexity. If an invariant can be achieved in 100 lines of pure code, we don't install a 2 MB dependency.
               </p>
             </div>
 
-            <div class="principle-item">
+            <div class="principle-item reveal-child">
               <h4 class="principle-title">04. Motion</h4>
               <p class="principle-body">
                 Motion in CoreShadow is not cosmetic decoration; it is mechanical communication. Physics-grounded acceleration curves reflecting operational states.
@@ -605,45 +692,45 @@
 
     <!-- Engineering Process Section -->
     <section id="process" class="process-section" aria-labelledby="process-heading">
-      <div class="container">
+      <div class="container reveal-init">
         <div class="section-kicker">Lifecycle</div>
         <h2 id="process-heading" class="section-title">The Engineering Process</h2>
         <p class="section-subtitle">
           A disciplined 6-stage methodology ensuring projects move from abstract problem spaces to mathematically verified implementations.
         </p>
 
-        <div class="process-timeline">
-          <div class="process-step">
+        <div class="process-timeline stagger-parent">
+          <div class="process-step reveal-child">
             <span class="step-num">PHASE 01</span>
             <h3 class="step-title">Problem Space</h3>
             <p class="step-desc">Deconstruct the objective to its fundamentals. Identify core bottlenecks, failure modes, and required outcomes.</p>
           </div>
 
-          <div class="process-step">
+          <div class="process-step reveal-child">
             <span class="step-num">PHASE 02</span>
             <h3 class="step-title">Constraints</h3>
             <p class="step-desc">Establish strict boundary conditions: memory limits, CPU latency budgets, and security invariants.</p>
           </div>
 
-          <div class="process-step">
+          <div class="process-step reveal-child">
             <span class="step-num">PHASE 03</span>
             <h3 class="step-title">Architecture</h3>
             <p class="step-desc">Design modular, decoupled components. Define data flow models, state transitions, and component contracts.</p>
           </div>
 
-          <div class="process-step">
+          <div class="process-step reveal-child">
             <span class="step-num">PHASE 04</span>
             <h3 class="step-title">Execution</h3>
             <p class="step-desc">Write clean, idiomatic code adhering to declared invariants. Implement zero-bloat algorithms with predictable complexity.</p>
           </div>
 
-          <div class="process-step">
+          <div class="process-step reveal-child">
             <span class="step-num">PHASE 05</span>
             <h3 class="step-title">Verification</h3>
             <p class="step-desc">Stress-test against malicious edge cases, concurrent workloads, and memory profiles. Prove baseline invariants pass.</p>
           </div>
 
-          <div class="process-step">
+          <div class="process-step reveal-child">
             <span class="step-num">PHASE 06</span>
             <h3 class="step-title">Documentation</h3>
             <p class="step-desc">Provide comprehensive, reproducible technical documentation, telemetry graphs, and maintainable runbooks.</p>
@@ -654,14 +741,14 @@
 
     <!-- GitHub & Project Resources Index -->
     <section id="github-index" class="github-section" aria-labelledby="github-heading">
-      <div class="container">
+      <div class="container reveal-init">
         <div class="section-kicker">Open Code</div>
         <h2 id="github-heading" class="section-title">Repository Catalog</h2>
         <p class="section-subtitle">
           Public repositories, experimental engines, and verified engineering tools maintained by Mayank Bhatt.
         </p>
 
-        <div class="github-catalog">
+        <div class="github-catalog reveal-init">
           <div class="catalog-header">
             <div>
               <strong style="color: var(--color-pure-white); font-family: var(--font-mono);">github.com/CodeStrikerMayank</strong>
@@ -738,14 +825,14 @@
 
     <!-- Direct Contact & Inquiry Section -->
     <section id="contact" class="contact-section" aria-labelledby="contact-heading">
-      <div class="container">
+      <div class="container reveal-init">
         <div class="section-kicker">Communication</div>
         <h2 id="contact-heading" class="section-title">Initiate Contact</h2>
         <p class="section-subtitle">
           Open to technical discussions, systems engineering collaborations, and research inquiries.
         </p>
 
-        <div class="contact-layout">
+        <div class="contact-layout reveal-init">
           <div class="contact-info">
             <div class="contact-engineer-card">
               <div class="contact-avatar-wrapper">

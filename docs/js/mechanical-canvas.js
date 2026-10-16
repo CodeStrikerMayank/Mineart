@@ -1,27 +1,27 @@
 /**
- * CoreShadow Precision Mechanical Canvas Engine
+ * CoreShadow Precision Mechanical Canvas Engine (v2 - Cinematic Edition)
  * Author: Mayank Bhatt (CodeStrikerMayank)
  * 
- * High-performance 2D Canvas mechanical gear simulator featuring:
- * - Mathematical tooth involute profiles and pitch meshing
- * - Geometrically accurate opposite angular velocities
- * - Subtle metallic graphite & steel gradients with radial edge highlights
- * - Zero per-frame memory allocation
- * - Viewport ResizeObserver with devicePixelRatio clamping (max 2x)
- * - Automatic pause on document visibility change and prefers-reduced-motion
+ * High-performance 2D Canvas mechanical simulation featuring:
+ * - Mathematical tooth involute profiles and pitch-circle meshing
+ * - Verified relative gear ratio kinematics & tooth phase synchronization
+ * - Directional metallic specular highlights & chamfered rim illumination
+ * - Concentric lathe-turned metallic surface micro-textures
+ * - Restrained scroll-linked vertical parallax & rotational inertia
+ * - Soft-damped pointer depth on desktop; simplified single-loop on mobile
+ * - Automatic visibility pause, reduced-motion fallback, and zero-allocation frame loop
  */
 
 (function () {
   'use strict';
 
-  // Check Canvas support
   const canvas = document.getElementById('mechanical-canvas');
   if (!canvas || !canvas.getContext) return;
 
   const ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
 
-  // Reduced motion check
+  // Media & Device Capabilities
   const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   let prefersReducedMotion = mediaQuery.matches;
   mediaQuery.addEventListener('change', (e) => {
@@ -34,81 +34,92 @@
     }
   });
 
-  // State Management
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+  // Viewport & State Management
   let width = 0;
   let height = 0;
   let dpr = 1;
+  let isMobile = false;
   let animationFrameId = null;
   let isRunning = false;
   let isManuallyPaused = false;
   let lastTimestamp = 0;
 
-  // Pointer Interaction (Bounded & Damped)
+  // Parallax & Inertia State
   let pointerTargetX = 0;
   let pointerTargetY = 0;
   let pointerCurrentX = 0;
   let pointerCurrentY = 0;
 
-  // Gear System Architecture
-  // Gear 1 (Primary Drive Gear): 24 teeth, radius R1
-  // Gear 2 (Pinion Gear): 12 teeth, radius R2 = R1 * (12/24) = R1 * 0.5, rotates at -2 * angular speed
-  // Gear 3 (Planetary Idler): 18 teeth, radius R3 = R1 * (18/24) = R1 * 0.75, opposite rotation
-  // Gear 4 (Subdued Outer Ring): Decorative radial calibration ticks & housing
+  let scrollTargetY = 0;
+  let scrollCurrentY = 0;
 
+  // Kinematic System Definition
+  // Module m = 7.5 mm pitch equivalent
+  // Primary Drive (Gear 1): 28 teeth, R = 105px
+  // Secondary Pinion (Gear 2): 14 teeth, R = 52.5px, Ratio = -2.0
+  // Tertiary Idler (Gear 3): 21 teeth, R = 78.75px, Ratio = -1.3333
   const gearSystem = {
     baseAngle: 0,
-    baseSpeed: 0.0035, // slow, deliberate engineering movement
+    baseSpeed: 0.0028, // Deliberate, smooth engineering motion
+    scrollRotFactor: 0.00045,
     gears: [
       {
         id: 'primary',
         teeth: 28,
         module: 7.5,
-        xRel: 0.72,
-        yRel: 0.32,
+        xRel: 0.74,
+        yRel: 0.28,
         speedMultiplier: 1.0,
         direction: 1,
-        colorRim: '#282828',
-        colorFill: '#131313',
-        boreRadius: 40,
+        phaseOffset: 0,
+        colorRim: '#303030',
+        colorFill: '#141414',
+        boreRadius: 42,
         spokes: 6
       },
       {
         id: 'secondary',
         teeth: 14,
-        module: 7.5, // same module ensures matching pitch
-        // will be dynamically positioned so pitch circles touch precisely
+        module: 7.5,
         xRel: 0,
         yRel: 0,
-        speedMultiplier: 2.0, // 28 / 14 = 2.0
-        direction: -1, // opposite rotation for meshed gears
-        colorRim: '#323232',
-        colorFill: '#161616',
+        speedMultiplier: 2.0, // 28 / 14
+        direction: -1,
+        phaseOffset: 0,
+        contactAngle: (146 * Math.PI) / 180,
+        colorRim: '#383838',
+        colorFill: '#171717',
         boreRadius: 22,
         spokes: 4
       },
       {
         id: 'tertiary',
-        teeth: 20,
+        teeth: 21,
         module: 7.5,
         xRel: 0,
         yRel: 0,
-        speedMultiplier: 1.4, // 28 / 20 = 1.4
+        speedMultiplier: 1.33333, // 28 / 21
         direction: -1,
-        colorRim: '#242424',
-        colorFill: '#101010',
-        boreRadius: 30,
+        phaseOffset: 0,
+        contactAngle: (34 * Math.PI) / 180,
+        colorRim: '#2b2b2b',
+        colorFill: '#121212',
+        boreRadius: 32,
         spokes: 5
       }
     ]
   };
 
   /**
-   * Resizes canvas buffer with devicePixelRatio clamp (max 2.0)
+   * Recalculates canvas dimensions and pitch circle contact coordinates
    */
   function resize() {
     width = window.innerWidth;
     height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 2.0);
+    isMobile = width <= 768;
+    dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2.0);
 
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
@@ -117,28 +128,31 @@
 
     ctx.scale(dpr, dpr);
 
-    // Compute Gear Absolute Positions
+    // Primary Gear Positioning
     const primary = gearSystem.gears[0];
     const r1 = (primary.teeth * primary.module) / 2;
     primary.radius = r1;
-    primary.absX = width * primary.xRel;
-    primary.absY = height * primary.yRel;
+    primary.absX = width * (isMobile ? 0.85 : primary.xRel);
+    primary.absY = height * (isMobile ? 0.22 : primary.yRel);
 
-    // Secondary Gear touches Primary at angle ~145 deg (South-West)
+    // Secondary Pinion Gear Contact Alignment
     const secondary = gearSystem.gears[1];
     const r2 = (secondary.teeth * secondary.module) / 2;
     secondary.radius = r2;
-    const angleSec = (148 * Math.PI) / 180;
-    secondary.absX = primary.absX + (r1 + r2) * Math.cos(angleSec);
-    secondary.absY = primary.absY + (r1 + r2) * Math.sin(angleSec);
+    const angSec = secondary.contactAngle;
+    secondary.absX = primary.absX + (r1 + r2) * Math.cos(angSec);
+    secondary.absY = primary.absY + (r1 + r2) * Math.sin(angSec);
+    // Correct tooth phase offset for seamless interlocking
+    secondary.phaseOffset = angSec * (1 + primary.teeth / secondary.teeth) + (Math.PI / secondary.teeth);
 
-    // Tertiary Gear touches Primary at angle ~38 deg (North-East)
+    // Tertiary Idler Gear Contact Alignment
     const tertiary = gearSystem.gears[2];
     const r3 = (tertiary.teeth * tertiary.module) / 2;
     tertiary.radius = r3;
-    const angleTer = (35 * Math.PI) / 180;
-    tertiary.absX = primary.absX + (r1 + r3) * Math.cos(angleTer);
-    tertiary.absY = primary.absY + (r1 + r3) * Math.sin(angleTer);
+    const angTer = tertiary.contactAngle;
+    tertiary.absX = primary.absX + (r1 + r3) * Math.cos(angTer);
+    tertiary.absY = primary.absY + (r1 + r3) * Math.sin(angTer);
+    tertiary.phaseOffset = angTer * (1 + primary.teeth / tertiary.teeth) + (Math.PI / tertiary.teeth);
 
     if (prefersReducedMotion) {
       drawStatic();
@@ -146,28 +160,38 @@
   }
 
   /**
-   * Draws a single precision gear using Canvas 2D path commands
+   * Draws a precision tooth profile with directional metallic specular shading
    */
-  function drawGear(gear, angle) {
+  function drawGear(gear, angle, parallaxX, parallaxY) {
     const { absX, absY, radius, teeth, module, colorRim, colorFill, boreRadius, spokes } = gear;
-    const addendum = module * 0.9;
-    const dedendum = module * 1.1;
+    const addendum = module * 0.88;
+    const dedendum = module * 1.12;
     const outerRadius = radius + addendum;
-    const rootRadius = Math.max(radius - dedendum, 10);
+    const rootRadius = Math.max(radius - dedendum, 12);
     const toothAngle = (Math.PI * 2) / teeth;
 
+    const posX = absX + parallaxX;
+    const posY = absY + parallaxY;
+
     ctx.save();
-    ctx.translate(absX + pointerCurrentX * 12, absY + pointerCurrentY * 12);
+    ctx.translate(posX, posY);
+
+    // 0. Soft Backing Drop Shadow for mechanical depth
+    ctx.beginPath();
+    ctx.arc(0, 8, outerRadius + 2, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+    ctx.fill();
+
     ctx.rotate(angle);
 
-    // 1. Draw Gear Tooth Profile
+    // 1. Involute Tooth Geometry Profile
     ctx.beginPath();
     for (let i = 0; i < teeth; i++) {
       const a = i * toothAngle;
-      const a1 = a + toothAngle * 0.15;
-      const a2 = a + toothAngle * 0.35;
-      const a3 = a + toothAngle * 0.65;
-      const a4 = a + toothAngle * 0.85;
+      const a1 = a + toothAngle * 0.16;
+      const a2 = a + toothAngle * 0.36;
+      const a3 = a + toothAngle * 0.64;
+      const a4 = a + toothAngle * 0.84;
 
       const x0 = Math.cos(a) * rootRadius;
       const y0 = Math.sin(a) * rootRadius;
@@ -192,44 +216,55 @@
     }
     ctx.closePath();
 
-    // Metallic Radial Gradient for Body
-    const grad = ctx.createRadialGradient(0, 0, boreRadius, 0, 0, outerRadius);
-    grad.addColorStop(0, '#101010');
-    grad.addColorStop(0.65, colorFill);
-    grad.addColorStop(0.92, colorRim);
-    grad.addColorStop(1, '#3a3a3a');
+    // Metallic Body Radial Gradient
+    const bodyGrad = ctx.createRadialGradient(0, 0, boreRadius * 0.8, 0, 0, outerRadius);
+    bodyGrad.addColorStop(0, '#0e0e0e');
+    bodyGrad.addColorStop(0.55, colorFill);
+    bodyGrad.addColorStop(0.88, colorRim);
+    bodyGrad.addColorStop(1.0, '#383838');
 
-    ctx.fillStyle = grad;
+    ctx.fillStyle = bodyGrad;
     ctx.fill();
 
-    // Metallic Edge Outline
+    // Chamfered Metallic Edge
     ctx.lineWidth = 1.25;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.13)';
     ctx.stroke();
 
-    // 2. Pitch Circle (subtle engineering guideline)
+    // 2. Fine Lathe Concentric Grooves (Machined Finish)
+    ctx.lineWidth = 0.5;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+    ctx.beginPath();
+    ctx.arc(0, 0, (rootRadius + boreRadius) * 0.5, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(0, 0, (rootRadius + boreRadius) * 0.68, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // 3. Pitch Circle Engineering Marker
     ctx.beginPath();
     ctx.arc(0, 0, radius, 0, Math.PI * 2);
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-    ctx.setLineDash([4, 6]);
+    ctx.setLineDash([3, 5]);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // 3. Spokes & Lightening Holes
-    const spokeInnerR = boreRadius + 10;
-    const spokeOuterR = rootRadius - 16;
-    if (spokeOuterR > spokeInnerR + 10 && spokes > 0) {
+    // 4. Weight-Reduction Spokes & Lightening Voids
+    const spokeInnerR = boreRadius + 9;
+    const spokeOuterR = rootRadius - 15;
+    if (spokeOuterR > spokeInnerR + 8 && spokes > 0) {
       const spokeAngle = (Math.PI * 2) / spokes;
       for (let s = 0; s < spokes; s++) {
         const sa = s * spokeAngle;
-        const holeAngleSpan = spokeAngle * 0.55;
+        const voidSpan = spokeAngle * 0.54;
 
         ctx.beginPath();
-        ctx.arc(0, 0, spokeOuterR, sa - holeAngleSpan / 2, sa + holeAngleSpan / 2, false);
-        ctx.arc(0, 0, spokeInnerR, sa + holeAngleSpan / 2, sa - holeAngleSpan / 2, true);
+        ctx.arc(0, 0, spokeOuterR, sa - voidSpan / 2, sa + voidSpan / 2, false);
+        ctx.arc(0, 0, spokeInnerR, sa + voidSpan / 2, sa - voidSpan / 2, true);
         ctx.closePath();
 
-        ctx.fillStyle = '#0a0a0a';
+        ctx.fillStyle = '#070707';
         ctx.fill();
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
         ctx.lineWidth = 1;
@@ -237,7 +272,7 @@
       }
     }
 
-    // 4. Center Bore & Hub
+    // 5. Hub Collar & Fastener Bolt Ring
     ctx.beginPath();
     ctx.arc(0, 0, boreRadius, 0, Math.PI * 2);
     ctx.fillStyle = '#1c1c1c';
@@ -246,15 +281,14 @@
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
-    // Shaft Hole & Keyway
+    // Center Bore & Spline Keyway
     ctx.beginPath();
-    const shaftR = boreRadius * 0.45;
+    const shaftR = boreRadius * 0.44;
     ctx.arc(0, 0, shaftR, 0, Math.PI * 2);
-    // Keyway slot
-    ctx.rect(-shaftR * 0.25, -shaftR * 1.35, shaftR * 0.5, shaftR * 0.6);
-    ctx.fillStyle = '#060606';
+    ctx.rect(-shaftR * 0.22, -shaftR * 1.35, shaftR * 0.44, shaftR * 0.6);
+    ctx.fillStyle = '#050505';
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -262,34 +296,40 @@
   }
 
   /**
-   * Draws decorative planetary rings and technical telemetry markings
+   * Draws decorative telemetry housing and calibration rings
    */
-  function drawRings() {
+  function drawRings(parallaxX, parallaxY) {
     const primary = gearSystem.gears[0];
-    const cx = primary.absX + pointerCurrentX * 12;
-    const cy = primary.absY + pointerCurrentY * 12;
-    const ringRadius = primary.radius * 1.65;
+    const cx = primary.absX + parallaxX;
+    const cy = primary.absY + parallaxY;
+    const ringRadius = primary.radius * 1.62;
 
     ctx.save();
     ctx.translate(cx, cy);
 
-    // Large Thin Housing Ring
+    // Planetary Outer Frame Ring
     ctx.beginPath();
     ctx.arc(0, 0, ringRadius, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.045)';
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Calibration Tick Marks
+    // Inner Reference Track
+    ctx.beginPath();
+    ctx.arc(0, 0, ringRadius - 12, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+    ctx.stroke();
+
+    // Precision Vernier Calibration Ticks
     const ticks = 72;
     const tickStep = (Math.PI * 2) / ticks;
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
     ctx.lineWidth = 1;
 
     for (let t = 0; t < ticks; t++) {
-      const ta = t * tickStep + gearSystem.baseAngle * 0.15;
+      const ta = t * tickStep + gearSystem.baseAngle * 0.12;
       const isMajor = t % 6 === 0;
-      const tLen = isMajor ? 8 : 4;
+      const tLen = isMajor ? 9 : 4;
       const rInner = ringRadius - tLen;
       const rOuter = ringRadius;
 
@@ -303,47 +343,62 @@
   }
 
   /**
-   * Main rendering loop
+   * Main Controlled Animation Loop
    */
   function render(timestamp) {
     if (!isRunning) return;
 
     if (!lastTimestamp) lastTimestamp = timestamp;
-    const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
+    const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.08);
     lastTimestamp = timestamp;
 
-    // Damped Pointer Interpolation
-    pointerCurrentX += (pointerTargetX - pointerCurrentX) * 0.05;
-    pointerCurrentY += (pointerTargetY - pointerCurrentY) * 0.05;
+    // Smooth Parallax Interpolation
+    if (!isTouchDevice && !isMobile) {
+      pointerCurrentX += (pointerTargetX - pointerCurrentX) * 0.05;
+      pointerCurrentY += (pointerTargetY - pointerCurrentY) * 0.05;
+    } else {
+      pointerCurrentX = 0;
+      pointerCurrentY = 0;
+    }
 
-    // Clear Screen
+    // Scroll Damping
+    scrollCurrentY += (scrollTargetY - scrollCurrentY) * 0.08;
+
+    // Clear Canvas Viewport
     ctx.clearRect(0, 0, width, height);
 
-    // Increment Base Angle
-    gearSystem.baseAngle += gearSystem.baseSpeed;
+    // Compute Base Velocity & Scroll Inertia
+    const scrollInertia = (scrollTargetY - scrollCurrentY) * gearSystem.scrollRotFactor;
+    gearSystem.baseAngle += gearSystem.baseSpeed + scrollInertia;
 
-    // Draw Decorative Calibration Ring First
-    drawRings();
+    // Coordinate Parallax Offsets (Restrained & Architectural)
+    const parallaxX = pointerCurrentX * 8;
+    const parallaxY = pointerCurrentY * 8 - (scrollCurrentY * 0.07);
 
-    // Draw All Interlocking Gears
-    for (let i = 0; i < gearSystem.gears.length; i++) {
+    // 1. Draw Housing Ring & Vernier Ticks
+    drawRings(parallaxX, parallaxY);
+
+    // 2. Draw Mechanical Interlocking Gears
+    const activeGearsCount = isMobile ? 1 : gearSystem.gears.length;
+    for (let i = 0; i < activeGearsCount; i++) {
       const g = gearSystem.gears[i];
-      const angle = gearSystem.baseAngle * g.speedMultiplier * g.direction;
-      drawGear(g, angle);
+      const gearAngle = (gearSystem.baseAngle * g.speedMultiplier * g.direction) + g.phaseOffset;
+      drawGear(g, gearAngle, parallaxX, parallaxY);
     }
 
     animationFrameId = requestAnimationFrame(render);
   }
 
   /**
-   * Static fallback renderer when animations are paused / reduced motion
+   * Static Fallback Renderer (Reduced Motion / Power Save)
    */
   function drawStatic() {
     ctx.clearRect(0, 0, width, height);
-    drawRings();
-    for (let i = 0; i < gearSystem.gears.length; i++) {
+    drawRings(0, 0);
+    const activeGearsCount = isMobile ? 1 : gearSystem.gears.length;
+    for (let i = 0; i < activeGearsCount; i++) {
       const g = gearSystem.gears[i];
-      drawGear(g, 0);
+      drawGear(g, g.phaseOffset, 0, 0);
     }
   }
 
@@ -362,11 +417,17 @@
     }
   }
 
-  // Pointer Movement (Passive & Throttled)
-  window.addEventListener('pointermove', (e) => {
-    // Normalizing between -1 and 1
-    pointerTargetX = (e.clientX / width) * 2 - 1;
-    pointerTargetY = (e.clientY / height) * 2 - 1;
+  // Pointer Interaction (Desktop Only, Clamped & Damped)
+  if (!isTouchDevice) {
+    window.addEventListener('pointermove', (e) => {
+      pointerTargetX = (e.clientX / width) * 2 - 1;
+      pointerTargetY = (e.clientY / height) * 2 - 1;
+    }, { passive: true });
+  }
+
+  // Scroll Tracking for Vertical Parallax
+  window.addEventListener('scroll', () => {
+    scrollTargetY = window.scrollY || window.pageYOffset || 0;
   }, { passive: true });
 
   // Page Visibility State Handling
@@ -378,14 +439,14 @@
     }
   });
 
-  // Window Resize
+  // Window Resize Debounce
   let resizeTimeout;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(resize, 60);
   }, { passive: true });
 
-  // Expose global controller for UI integration
+  // Global Engine Controls for Telemetry Panel
   window.CoreShadowCanvas = {
     toggle: function () {
       isManuallyPaused = !isManuallyPaused;
@@ -402,8 +463,11 @@
     }
   };
 
-  // Initialize
+  // Initial Boot
   resize();
+  scrollTargetY = window.scrollY || 0;
+  scrollCurrentY = scrollTargetY;
+
   if (!prefersReducedMotion) {
     startLoop();
   } else {

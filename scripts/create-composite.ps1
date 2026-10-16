@@ -5,14 +5,14 @@ $outputFile = Join-Path $artifactDir "portfolio_feature_showcase_master.png"
 $localAssetFile = "d:\Education Content\Professional website\assets\portfolio_showcase_master.png"
 $docsAssetFile = "d:\Education Content\Professional website\docs\assets\portfolio_showcase_master.png"
 
-# File paths for the 7 feature screenshots
-$f1 = Join-Path $artifactDir "feat_1_hero_png_1792177080239.png"
-$f2 = Join-Path $artifactDir "feat_2_projects_png_1792177097876.png"
-$f3 = Join-Path $artifactDir "feat_3_modal_png_1792177157434.png"
-$f4 = Join-Path $artifactDir "feat_4_capabilities_png_1792177186795.png"
-$f5 = Join-Path $artifactDir "feat_5_principles_png_1792177206112.png"
-$f6 = Join-Path $artifactDir "feat_6_repositories_png_1792177239959.png"
-$f7 = Join-Path $artifactDir "feat_7_contact_png_1792177281774.png"
+# File paths for the 7 feature screenshots (Upgraded Cinematic Motion & Visual Refinement)
+$f1 = Join-Path $artifactDir "hero_section_1792179242279.png"
+$f2 = Join-Path $artifactDir "projects_grid_1792179261249.png"
+$f3 = Join-Path $artifactDir "apex_modal_1792179277386.png"
+$f4 = Join-Path $artifactDir "capabilities_matrix_1792179318064.png"
+$f5 = Join-Path $artifactDir "principles_section_1792179336398.png"
+$f6 = Join-Path $artifactDir "repositories_catalog_1792179410297.png"
+$f7 = Join-Path $artifactDir "contact_section_1792179442746.png"
 
 # Canvas Dimensions
 $masterWidth = 2880
@@ -58,8 +58,8 @@ $accentBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::From
 
 # Title drawing
 $headerTitle = "CORESHADOW // MAYANK BHATT"
-$headerSub = "SYSTEMS & CREATIVE ENGINEERING PORTFOLIO -- MASTER ARCHITECTURE & FEATURE MATRIX"
-$headerMeta = "STATUS: ONLINE // VERIFIED GITHUB PAGE [OK] - 2D INVOLUTE MESH ENGINE - ZERO-LEAK STEALTH GATEWAY"
+$headerSub = "SYSTEMS & CREATIVE ENGINEERING PORTFOLIO -- CINEMATIC MOTION & ARCHITECTURAL REFINEMENT"
+$headerMeta = "STATUS: ONLINE // UNIFIED MOTION CURVES - INTERLOCKING KINEMATIC GEAR ENGINE - FLIP MORPH MODAL"
 
 $g.DrawString($headerTitle, $titleFont, $whiteBrush, [float]$margin, 35.0)
 $g.DrawString($headerSub, $subtitleFont, $silverBrush, [float]$margin, 95.0)
