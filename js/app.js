@@ -394,7 +394,15 @@
         const data = await response.json();
 
         // Check if transmission was received
-        if (response.ok || data.success === 'true' || data.success === true || (data.message && data.message.includes('Activation'))) {
+        if (data.message && data.message.toLowerCase().includes('activation')) {
+          formFeedback.className = 'form-feedback info';
+          formFeedback.innerHTML = `
+            <div style="font-weight: 700; margin-bottom: 0.35rem; color: var(--color-pure-white);">⚠️ One-Time Form Activation Required</div>
+            <div style="margin-bottom: 0.5rem;">FormSubmit has sent an activation link to <strong>mayankoriginal711@gmail.com</strong>.</div>
+            <div style="font-size: 0.8rem; color: var(--color-silver);">Please open your inbox at <em>mayankoriginal711@gmail.com</em> and click the <strong>"Activate Form"</strong> button. Once activated, all inquiries sent from this site arrive instantly in your inbox!</div>
+          `;
+          contactForm.reset();
+        } else if (data.success === 'true' || data.success === true) {
           formFeedback.className = 'form-feedback success';
           formFeedback.innerHTML = `
             <div style="font-weight: 700; margin-bottom: 0.35rem;">✓ Inquiry Dispatched Successfully!</div>
