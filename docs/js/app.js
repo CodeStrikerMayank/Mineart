@@ -9,6 +9,23 @@
   // --- Project Showcase Data (Verified Engineering Proofs by Mayank Bhatt) ---
   const PROJECTS = [
     {
+      id: 'apex',
+      title: 'APEX Adaptive Student Intelligence Platform',
+      category: 'AI Systems & Adaptive Computing',
+      summary: 'Offline-first, mathematically grounded adaptive intelligence engine with a 7-tier power cascade, interactive DAG roadmaps, and Bayesian knowledge tracing.',
+      featured: true,
+      repo: 'https://github.com/CodeStrikerMayank/APEX',
+      demo: 'https://github.com/CodeStrikerMayank/APEX',
+      technologies: ['Python', 'FastAPI', 'DAG Graph Algorithms', 'Multi-LLM Cascade', 'Ollama Offline'],
+      specs: {
+        'AI Architecture': '7-Tier Power Cascade with Multi-Key Pooling & In-Flight Auto-Recharge',
+        'Offline Mode': 'Hardware-optimized local Ollama inference + deterministic fallback',
+        'Visual Roadmap': 'Interactive SVG Directed Acyclic Graph (DAG) with pan/zoom',
+        'Memory Model': 'Ebbinghaus spaced-repetition retention scheduler'
+      },
+      deepDive: 'APEX is an adaptive intelligence platform engineered for high-stakes competitive examinations. It calibrates global Latent Ability through multi-tiered diagnostics, classifies distractor errors, and dynamically synthesizes prerequisite learning paths through topological DAG sorting.'
+    },
+    {
       id: 'controlprotocol',
       title: 'ControlProtocol Interactive CLI',
       category: 'Systems & CLI Architecture',

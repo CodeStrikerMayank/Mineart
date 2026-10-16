@@ -25,6 +25,7 @@ CoreShadow represents an engineered digital environment combining:
 
 | Project | Domain | Architecture & Highlights | Repository |
 | :--- | :--- | :--- | :--- |
+| **APEX** | AI Systems & Adaptive Computing | Offline-first adaptive student intelligence engine with a 7-tier power cascade, interactive SVG DAG roadmaps, and Bayesian knowledge tracing. | [APEX](https://github.com/CodeStrikerMayank/APEX) |
 | **ControlProtocol** | Systems & CLI Architecture | Python-based interactive CLI system for deep directory inspection (tree & X-ray view), network file transfer, system telemetry insights, and controlled file operations. | [controlprotocol](https://github.com/CodeStrikerMayank/controlprotocol) |
 | **Arise** | Geospatial & 3D Visualization | Interactive lunar surface 3D mapping and topographic terrain visualization system rendering planetary elevation models directly in the web browser. | [Arise](https://github.com/CodeStrikerMayank/Arise) |
 | **Mineart** | Graphics & Simulation | Procedural voxel generator and real-time canvas rendering system combining lightweight 3D coordinate math with low-overhead canvas geometry rasterization. | [Mineart](https://github.com/CodeStrikerMayank/Mineart) |
