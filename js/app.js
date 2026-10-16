@@ -304,36 +304,10 @@
     });
   }
 
-  // --- On-Demand Email Reveal & Copy (Scraper Protected) ---
-  const copyEmailBtn = document.getElementById('copy-email-btn');
-  const verifiedEmailEl = document.getElementById('verified-email');
-
-  // Deconstructed string to eliminate plain-text scrapers
+  // --- Deconstructed email representation (zero plain-text in source) ---
   const uPart = 'mayankoriginal711';
   const dPart = 'gmail.com';
   const resolvedEmail = `${uPart}@${dPart}`;
-
-  if (copyEmailBtn && verifiedEmailEl) {
-    copyEmailBtn.addEventListener('click', () => {
-      // Reveal the email
-      verifiedEmailEl.textContent = resolvedEmail;
-      verifiedEmailEl.style.color = 'var(--color-pure-white)';
-
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(resolvedEmail).then(() => {
-          const originalText = copyEmailBtn.textContent;
-          copyEmailBtn.textContent = 'Email Copied!';
-          copyEmailBtn.style.background = 'var(--color-silver)';
-          copyEmailBtn.style.color = '#000';
-          setTimeout(() => {
-            copyEmailBtn.textContent = 'Copy Email';
-            copyEmailBtn.style.background = '';
-            copyEmailBtn.style.color = '';
-          }, 2500);
-        });
-      }
-    });
-  }
 
   // --- Validated Contact Form & Real Email Dispatch ---
   const contactForm = document.getElementById('contact-form');
@@ -391,12 +365,29 @@
 
       function triggerFailSafe(noticeTitle, noticeDesc) {
         // Automatically unhide/reveal email in the Direct Channel box
+        const verifiedEmailEl = document.getElementById('verified-email');
+        const gatewayStatusPill = document.getElementById('gateway-status-pill');
         if (verifiedEmailEl) {
           verifiedEmailEl.textContent = resolvedEmail;
           verifiedEmailEl.style.color = 'var(--color-pure-white)';
         }
-        if (copyEmailBtn) {
-          copyEmailBtn.textContent = 'Copy Email';
+        if (gatewayStatusPill) {
+          gatewayStatusPill.innerHTML = `
+            <button type="button" id="copy-channel-email-btn" class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.65rem;">
+              Copy Email
+            </button>
+          `;
+          const copyChannelBtn = document.getElementById('copy-channel-email-btn');
+          if (copyChannelBtn) {
+            copyChannelBtn.addEventListener('click', () => {
+              if (navigator.clipboard) {
+                navigator.clipboard.writeText(resolvedEmail).then(() => {
+                  copyChannelBtn.textContent = 'Copied!';
+                  setTimeout(() => { copyChannelBtn.textContent = 'Copy Email'; }, 2000);
+                });
+              }
+            });
+          }
         }
 
         formFeedback.className = 'form-feedback info';

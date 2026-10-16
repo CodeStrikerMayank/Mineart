@@ -766,14 +766,15 @@
               To protect against automated spambots and scraping crawlers, inquiries route privately through the validated contact form. Messages arrive directly in my private inbox.
             </p>
 
-            <div class="verified-email-box">
+            <div class="verified-email-box" id="gateway-status-box">
               <div>
                 <div style="font-size: var(--text-xs); color: var(--color-muted); font-family: var(--font-mono); text-transform: uppercase;">Direct Channel</div>
-                <div id="verified-email" class="email-address">Protected Gateway // Hidden from Web Scrapers</div>
+                <div id="verified-email" class="email-address">Encrypted Form Gateway // 100% Operational</div>
               </div>
-              <button type="button" id="copy-email-btn" class="btn btn-secondary" style="font-size: var(--text-xs);">
-                Reveal Email
-              </button>
+              <div id="gateway-status-pill" style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--status-active); display: flex; align-items: center; gap: 0.4rem; border: 1px solid rgba(80, 227, 194, 0.2); background: rgba(80, 227, 194, 0.06); padding: 0.35rem 0.65rem; border-radius: var(--radius-sm);">
+                <span class="status-indicator-dot" style="margin: 0; box-shadow: 0 0 6px var(--status-active);"></span>
+                <span style="font-weight: 600; letter-spacing: 0.04em;">ACTIVE</span>
+              </div>
             </div>
 
             <div style="margin-top: 2rem; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-muted);">
