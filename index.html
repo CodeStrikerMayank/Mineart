@@ -27,6 +27,39 @@
 </head>
 <body>
 
+  <!-- Full-Viewport Cinematic Mechanical Intro Sequence -->
+  <aside id="cinematic-intro" class="cinematic-intro" role="region" aria-label="CoreShadow Mechanical Introduction">
+    <!-- Accessible Skip Control -->
+    <button type="button" id="intro-skip-btn" class="intro-skip-btn" aria-label="Skip introductory sequence">
+      <span>SKIP SEQUENCE</span>
+      <span class="intro-skip-key">[ESC]</span>
+    </button>
+
+    <!-- Kinetic Mechanical Intro Canvas -->
+    <div class="intro-canvas-container" aria-hidden="true">
+      <canvas id="intro-gear-canvas" class="intro-gear-canvas"></canvas>
+    </div>
+
+    <!-- Center Stage Typography & Light Sweep -->
+    <div class="intro-center-stage">
+      <div class="intro-telemetry-badge">
+        <span class="status-indicator-dot"></span>
+        <span class="intro-telemetry-text">SYSTEM KINEMATICS INITIALIZING // 60 FPS</span>
+      </div>
+
+      <div class="intro-wordmark-wrapper">
+        <div class="intro-wordmark" aria-label="CoreShadow">CORESHADOW</div>
+        <div class="intro-sweep-beam" aria-hidden="true"></div>
+      </div>
+
+      <div class="intro-subline">
+        <span class="intro-author">MAYANK BHATT</span>
+        <span class="intro-sep">//</span>
+        <span class="intro-desc">SYSTEMS &amp; CREATIVE ENGINEERING</span>
+      </div>
+    </div>
+  </aside>
+
   <!-- Signature Mechanical Gear Background -->
   <canvas id="mechanical-canvas" aria-hidden="true"></canvas>
   <div class="ambient-gradient" aria-hidden="true"></div>
@@ -958,6 +991,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="js/intro-sequence.js"></script>
   <script src="js/mechanical-canvas.js"></script>
   <script src="js/app.js"></script>
 </body>

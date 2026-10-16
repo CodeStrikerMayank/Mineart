@@ -5,13 +5,15 @@ $outputFile = Join-Path $artifactDir "portfolio_feature_showcase_master.png"
 $localAssetFile = "d:\Education Content\Professional website\assets\portfolio_showcase_master.png"
 $docsAssetFile = "d:\Education Content\Professional website\docs\assets\portfolio_showcase_master.png"
 
-# File paths for the 7 feature screenshots (Upgraded Cinematic Motion & Visual Refinement)
-$f1 = Join-Path $artifactDir "hero_section_1792179242279.png"
-$f2 = Join-Path $artifactDir "projects_grid_1792179261249.png"
-$f3 = Join-Path $artifactDir "apex_modal_1792179277386.png"
-$f4 = Join-Path $artifactDir "capabilities_matrix_1792179318064.png"
-$f5 = Join-Path $artifactDir "principles_section_1792179336398.png"
-$f6 = Join-Path $artifactDir "repositories_catalog_1792179410297.png"
+# File paths for feature screenshots (Cinematic Intro + Mobile Upgrade)
+$f1 = Join-Path $artifactDir "intro_cinematic_stage_1792182495235.png"
+$f2 = Join-Path $artifactDir "hero_section_1792179242279.png"
+$f3 = Join-Path $artifactDir "projects_grid_1792179261249.png"
+$f4 = Join-Path $artifactDir "apex_modal_1792179277386.png"
+$f5_a = Join-Path $artifactDir "mobile_hero_view_1792182098612.png"
+$f5_b = Join-Path $artifactDir "mobile_drawer_open_1792182111231.png"
+$f6_a = Join-Path $artifactDir "mobile_repo_cards_1792182175737.png"
+$f6_b = Join-Path $artifactDir "mobile_modal_view_1792182253083.png"
 $f7 = Join-Path $artifactDir "contact_section_1792179442746.png"
 
 # Canvas Dimensions
@@ -58,8 +60,8 @@ $accentBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::From
 
 # Title drawing
 $headerTitle = "CORESHADOW // MAYANK BHATT"
-$headerSub = "SYSTEMS & CREATIVE ENGINEERING PORTFOLIO -- CINEMATIC MOTION & ARCHITECTURAL REFINEMENT"
-$headerMeta = "STATUS: ONLINE // UNIFIED MOTION CURVES - INTERLOCKING KINEMATIC GEAR ENGINE - FLIP MORPH MODAL"
+$headerSub = "SYSTEMS & CREATIVE ENGINEERING PORTFOLIO -- CINEMATIC INTRO & MOBILE REDESIGN UPGRADE"
+$headerMeta = "STATUS: ONLINE // FULL-VIEWPORT KINEMATIC INTRO [OK] - DELIBERATE SMARTPHONE SYSTEM - ZERO-OVERFLOW"
 
 $g.DrawString($headerTitle, $titleFont, $whiteBrush, [float]$margin, 35.0)
 $g.DrawString($headerSub, $subtitleFont, $silverBrush, [float]$margin, 95.0)
@@ -103,20 +105,83 @@ function Render-FeaturePanel {
     $g.DrawRectangle($imgBorderPen, $PosX, $screenY, $imgWidth, $imgHeight)
 }
 
-# Row 1: Hero and Projects
+function Render-MobileDualPanel {
+    param(
+        [string]$Path1,
+        [string]$Path2,
+        [int]$PosX,
+        [int]$PosY,
+        [int]$Idx,
+        [string]$TitleText,
+        [string]$SubText
+    )
+    
+    # Header container
+    $headerBoxBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255, 16, 16, 16))
+    $g.FillRectangle($headerBoxBrush, $PosX, $PosY, $imgWidth, $labelHeight)
+    
+    $framePen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255, 38, 38, 38), 1)
+    $g.DrawRectangle($framePen, $PosX, $PosY, $imgWidth, $labelHeight)
+    
+    # Badge and title
+    $badgeText = "FEATURE 0" + $Idx + " // "
+    $g.DrawString($badgeText, $panelSubFont, $accentBrush, [float]($PosX + 18), [float]($PosY + 14))
+    $badgeSize = $g.MeasureString($badgeText, $panelSubFont)
+    $g.DrawString($TitleText, $panelTitleFont, $whiteBrush, [float]($PosX + 18 + $badgeSize.Width), [float]($PosY + 10))
+    $g.DrawString($SubText, $panelSubFont, $mutedBrush, [float]($PosX + 18), [float]($PosY + 40))
+    
+    $screenY = $PosY + $labelHeight
+    
+    # Fill background box
+    $panelBgBrush = New-Object System.Drawing.SolidBrush([System.Drawing.Color]::FromArgb(255, 10, 10, 10))
+    $g.FillRectangle($panelBgBrush, $PosX, $screenY, $imgWidth, $imgHeight)
+    
+    # Dual mobile aspect ratio sizing
+    $mobileH = $imgHeight - 40 # 730 px
+    $mobileW = [int]($mobileH * 390 / 844) # ~337 px
+    $gap = 60
+    $totalW = ($mobileW * 2) + $gap
+    $startInnerX = $PosX + [int](($imgWidth - $totalW) / 2)
+    $innerY = $screenY + 20
+    
+    # Phone 1
+    if (Test-Path $Path1) {
+        $img1 = [System.Drawing.Bitmap]::FromFile((Resolve-Path $Path1).Path)
+        $g.DrawImage($img1, $startInnerX, $innerY, $mobileW, $mobileH)
+        $img1.Dispose()
+        $phoneBorderPen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255, 45, 45, 45), 1)
+        $g.DrawRectangle($phoneBorderPen, $startInnerX, $innerY, $mobileW, $mobileH)
+    }
+    
+    # Phone 2
+    $phone2X = $startInnerX + $mobileW + $gap
+    if (Test-Path $Path2) {
+        $img2 = [System.Drawing.Bitmap]::FromFile((Resolve-Path $Path2).Path)
+        $g.DrawImage($img2, $phone2X, $innerY, $mobileW, $mobileH)
+        $img2.Dispose()
+        $phoneBorderPen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255, 45, 45, 45), 1)
+        $g.DrawRectangle($phoneBorderPen, $phone2X, $innerY, $mobileW, $mobileH)
+    }
+    
+    # Frame outer border
+    $imgBorderPen = New-Object System.Drawing.Pen([System.Drawing.Color]::FromArgb(255, 45, 45, 45), 1)
+    $g.DrawRectangle($imgBorderPen, $PosX, $screenY, $imgWidth, $imgHeight)
+}
+
+# Row 1: Intro Sequence and Hero
 $y1 = $headerHeight
-Render-FeaturePanel -Path $f1 -PosX $margin -PosY $y1 -Idx 1 -TitleText "HERO ARCHITECTURE & TELEMETRY" -SubText "Canvas 2D Involute Mesh Simulation - Monochrome Dragon Emblem - Telemetry Control"
-Render-FeaturePanel -Path $f2 -PosX ($margin + $imgWidth + $gutter) -PosY $y1 -Idx 2 -TitleText "SELECTED ENGINEERING PROJECTS" -SubText "Flagship APEX Platform, controlprotocol, Arise 3D Lunar Mapper, Mineart Graphics"
+Render-FeaturePanel -Path $f1 -PosX $margin -PosY $y1 -Idx 1 -TitleText "CINEMATIC MECHANICAL INTRO SEQUENCE" -SubText "Full-Viewport Mechanical Involute Aperture - Wordmark Illumination - Light Sweep - [ESC] Skip"
+Render-FeaturePanel -Path $f2 -PosX ($margin + $imgWidth + $gutter) -PosY $y1 -Idx 2 -TitleText "HERO ARCHITECTURE & TELEMETRY" -SubText "Canvas 2D Involute Mesh Simulation - Staggered Choreography - Telemetry Control"
 
-# Row 2: Modal and Capabilities
+# Row 2: Selected Projects and Modal
 $y2 = $y1 + $rowHeight
-Render-FeaturePanel -Path $f3 -PosX $margin -PosY $y2 -Idx 3 -TitleText "INTERACTIVE ARCHITECTURE MODAL" -SubText "APEX Power Cascade DAG, Bayesian Knowledge Tracing & Systems Specifications"
-Render-FeaturePanel -Path $f4 -PosX ($margin + $imgWidth + $gutter) -PosY $y2 -Idx 4 -TitleText "TECHNICAL CAPABILITIES MATRIX" -SubText "Systems Programming, AI Governance & Hypervisors, High-Throughput Graphics"
+Render-FeaturePanel -Path $f3 -PosX $margin -PosY $y2 -Idx 3 -TitleText "SELECTED ENGINEERING PROJECTS" -SubText "Flagship APEX Platform, controlprotocol, Arise 3D Lunar Mapper, Mineart Graphics"
+Render-FeaturePanel -Path $f4 -PosX ($margin + $imgWidth + $gutter) -PosY $y2 -Idx 4 -TitleText "INTERACTIVE ARCHITECTURE MODAL" -SubText "Signature FLIP Morph Expansion, Bayesian Knowledge Tracing & System Specifications"
 
-# Row 3: Principles and Repositories
+# Row 3: Mobile Smartphone Experience (Hero & Drawer) and Mobile Architecture (Repo Cards & Modal)
 $y3 = $y2 + $rowHeight
-Render-FeaturePanel -Path $f5 -PosX $margin -PosY $y3 -Idx 5 -TitleText "ENGINEERING METHODOLOGY & PRINCIPLES" -SubText "Zero Synthetic Metric Invariant, Algorithmic Discipline, Mechanical Motion Standards"
-Render-FeaturePanel -Path $f6 -PosX ($margin + $imgWidth + $gutter) -PosY $y3 -Idx 6 -TitleText "VERIFIED REPOSITORY CATALOG" -SubText "8 Live GitHub Repositories - Full Source Verification - Real Architectural Metrics"
+Render-MobileDualPanel -Path1 $f5_a -Path2 $f5_b -PosX $margin -PosY $y3 -Idx 5 -TitleText "DELIBERATE SMARTPHONE EXPERIENCE" -SubText "Phone Viewport (390x844) - Fluid Clamped Hero & Slide-Down Navigation Drawer"
+Render-MobileDualPanel -Path1 $f6_a -Path2 $f6_b -PosX ($margin + $imgWidth + $gutter) -PosY $y3 -Idx 6 -TitleText "MOBILE REPOSITORIES & MODAL" -SubText "Responsive Table-to-Card Transformation & Mobile Full-Height Specifications Modal"
 
 # Row 4: Contact Form and Architecture Dashboard
 $y4 = $y3 + $rowHeight
@@ -154,16 +219,16 @@ $ty += 45
 
 $metrics = @(
     @("ENGINEER IDENTITY", "Mayank Bhatt (CoreShadow) // Systems & AI Security"),
-    @("GITHUB REPOSITORY", "https://github.com/CodeStrikerMayank/Mineart"),
-    @("LIVE PAGES URL", "https://codestrikermayank.github.io/Mineart/"),
+    @("CINEMATIC INTRO", "2.5s Mechanical Gear Aperture // [ESC] Skip // Session Storage Cache"),
+    @("MOBILE SMARTPHONE UX", "Deliberate 320px-430px Responsive Layout // Zero Horizontal Overflow"),
+    @("REPO ARCHITECTURE", "CSS Table-to-Card Mobile Transformation // Real GitHub Project Links"),
     @("CORE GRAPHICS ENGINE", "Custom 2D Involute Pitch Gear Mesh (Canvas2D, Zero 3D engine deps)"),
     @("PERFORMANCE PROFILE", "Locked 60 FPS | Clamped DevicePixelRatio | Page Visibility Auto-Pause"),
+    @("MODAL MORPH", "GPU-Accelerated Card-to-Modal FLIP Transition (460ms)"),
     @("DESIGN AESTHETICS", "OKLCH Tailored Monochrome Palette (#080808 to #FFFFFF) | Zero AI Purple"),
-    @("AUTHENTIC PROJECTS", "8 Verified Repos (APEX, controlprotocol, Arise, Mineart, Historyworld, etc.)"),
     @("FORM SECURITY GATEWAY", "FormSubmit Obfuscated Token (9bcee9c40b2236a2fd2ca7f2c60b32bd)"),
     @("PRIVACY PROTOCOL", "Plain-text Email Hidden from Scrapers | Dynamic Fail-Safe Auto-Reveal"),
     @("STANDARDS COMPLIANCE", "WCAG 2.2 AA Contrast | Keyboard Focus Rings | Prefers-Reduced-Motion"),
-    @("HOSTING STRUCTURE", "Dual-sync deployment (/ root & /docs mirror) | .nojekyll enabled"),
     @("SYSTEM STATUS", "ALL PRODUCTION CHECKS PASSING [ONLINE]")
 )
 
