@@ -304,24 +304,32 @@
     });
   }
 
-  // --- Copy Verified Email to Clipboard ---
+  // --- On-Demand Email Reveal & Copy (Scraper Protected) ---
   const copyEmailBtn = document.getElementById('copy-email-btn');
   const verifiedEmailEl = document.getElementById('verified-email');
 
+  // Deconstructed string to eliminate plain-text scrapers
+  const uPart = 'mayankoriginal711';
+  const dPart = 'gmail.com';
+  const resolvedEmail = `${uPart}@${dPart}`;
+
   if (copyEmailBtn && verifiedEmailEl) {
     copyEmailBtn.addEventListener('click', () => {
-      const email = verifiedEmailEl.textContent.trim();
+      // Reveal the email
+      verifiedEmailEl.textContent = resolvedEmail;
+      verifiedEmailEl.style.color = 'var(--color-pure-white)';
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(email).then(() => {
+        navigator.clipboard.writeText(resolvedEmail).then(() => {
           const originalText = copyEmailBtn.textContent;
-          copyEmailBtn.textContent = 'Copied to Clipboard!';
+          copyEmailBtn.textContent = 'Email Copied!';
           copyEmailBtn.style.background = 'var(--color-silver)';
           copyEmailBtn.style.color = '#000';
           setTimeout(() => {
-            copyEmailBtn.textContent = originalText;
+            copyEmailBtn.textContent = 'Copy Email';
             copyEmailBtn.style.background = '';
             copyEmailBtn.style.color = '';
-          }, 2000);
+          }, 2500);
         });
       }
     });
@@ -368,9 +376,9 @@
         dispatchBtnText.innerHTML = '<span class="spinner" aria-hidden="true"></span> Transmitting Inquiry...';
       }
       formFeedback.className = 'form-feedback info';
-      formFeedback.textContent = 'Connecting to delivery gateway... Transmitting message to mayankoriginal711@gmail.com.';
+      formFeedback.textContent = 'Connecting to secure gateway... Transmitting encrypted inquiry.';
 
-      const mailtoUrl = `mailto:mayankoriginal711@gmail.com?subject=${encodeURIComponent(subject || 'Portfolio Inquiry from ' + name)}&body=${encodeURIComponent('From: ' + name + ' (' + email + ')\n\n' + message)}`;
+      const mailtoUrl = `mailto:${resolvedEmail}?subject=${encodeURIComponent(subject || 'Portfolio Inquiry from ' + name)}&body=${encodeURIComponent('From: ' + name + ' (' + email + ')\n\n' + message)}`;
 
       const payload = {
         name: name,
@@ -398,15 +406,15 @@
           formFeedback.className = 'form-feedback info';
           formFeedback.innerHTML = `
             <div style="font-weight: 700; margin-bottom: 0.35rem; color: var(--color-pure-white);">⚠️ One-Time Form Activation Required</div>
-            <div style="margin-bottom: 0.5rem;">FormSubmit has sent an activation link to <strong>mayankoriginal711@gmail.com</strong>.</div>
-            <div style="font-size: 0.8rem; color: var(--color-silver);">Please open your inbox at <em>mayankoriginal711@gmail.com</em> and click the <strong>"Activate Form"</strong> button. Once activated, all inquiries sent from this site arrive instantly in your inbox!</div>
+            <div style="margin-bottom: 0.5rem;">FormSubmit has sent an activation link to your registered address.</div>
+            <div style="font-size: 0.8rem; color: var(--color-silver);">Please open your inbox and click the <strong>"Activate Form"</strong> button. Once activated, all inquiries sent from this site arrive instantly in your inbox!</div>
           `;
           contactForm.reset();
         } else if (data.success === 'true' || data.success === true) {
           formFeedback.className = 'form-feedback success';
           formFeedback.innerHTML = `
             <div style="font-weight: 700; margin-bottom: 0.35rem;">✓ Inquiry Dispatched Successfully!</div>
-            <div>Your message has been delivered to <strong>mayankoriginal711@gmail.com</strong>. Mayank will review and respond directly to <em>${escapeHtml(email)}</em>.</div>
+            <div>Your message has been delivered directly to Mayank. Mayank will review and respond directly to <em>${escapeHtml(email)}</em>.</div>
           `;
           contactForm.reset();
         } else {
@@ -418,7 +426,7 @@
         formFeedback.innerHTML = `
           <div style="font-weight: 700; margin-bottom: 0.5rem;">Transmission Gateway Ready</div>
           <p style="margin-bottom: 0.75rem; font-size: 0.8rem; color: var(--color-silver);">
-            Direct network message drafted for <strong>mayankoriginal711@gmail.com</strong>. You can open your email client directly or copy the drafted text below:
+            Direct network message prepared for Mayank. You can open your email client directly or copy the drafted text below:
           </p>
           <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
             <a href="${mailtoUrl}" class="btn btn-primary" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;">

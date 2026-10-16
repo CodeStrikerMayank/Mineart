@@ -1021,17 +1021,23 @@ section {
   color: var(--color-silver);
 }
 
-.contact-engineer-email a {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--color-muted);
-  text-decoration: none;
-  transition: color var(--duration-fast);
+.contact-engineer-status {
+  margin-top: 0.35rem;
 }
 
-.contact-engineer-email a:hover {
-  color: var(--color-pure-white);
-  text-decoration: underline;
+.secure-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-silver);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-steel);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .contact-card {
