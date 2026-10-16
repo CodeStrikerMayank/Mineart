@@ -23,14 +23,22 @@
   --blue-edge-glow: 0 0 24px rgba(56, 189, 248, 0.12), 0 0 0 1px rgba(56, 189, 248, 0.35);
   --blue-pip-glow: 0 0 10px rgba(56, 189, 248, 0.6);
 
-  /* Translucent Surface Accents & Metallic Highlights */
-  --surface-border: rgba(255, 255, 255, 0.07);
-  --surface-border-hover: rgba(255, 255, 255, 0.18);
-  --surface-border-subtle: rgba(255, 255, 255, 0.04);
-  --surface-specular-top: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  --surface-glass: rgba(14, 14, 14, 0.78);
-  --surface-glass-blur: blur(14px);
-  --subtle-glow: 0 0 32px rgba(255, 255, 255, 0.02);
+  /* Translucent Surface Accents & Metallic Precision System */
+  --surface-border: rgba(255, 255, 255, 0.11);
+  --surface-border-hover: rgba(255, 255, 255, 0.26);
+  --surface-border-subtle: rgba(255, 255, 255, 0.06);
+  --surface-border-metallic-top: rgba(255, 255, 255, 0.28);
+  --surface-specular-top: inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 12px rgba(255, 255, 255, 0.02);
+  --surface-glass: rgba(16, 17, 19, 0.88);
+  --surface-glass-blur: blur(16px);
+  --subtle-glow: 0 0 32px rgba(255, 255, 255, 0.04);
+
+  /* Milled Titanium & Metallic Surface Textures */
+  --metallic-gradient-card: linear-gradient(135deg, rgba(32, 33, 37, 0.92) 0%, rgba(20, 21, 24, 0.96) 48%, rgba(13, 14, 16, 0.99) 100%);
+  --metallic-gradient-card-hover: linear-gradient(135deg, rgba(42, 44, 50, 0.96) 0%, rgba(26, 27, 31, 0.98) 50%, rgba(16, 17, 20, 1) 100%);
+  --metallic-gradient-header: linear-gradient(180deg, rgba(28, 29, 34, 0.92) 0%, rgba(14, 15, 17, 0.96) 100%);
+  --metallic-specular-bevel: inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 1px 0 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.65);
+  --metallic-specular-bevel-hover: inset 0 1px 0 rgba(255, 255, 255, 0.42), inset 1px 0 0 rgba(255, 255, 255, 0.16), inset 0 -1px 0 rgba(0, 0, 0, 0.8);
 
   /* Status Tokens */
   --status-active: #38BDF8;

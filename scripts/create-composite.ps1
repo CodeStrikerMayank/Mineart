@@ -6,9 +6,9 @@ $localAssetFile = "d:\Education Content\Professional website\assets\portfolio_sh
 $docsAssetFile = "d:\Education Content\Professional website\docs\assets\portfolio_showcase_master.png"
 
 # File paths for feature screenshots (Cinematic Intro + Mobile Upgrade)
-$f1 = Join-Path $artifactDir "coreshadow_early_1792184155623.png"
-$f2 = Join-Path $artifactDir "hero_section_1792179242279.png"
-$f3 = Join-Path $artifactDir "projects_grid_1792179261249.png"
+$f1 = Join-Path $artifactDir "intro_metallic_gears_1792185000724.png"
+$f2 = Join-Path $artifactDir "hero_revealed_direct_1792185034552.png"
+$f3 = Join-Path $artifactDir "projects_metallic_cards_1792185044592.png"
 $f4 = Join-Path $artifactDir "apex_modal_1792179277386.png"
 $f5_a = Join-Path $artifactDir "mobile_hero_view_1792182098612.png"
 $f5_b = Join-Path $artifactDir "mobile_drawer_open_1792182111231.png"

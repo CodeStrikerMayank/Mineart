@@ -232,12 +232,24 @@
     ctx.closePath();
 
     if (fillColor) {
-      ctx.fillStyle = fillColor;
+      const metalSheen = ctx.createRadialGradient(0, 0, rInner * 0.15, 0, 0, rOuter);
+      metalSheen.addColorStop(0, 'rgba(85, 88, 96, 0.45)');
+      metalSheen.addColorStop(0.35, 'rgba(38, 40, 45, 0.65)');
+      metalSheen.addColorStop(0.85, 'rgba(22, 23, 26, 0.85)');
+      metalSheen.addColorStop(1, 'rgba(12, 13, 15, 0.95)');
+      ctx.fillStyle = metalSheen;
       ctx.fill();
     }
 
     ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+
+    // Milled lathe groove ring for machined metallic feel
+    ctx.beginPath();
+    ctx.arc(0, 0, (rInner + rOuter) / 2, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+    ctx.lineWidth = 0.8;
     ctx.stroke();
 
     ctx.restore();
