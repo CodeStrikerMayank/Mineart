@@ -267,7 +267,7 @@
     );
 
     // Inner Mechanical Ring
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)'; // Cyan-blue indicator highlight
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)'; // Precision silver metallic highlight
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     ctx.arc(center, center, center * 0.46, 0, Math.PI * 2);
@@ -294,10 +294,10 @@
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
     ctx.stroke();
 
-    // Reticle Crosshairs with Restrained Cyan Glow
+    // Reticle Crosshairs with Restrained Silver Specular Lines
     if (elapsed > 700) {
-      const laserAlpha = Math.min((elapsed - 700) / 400, 0.65);
-      ctx.strokeStyle = `rgba(56, 189, 248, ${laserAlpha})`;
+      const laserAlpha = Math.min((elapsed - 700) / 400, 0.45);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${laserAlpha})`;
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 6]);
 

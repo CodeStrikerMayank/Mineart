@@ -6,7 +6,7 @@ $localAssetFile = "d:\Education Content\Professional website\assets\portfolio_sh
 $docsAssetFile = "d:\Education Content\Professional website\docs\assets\portfolio_showcase_master.png"
 
 # File paths for feature screenshots (Cinematic Intro + Mobile Upgrade)
-$f1 = Join-Path $artifactDir "intro_cinematic_stage_1792182495235.png"
+$f1 = Join-Path $artifactDir "intro_hold_mechanical_1792183575866.png"
 $f2 = Join-Path $artifactDir "hero_section_1792179242279.png"
 $f3 = Join-Path $artifactDir "projects_grid_1792179261249.png"
 $f4 = Join-Path $artifactDir "apex_modal_1792179277386.png"
@@ -170,7 +170,7 @@ function Render-MobileDualPanel {
 
 # Row 1: Intro Sequence and Hero
 $y1 = $headerHeight
-Render-FeaturePanel -Path $f1 -PosX $margin -PosY $y1 -Idx 1 -TitleText "CINEMATIC MECHANICAL INTRO SEQUENCE" -SubText "Full-Viewport Mechanical Involute Aperture - Wordmark Illumination - Light Sweep - [ESC] Skip"
+Render-FeaturePanel -Path $f1 -PosX $margin -PosY $y1 -Idx 1 -TitleText "CINEMATIC MECHANICAL INTRO SEQUENCE" -SubText "Full-Viewport Mechanical Involute Aperture - Precision Counter-Rotating Gears - [ESC] Skip"
 Render-FeaturePanel -Path $f2 -PosX ($margin + $imgWidth + $gutter) -PosY $y1 -Idx 2 -TitleText "HERO ARCHITECTURE & TELEMETRY" -SubText "Canvas 2D Involute Mesh Simulation - Staggered Choreography - Telemetry Control"
 
 # Row 2: Selected Projects and Modal

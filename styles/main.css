@@ -157,13 +157,13 @@ body.intro-finished .hero-telemetry-panel {
 
 .intro-skip-btn:hover {
   color: var(--color-pure-white);
-  border-color: var(--blue-border-active);
-  box-shadow: var(--blue-edge-glow);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
 }
 
 .intro-skip-key {
-  color: var(--blue-indicator);
+  color: var(--color-silver);
   font-weight: 600;
 }
 
