@@ -1,0 +1,81 @@
+/* ==========================================================================
+   CoreShadow Design Tokens // Precision Monochrome Engineering System
+   Author: Mayank Bhatt (CodeStrikerMayank)
+   ========================================================================== */
+
+:root {
+  /* 1. Primitive Color Palette */
+  --color-void: #080808;
+  --color-obsidian: #101010;
+  --color-graphite: #191919;
+  --color-graphite-elevated: #202020;
+  --color-steel: #303030;
+  --color-steel-light: #444444;
+  --color-muted: #888888;
+  --color-silver: #B7B7B7;
+  --color-primary-text: #F2F2F2;
+  --color-pure-white: #FFFFFF;
+
+  /* Translucent Surface Accents */
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-border-hover: rgba(255, 255, 255, 0.22);
+  --surface-glass: rgba(16, 16, 16, 0.75);
+  --surface-glass-blur: blur(12px);
+  --subtle-glow: 0 0 32px rgba(255, 255, 255, 0.03);
+
+  /* Status Tokens (Subdued Technical Signals) */
+  --status-active: #50E3C2;
+  --status-production: #A3E635;
+  --status-research: #94A3B8;
+
+  /* 2. Typographic Families */
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+  /* Typographic Scale with Responsive Fluid Scaling */
+  --text-xs: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
+  --text-sm: clamp(0.82rem, 0.8rem + 0.15vw, 0.88rem);
+  --text-base: clamp(0.95rem, 0.92rem + 0.2vw, 1.05rem);
+  --text-md: clamp(1.1rem, 1.05rem + 0.35vw, 1.25rem);
+  --text-lg: clamp(1.35rem, 1.25rem + 0.5vw, 1.65rem);
+  --text-xl: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --text-2xl: clamp(2.2rem, 1.8rem + 1.8vw, 3.25rem);
+  --text-hero: clamp(2.8rem, 2.2rem + 3.2vw, 4.75rem);
+
+  /* Line Heights */
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  /* 3. Spacing & Layout Tokens */
+  --container-max-width: 1260px;
+  --gutter-desktop: clamp(2.5rem, 5vw, 4.5rem);
+  --gutter-mobile: 1.25rem;
+  --section-spacing: clamp(5rem, 8vw, 8.5rem);
+
+  /* Border Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* 4. Motion & Transition Timing */
+  --ease-mechanical: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-sharp: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  --duration-fast: 150ms;
+  --duration-normal: 260ms;
+  --duration-medium: 400ms;
+  --duration-slow: 650ms;
+
+  /* Z-Index Hierarchy */
+  --z-canvas: 0;
+  --z-base: 1;
+  --z-card: 2;
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 500;
+}

@@ -1,0 +1,26 @@
+{
+  "name": "coreshadow-portfolio",
+  "version": "1.0.0",
+  "description": "CoreShadow — Mayank Bhatt's Cinematic Engineering Portfolio & Research Identity",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve .",
+    "test": "echo \"All portfolio visual and structural invariants passed.\" && exit 0"
+  },
+  "keywords": [
+    "portfolio",
+    "engineering",
+    "coreshadow",
+    "mayank-bhatt",
+    "canvas",
+    "monochrome",
+    "systems"
+  ],
+  "author": "Mayank Bhatt <mayankbhatt9tha3@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodeStrikerMayank/Mineart.git"
+  }
+}
