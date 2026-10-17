@@ -519,6 +519,29 @@ body.intro-finished .hero-telemetry-panel {
   outline-offset: 2px;
 }
 
+/* Mobile Drawer Backdrop */
+.mobile-drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: calc(var(--z-drawer) - 1);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity var(--time-card) var(--ease-cinematic), visibility var(--time-card);
+}
+
+.mobile-drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
 /* Mobile Drawer Overlay */
 .mobile-drawer {
   position: fixed;
@@ -579,6 +602,14 @@ body.intro-finished .hero-telemetry-panel {
   background: rgba(255, 255, 255, 0.04);
   padding-left: 1.15rem;
   border-bottom-color: var(--blue-border-active);
+}
+
+.mobile-nav-links li a.active {
+  color: var(--color-pure-white);
+  background: rgba(56, 189, 248, 0.08);
+  border-bottom-color: var(--blue-border-active);
+  box-shadow: inset 2px 0 0 var(--blue-indicator);
+  padding-left: 1.15rem;
 }
 
 /* 4. Precision Buttons & Interactive States */
@@ -1084,31 +1115,206 @@ section {
   box-shadow: var(--blue-edge-glow), var(--metallic-specular-bevel);
 }
 
-/* Project Architectural Schematic Banner */
+/* Project Architectural Schematic Banner & Interactive Previews */
 .project-preview-media {
   width: 100%;
-  height: 90px;
+  min-height: 115px;
   background: var(--color-void);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 16px rgba(0, 0, 0, 0.6);
   border-radius: var(--radius-md);
   margin-bottom: 1.5rem;
   overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   position: relative;
+  user-select: none;
+  cursor: crosshair;
 }
 
-.project-preview-media svg {
+.project-preview-media:focus-visible {
+  outline: 2px solid var(--blue-indicator);
+  outline-offset: 2px;
+}
+
+.preview-schematic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.75rem;
+  background: rgba(18, 18, 20, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  z-index: 2;
+}
+
+.preview-type-badge {
+  color: var(--blue-indicator);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.preview-type-badge::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--blue-indicator);
+  box-shadow: 0 0 6px var(--blue-indicator);
+}
+
+.preview-live-metric {
+  color: var(--color-silver);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 65%;
+  transition: color var(--time-micro);
+}
+
+.preview-schematic-body {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 80px;
+  padding: 0.25rem 0.5rem;
+}
+
+.preview-schematic-body svg {
   width: 100%;
   height: 100%;
-  opacity: 0.75;
+  max-height: 85px;
+  opacity: 0.88;
   transition: transform var(--time-card) var(--ease-cinematic), opacity var(--time-card);
 }
 
-.project-card:hover .project-preview-media svg {
-  transform: scale(1.025);
-  opacity: 0.95;
+.project-card:hover .preview-schematic-body svg {
+  opacity: 1;
+}
+
+.preview-micro-action {
+  position: absolute;
+  bottom: 0.45rem;
+  right: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  background: rgba(26, 27, 30, 0.92);
+  border: 1px solid var(--surface-border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-silver);
+  cursor: pointer;
+  transition: all var(--time-micro);
+  z-index: 3;
+}
+
+.preview-micro-action:hover {
+  color: var(--color-pure-white);
+  border-color: var(--blue-border-active);
+  background: rgba(35, 36, 42, 0.98);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.25);
+}
+
+/* APEX Interactive Elements */
+.apex-node {
+  cursor: pointer;
+  transition: transform var(--time-micro) var(--ease-cinematic);
+}
+.apex-node circle:first-child {
+  transition: stroke var(--time-micro), fill var(--time-micro);
+}
+.apex-node:hover circle:first-child,
+.apex-node.is-active circle:first-child {
+  stroke: var(--blue-indicator);
+  fill: #1a2228;
+}
+.apex-node:hover circle:nth-child(2),
+.apex-node.is-active circle:nth-child(2) {
+  fill: #fff;
+  filter: drop-shadow(0 0 4px var(--blue-indicator));
+}
+.apex-link {
+  transition: stroke var(--time-micro), stroke-width var(--time-micro);
+}
+.apex-link.is-active {
+  stroke: var(--blue-indicator) !important;
+  stroke-width: 2 !important;
+  stroke-dasharray: 6 3 !important;
+  animation: signalPulse 1s linear infinite;
+}
+
+@keyframes signalPulse {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+/* ControlProtocol Interactive Elements */
+.tree-folder {
+  cursor: pointer;
+  transition: all var(--time-micro);
+}
+.tree-folder:hover rect,
+.tree-folder.is-open rect {
+  stroke: var(--blue-indicator);
+  fill: #192025;
+}
+.tree-folder:hover text,
+.tree-folder.is-open text {
+  fill: var(--color-pure-white);
+}
+.tree-file {
+  cursor: pointer;
+  transition: all var(--time-micro);
+}
+.tree-file:hover text,
+.tree-file.is-selected text {
+  fill: var(--blue-indicator);
+  font-weight: bold;
+}
+.tree-group {
+  transition: opacity var(--time-card);
+}
+.tree-group:not(.is-visible) {
+  opacity: 0.35;
+}
+.xray-active .tree-file text {
+  fill: var(--blue-indicator);
+}
+
+/* Arise Lunar Interactive Scanner */
+.arise-scanner-crosshair {
+  transition: opacity var(--time-micro);
+  pointer-events: none;
+}
+.arise-contour-line {
+  transition: stroke var(--time-micro);
+}
+.preview-schematic-body:hover .arise-contour-line {
+  stroke: rgba(56, 189, 248, 0.45);
+}
+
+/* Mineart Interactive Voxel Lattice */
+.voxel-cube {
+  cursor: pointer;
+  transition: transform var(--time-card) var(--ease-cinematic), filter var(--time-micro);
+}
+.voxel-cube:hover,
+.voxel-cube.is-active {
+  filter: brightness(1.35) drop-shadow(0 0 5px rgba(56, 189, 248, 0.5));
+}
+.voxel-cube.is-mined {
+  opacity: 0.2;
 }
 
 .project-featured-badge {

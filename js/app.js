@@ -166,19 +166,37 @@
   // --- Mobile Navigation Drawer ---
   const mobileToggle = document.getElementById('mobile-menu-toggle');
   const mobileDrawer = document.getElementById('mobile-drawer');
+  const mobileBackdrop = document.getElementById('mobile-drawer-backdrop');
 
   if (mobileToggle && mobileDrawer) {
     function closeDrawer() {
       mobileDrawer.classList.remove('open');
+      if (mobileBackdrop) mobileBackdrop.classList.remove('open');
       mobileToggle.setAttribute('aria-expanded', 'false');
       mobileToggle.textContent = '☰';
+      document.body.style.overflow = '';
+    }
+
+    function openDrawer() {
+      mobileDrawer.classList.add('open');
+      if (mobileBackdrop) mobileBackdrop.classList.add('open');
+      mobileToggle.setAttribute('aria-expanded', 'true');
+      mobileToggle.textContent = '✕';
+      document.body.style.overflow = 'hidden';
     }
 
     mobileToggle.addEventListener('click', () => {
-      const isOpen = mobileDrawer.classList.toggle('open');
-      mobileToggle.setAttribute('aria-expanded', isOpen);
-      mobileToggle.textContent = isOpen ? '✕' : '☰';
+      const isOpen = mobileDrawer.classList.contains('open');
+      if (isOpen) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
     });
+
+    if (mobileBackdrop) {
+      mobileBackdrop.addEventListener('click', closeDrawer);
+    }
 
     mobileDrawer.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', closeDrawer);
@@ -190,17 +208,12 @@
         mobileToggle.focus();
       }
     });
-
-    document.addEventListener('click', (e) => {
-      if (mobileDrawer.classList.contains('open') && !mobileDrawer.contains(e.target) && e.target !== mobileToggle) {
-        closeDrawer();
-      }
-    });
   }
 
-  // --- Scroll Active Section Spy ---
+  // --- Scroll Active Section Spy (Desktop & Mobile Drawer) ---
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
+  const desktopNavLinks = document.querySelectorAll('.nav-link');
+  const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
 
   if ('IntersectionObserver' in window) {
     const navObserver = new IntersectionObserver(
@@ -208,12 +221,11 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const id = entry.target.getAttribute('id');
-            navLinks.forEach((link) => {
-              if (link.getAttribute('href') === `#${id}`) {
-                link.classList.add('active');
-              } else {
-                link.classList.remove('active');
-              }
+            desktopNavLinks.forEach((link) => {
+              link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+            });
+            mobileNavLinks.forEach((link) => {
+              link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
             });
           }
         });

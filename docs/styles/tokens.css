@@ -78,23 +78,29 @@
   --radius-lg: 12px;
   --radius-pill: 9999px;
 
-  /* 5. Unified Motion & Transition Timing */
+  /* 5. Unified Motion & Transition Timing (Calibrated to 150-220ms micro, 200-300ms card, 400-550ms reveal, 350-500ms modal) */
   --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-mechanical: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-sharp: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
 
-  --time-micro: 180ms;       /* Micro-interactions: 140–200ms */
-  --time-card: 260ms;        /* Card interactions: 200–300ms */
-  --time-morph: 460ms;       /* Project card to modal morph: 400–600ms */
-  --time-section: 520ms;     /* Section reveals: 450–600ms */
-  --time-hero: 620ms;        /* Hero choreography: 500–700ms */
+  --time-micro: 180ms;       /* Micro-interactions: 150–220ms */
+  --time-card: 240ms;        /* Card transitions: 200–300ms */
+  --time-modal: 420ms;       /* Project-detail transitions: 350–500ms */
+  --time-morph: var(--time-modal);
+  --time-section: 460ms;     /* Section reveals: 400–550ms */
+  --time-hero: 580ms;        /* Hero choreography */
 
   --duration-fast: var(--time-micro);
   --duration-normal: var(--time-card);
-  --duration-medium: var(--time-morph);
-  --duration-slow: var(--time-hero);
+  --duration-medium: var(--time-modal);
+  --duration-slow: var(--time-section);
+
+  /* 6. Technical Atmosphere Tokens */
+  --grid-line-subtle: rgba(255, 255, 255, 0.03);
+  --grid-line-accent: rgba(56, 189, 248, 0.08);
+  --concentric-ring-stroke: rgba(255, 255, 255, 0.035);
 
   /* Z-Index Hierarchy */
   --z-canvas: 0;

@@ -119,7 +119,7 @@
     width = window.innerWidth;
     height = window.innerHeight;
     isMobile = width <= 768;
-    dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2.0);
+    dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2.0);
 
     canvas.width = Math.floor(width * dpr);
     canvas.height = Math.floor(height * dpr);
@@ -296,9 +296,34 @@
   }
 
   /**
-   * Draws decorative telemetry housing and calibration rings
+   * Draws faint technical alignment crosshairs across background
    */
-  function drawRings(parallaxX, parallaxY) {
+  function drawTechnicalAtmosphere(parallaxX, parallaxY) {
+    if (isMobile) return; // Skip background crosshairs on mobile for optimal efficiency
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+    ctx.lineWidth = 1;
+    const gridStep = 200;
+    const offX = ((parallaxX * 0.4) % gridStep + gridStep) % gridStep;
+    const offY = ((parallaxY * 0.4) % gridStep + gridStep) % gridStep;
+
+    for (let x = offX; x < width; x += gridStep) {
+      for (let y = offY; y < height; y += gridStep) {
+        ctx.beginPath();
+        ctx.moveTo(x - 5, y);
+        ctx.lineTo(x + 5, y);
+        ctx.moveTo(x, y - 5);
+        ctx.lineTo(x, y + 5);
+        ctx.stroke();
+      }
+    }
+    ctx.restore();
+  }
+
+  /**
+   * Draws decorative telemetry housing, concentric rings, and periodic ambient sweep
+   */
+  function drawRings(parallaxX, parallaxY, timestamp) {
     const primary = gearSystem.gears[0];
     const cx = primary.absX + parallaxX;
     const cy = primary.absY + parallaxY;
@@ -320,6 +345,29 @@
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
     ctx.stroke();
 
+    // Secondary Outer Concentric Alignment Ring
+    ctx.beginPath();
+    ctx.arc(0, 0, ringRadius * 1.28, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+    ctx.setLineDash([4, 12]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Quadrant Alignment Cross Markers
+    const quadAngles = [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5];
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.lineWidth = 1;
+    quadAngles.forEach(qa => {
+      const qx = Math.cos(qa) * (ringRadius * 1.28);
+      const qy = Math.sin(qa) * (ringRadius * 1.28);
+      ctx.beginPath();
+      ctx.moveTo(qx - 4, qy);
+      ctx.lineTo(qx + 4, qy);
+      ctx.moveTo(qx, qy - 4);
+      ctx.lineTo(qx, qy + 4);
+      ctx.stroke();
+    });
+
     // Precision Vernier Calibration Ticks
     const ticks = 72;
     const tickStep = (Math.PI * 2) / ticks;
@@ -337,6 +385,35 @@
       ctx.moveTo(Math.cos(ta) * rInner, Math.sin(ta) * rInner);
       ctx.lineTo(Math.cos(ta) * rOuter, Math.sin(ta) * rOuter);
       ctx.stroke();
+    }
+
+    // Occasional Ambient Specular Light Sweep (Every 9s, duration 1.8s)
+    if (timestamp && !prefersReducedMotion && !isMobile) {
+      const sweepPeriod = 9000;
+      const sweepDuration = 1800;
+      const sweepCycle = timestamp % sweepPeriod;
+      if (sweepCycle < sweepDuration) {
+        const sweepPhase = sweepCycle / sweepDuration;
+        const sweepAngle = -Math.PI * 0.6 + (sweepPhase * Math.PI * 1.6);
+        const sweepIntensity = Math.sin(sweepPhase * Math.PI) * 0.12;
+
+        const sweepGrad = ctx.createRadialGradient(
+          Math.cos(sweepAngle) * ringRadius * 0.75,
+          Math.sin(sweepAngle) * ringRadius * 0.75,
+          2,
+          Math.cos(sweepAngle) * ringRadius * 0.75,
+          Math.sin(sweepAngle) * ringRadius * 0.75,
+          ringRadius * 0.85
+        );
+        sweepGrad.addColorStop(0, `rgba(56, 189, 248, ${sweepIntensity})`);
+        sweepGrad.addColorStop(0.5, `rgba(255, 255, 255, ${sweepIntensity * 0.4})`);
+        sweepGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        ctx.fillStyle = sweepGrad;
+        ctx.beginPath();
+        ctx.arc(0, 0, ringRadius * 1.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
 
     ctx.restore();
@@ -364,6 +441,13 @@
     // Scroll Damping
     scrollCurrentY += (scrollTargetY - scrollCurrentY) * 0.08;
 
+    // 0. Offscreen Scroll Optimization: pause when scrolled far past hero/projects
+    const maxScrollActive = Math.max(height * 2.2, 2000);
+    if (scrollTargetY > maxScrollActive) {
+      animationFrameId = requestAnimationFrame(render);
+      return;
+    }
+
     // Clear Canvas Viewport
     ctx.clearRect(0, 0, width, height);
 
@@ -375,15 +459,24 @@
     const parallaxX = pointerCurrentX * 8;
     const parallaxY = pointerCurrentY * 8 - (scrollCurrentY * 0.07);
 
-    // 1. Draw Housing Ring & Vernier Ticks
-    drawRings(parallaxX, parallaxY);
+    // 1. Draw Technical Atmosphere (Crosshairs & Alignment Marks)
+    drawTechnicalAtmosphere(parallaxX, parallaxY);
 
-    // 2. Draw Mechanical Interlocking Gears
+    // 2. Draw Housing Ring, Concentric Marks & Ambient Sweep
+    drawRings(parallaxX, parallaxY, timestamp);
+
+    // 3. Draw Mechanical Interlocking Gears (Restrained mobile watermark)
+    if (isMobile) {
+      ctx.globalAlpha = 0.22;
+    }
     const activeGearsCount = isMobile ? 1 : gearSystem.gears.length;
     for (let i = 0; i < activeGearsCount; i++) {
       const g = gearSystem.gears[i];
       const gearAngle = (gearSystem.baseAngle * g.speedMultiplier * g.direction) + g.phaseOffset;
       drawGear(g, gearAngle, parallaxX, parallaxY);
+    }
+    if (isMobile) {
+      ctx.globalAlpha = 1.0;
     }
 
     animationFrameId = requestAnimationFrame(render);
@@ -394,11 +487,18 @@
    */
   function drawStatic() {
     ctx.clearRect(0, 0, width, height);
-    drawRings(0, 0);
+    drawTechnicalAtmosphere(0, 0);
+    drawRings(0, 0, 0);
+    if (isMobile) {
+      ctx.globalAlpha = 0.22;
+    }
     const activeGearsCount = isMobile ? 1 : gearSystem.gears.length;
     for (let i = 0; i < activeGearsCount; i++) {
       const g = gearSystem.gears[i];
       drawGear(g, g.phaseOffset, 0, 0);
+    }
+    if (isMobile) {
+      ctx.globalAlpha = 1.0;
     }
   }
 
