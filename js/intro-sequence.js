@@ -38,14 +38,15 @@
   const GLYPHS = '0123456789ABCDEF#_></[]*+=§%';
 
   const urlParams = new URLSearchParams(window.location.search);
-  const forceIntro = urlParams.has('intro') || urlParams.has('replay_intro') || urlParams.has('intro_hold');
+  const skipIntro = urlParams.get('intro') === '0' || urlParams.has('skip_intro');
+  const forceIntro = !skipIntro && (urlParams.get('intro') === '1' || urlParams.has('replay_intro') || urlParams.has('intro_hold'));
   const holdIntro = urlParams.has('intro_hold');
   const hasDirectHash = Boolean(window.location.hash && window.location.hash.length > 1);
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const alreadySeen = sessionStorage.getItem('coreshadow_intro_completed') === 'true';
 
   // Instant bypass policy
-  if ((alreadySeen && !forceIntro) || (hasDirectHash && !forceIntro) || (prefersReduced && !forceIntro)) {
+  if (skipIntro || (alreadySeen && !forceIntro) || (hasDirectHash && !forceIntro) || (prefersReduced && !forceIntro)) {
     instantBypass();
     return;
   }

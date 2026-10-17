@@ -40,6 +40,29 @@ CoreShadow represents an engineered digital environment combining:
 
 ---
 
+## 📸 Visual Documentation & Feature Screenshots
+
+A complete suite of 14 high-resolution captures showcasing desktop architectures and dedicated smartphone layouts:
+
+| # | Capture | Viewport | Focus / Highlights | Asset Link |
+| :-: | :--- | :--- | :--- | :--- |
+| **01** | Cinematic Intro & Text Encoder | 1366 × 768 | Real-time gear train + CORESHADOW to MAYANK BHATT scramble | [01_intro_encoder.png](assets/screenshots/01_intro_encoder.png) |
+| **02** | Hero Architecture & Telemetry | 1366 × 768 | Status dot, deliberate typography, and systems control panel | [02_hero_desktop.png](assets/screenshots/02_hero_desktop.png) |
+| **03** | Selected Projects Schematics | 1366 × 768 | Flagship APEX 7-tier power cascade interactive SVG schematic | [03_projects_schematics.png](assets/screenshots/03_projects_schematics.png) |
+| **04** | APEX Architecture Modal | 1366 × 768 | Signature FLIP expansion, specs matrix, and deep-dive proof | [04_apex_modal.png](assets/screenshots/04_apex_modal.png) |
+| **05** | Technical Capabilities Matrix | 1366 × 768 | 6 core engineering domains with metallic gradient cards | [05_capabilities_matrix.png](assets/screenshots/05_capabilities_matrix.png) |
+| **06** | Engineering Principles (Philosophy) | 1366 × 768 | Editorial narrative: Precision, Depth, Restraint, Motion | [06_principles_editorial.png](assets/screenshots/06_principles_editorial.png) |
+| **07** | Repositories Catalog | 1366 × 768 | Clean monospaced table linking all verified GitHub toolchains | [07_repositories_catalog.png](assets/screenshots/07_repositories_catalog.png) |
+| **08** | Stealth Contact Gateway | 1366 × 768 | FormSubmit encrypted gateway with instant fail-safe reveal | [08_contact_gateway.png](assets/screenshots/08_contact_gateway.png) |
+| **09** | Mobile Hero (Centralized) | 390 × 844 | Perfectly centered viewport layout tailored for smartphones | [09_mobile_hero_centralized.png](assets/screenshots/09_mobile_hero_centralized.png) |
+| **10** | Mobile Navigation Drawer | 390 × 844 | Backdrop overlay, accessibility toggle, and deep section jump | [10_mobile_drawer_backdrop.png](assets/screenshots/10_mobile_drawer_backdrop.png) |
+| **11** | Mobile Project Cards | 390 × 844 | Touch-friendly cards, zero horizontal overflow, full preview | [11_mobile_project_cards.png](assets/screenshots/11_mobile_project_cards.png) |
+| **12** | Mobile Repository Cards | 390 × 844 | Table-to-card transformation for ergonomic mobile browsing | [12_mobile_repo_cards.png](assets/screenshots/12_mobile_repo_cards.png) |
+| **13** | Mobile Modal Experience | 390 × 844 | Full-height bottom-sheet modal with sticky header & controls | [13_mobile_bottom_sheet_modal.png](assets/screenshots/13_mobile_bottom_sheet_modal.png) |
+| **14** | Mobile Contact Form | 390 × 844 | 48px touch targets, mobile keypad support, bot protection | [14_mobile_contact_form.png](assets/screenshots/14_mobile_contact_form.png) |
+
+---
+
 ## 🛠️ Tech Stack & Directory Structure
 
 ```

@@ -208,6 +208,36 @@
         mobileToggle.focus();
       }
     });
+
+    // Auto-open drawer if requested via URL param
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('drawer') === '1') {
+      setTimeout(openDrawer, 150);
+    }
+
+    // Auto-reveal all elements if requested via URL param (e.g. for screenshotting)
+    if (urlParams.get('reveal') === '1' || urlParams.get('scroll')) {
+      document.body.classList.add('all-revealed');
+      document.querySelectorAll('.reveal-init, .stagger-parent, .reveal-child').forEach(el => {
+        el.classList.add('is-revealed');
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+    }
+
+    // Scroll to target section if requested via URL param
+    const scrollTarget = urlParams.get('scroll');
+    if (scrollTarget) {
+      const doScroll = () => {
+        const el = document.getElementById(scrollTarget);
+        if (el) {
+          el.scrollIntoView({ behavior: 'instant', block: 'start' });
+        }
+      };
+      doScroll();
+      setTimeout(doScroll, 50);
+      setTimeout(doScroll, 150);
+    }
   }
 
   // --- Scroll Active Section Spy (Desktop & Mobile Drawer) ---
@@ -434,6 +464,12 @@
         closeProjectModal();
       }
     });
+
+    // Auto-open modal if requested via URL param
+    const modalParam = new URLSearchParams(window.location.search).get('modal');
+    if (modalParam) {
+      setTimeout(() => openProjectModal(modalParam), 200);
+    }
   }
 
   // --- Deconstructed email representation (zero plain-text in source) ---

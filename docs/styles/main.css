@@ -89,6 +89,10 @@ code, .mono-text {
     padding-left: var(--gutter-mobile);
     padding-right: var(--gutter-mobile);
   }
+  body.all-revealed .hero-section {
+    min-height: 844px !important;
+    height: auto !important;
+  }
 }
 
 /* 1.5. Full-Viewport Cinematic Mechanical Intro Sequence */
@@ -787,6 +791,20 @@ section {
 .reveal-init.is-revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+body.all-revealed .hero-section {
+  min-height: 768px !important;
+  height: 768px !important;
+}
+
+body.all-revealed .reveal-init,
+body.all-revealed .reveal-child,
+body.all-revealed .stagger-parent > .reveal-child,
+body.all-revealed .github-catalog {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
 }
 
 .stagger-parent > .reveal-child {
