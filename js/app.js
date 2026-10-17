@@ -318,7 +318,7 @@
       const isRunning = window.CoreShadowCanvas.toggle();
       canvasToggleBtn.textContent = isRunning ? 'Pause Engine' : 'Resume Engine';
       if (canvasStatusText) {
-        canvasStatusText.textContent = isRunning ? '60 FPS // Active' : 'Paused';
+        canvasStatusText.textContent = isRunning ? '60 FPS • Active' : 'Paused';
       }
     });
   }
@@ -707,7 +707,7 @@
 
         if (data.message && data.message.toLowerCase().includes('activation')) {
           triggerFailSafe(
-            '⚡ Direct Email Revealed // Gateway Notice',
+            '⚡ Direct Email Revealed: Gateway Notice',
             'The form gateway is currently awaiting one-time confirmation. To ensure your inquiry reaches Mayank right now, his direct email is unlocked below:'
           );
         } else if (data.success === 'true' || data.success === true) {
@@ -719,14 +719,14 @@
           contactForm.reset();
         } else {
           triggerFailSafe(
-            '⚡ Fail-Safe Activated // Direct Email Revealed',
+            '⚡ Fail-Safe Activated: Direct Email Revealed',
             'The form gateway returned a notice. Mayank\'s verified email is unlocked below so you can reach him directly:'
           );
         }
       } catch (err) {
         console.warn('Direct gateway transmission notice:', err);
         triggerFailSafe(
-          '⚡ Fail-Safe Activated // Direct Email Revealed',
+          '⚡ Fail-Safe Activated: Direct Email Revealed',
           'The automated network gateway is unreachable or blocked. Your message has been preserved and Mayank\'s direct email address is unlocked below:'
         );
       } finally {
@@ -740,7 +740,7 @@
 
   // Console branding signature
   console.log(
-    '%c CoreShadow // Mayank Bhatt %c\nPrecision Engineering Portfolio & Research Systems\nGitHub: https://github.com/CodeStrikerMayank',
+    '%c CoreShadow: Mayank Bhatt %c\nPrecision Engineering Portfolio & Research Systems\nGitHub: https://github.com/CodeStrikerMayank',
     'background: #111; color: #fff; font-weight: bold; padding: 4px 8px; border: 1px solid #333;',
     'color: #888; font-size: 11px;'
   );

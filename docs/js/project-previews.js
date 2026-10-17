@@ -61,7 +61,7 @@
 
       const tierData = tiers.find(t => t.id === tierNum);
       if (metricDisplay && tierData) {
-        metricDisplay.textContent = `${tierData.name} // ${tierData.latency} // ${tierData.desc}`;
+        metricDisplay.textContent = `${tierData.name} • ${tierData.latency} • ${tierData.desc}`;
         metricDisplay.style.color = 'var(--blue-indicator)';
       }
     }
@@ -95,7 +95,7 @@
           clearInterval(interval);
           setTimeout(() => {
             if (metricDisplay) {
-              metricDisplay.textContent = 'CASCADE COMPLETE // 7 TIERS VERIFIED';
+              metricDisplay.textContent = 'CASCADE COMPLETE: 7 TIERS VERIFIED';
               metricDisplay.style.color = 'var(--color-silver)';
             }
             if (traceBtn) traceBtn.disabled = false;
@@ -117,7 +117,7 @@
         nodes.forEach(n => n.classList.remove('is-active'));
         links.forEach(l => l.classList.remove('is-active'));
         if (metricDisplay) {
-          metricDisplay.textContent = 'CASCADE READY // TAP NODES TO PROBE';
+          metricDisplay.textContent = 'CASCADE READY: TAP NODES TO PROBE';
           metricDisplay.style.color = 'var(--color-silver)';
         }
       }
@@ -144,7 +144,7 @@
           folderTarget.classList.toggle('is-visible', isOpen);
         }
         if (metricDisplay) {
-          metricDisplay.textContent = `DIR_${isOpen ? 'EXPANDED' : 'COLLAPSED'}: ${folderName}/ // TELEMETRY STREAM`;
+          metricDisplay.textContent = `DIR_${isOpen ? 'EXPANDED' : 'COLLAPSED'}: ${folderName}/ • TELEMETRY STREAM`;
           metricDisplay.style.color = isOpen ? 'var(--blue-indicator)' : 'var(--color-silver)';
         }
       });
@@ -165,7 +165,7 @@
         const fileName = file.getAttribute('data-file');
         const fileSize = file.getAttribute('data-size') || '14.2 KB';
         if (metricDisplay) {
-          metricDisplay.textContent = `INSPECT: ${fileName} // ${fileSize} // SHA256 OK`;
+          metricDisplay.textContent = `INSPECT: ${fileName} • ${fileSize} • SHA256 OK`;
           metricDisplay.style.color = 'var(--blue-indicator)';
         }
       });
@@ -179,7 +179,7 @@
         previewEl.classList.toggle('xray-active', xRayMode);
         xRayToggleBtn.textContent = xRayMode ? 'X-Ray Active' : 'Toggle X-Ray';
         if (metricDisplay) {
-          metricDisplay.textContent = xRayMode ? 'X-RAY: 1,420 INODES SCANNED // 0 ANOMALIES' : 'STANDARD TREE VIEW // RECURSIVE';
+          metricDisplay.textContent = xRayMode ? 'X-RAY: 1,420 INODES SCANNED • 0 ANOMALIES' : 'STANDARD TREE VIEW: RECURSIVE';
           metricDisplay.style.color = xRayMode ? 'var(--blue-indicator)' : 'var(--color-silver)';
         }
       });
@@ -236,7 +236,7 @@
     previewEl.addEventListener('pointerleave', () => {
       if (crosshairEl) crosshairEl.style.opacity = '0.35';
       if (metricDisplay) {
-        metricDisplay.textContent = 'PROBE: 0.671°N 23.472°E // MARE TRANQUILLITATIS';
+        metricDisplay.textContent = 'PROBE: 0.671°N 23.472°E • MARE TRANQUILLITATIS';
         metricDisplay.style.color = 'var(--color-silver)';
       }
     });
@@ -260,7 +260,7 @@
         const vz = voxel.getAttribute('data-vz') || '2';
         const state = voxel.getAttribute('data-state') || 'SOLID';
         if (metricDisplay) {
-          metricDisplay.textContent = `VOXEL [${vx}, ${vy}, ${vz}] // ${state} // OCCLUSION CULLED`;
+          metricDisplay.textContent = `VOXEL [${vx}, ${vy}, ${vz}] • ${state} • OCCLUSION CULLED`;
           metricDisplay.style.color = 'var(--blue-indicator)';
         }
       });
@@ -270,7 +270,7 @@
         voxel.classList.toggle('is-mined');
         const isMined = voxel.classList.contains('is-mined');
         if (metricDisplay) {
-          metricDisplay.textContent = `CHUNK UPDATED // VOXEL ${isMined ? 'MINED (AIR)' : 'RASTERIZED'}`;
+          metricDisplay.textContent = `CHUNK UPDATED: VOXEL ${isMined ? 'MINED (AIR)' : 'RASTERIZED'}`;
           metricDisplay.style.color = 'var(--blue-indicator)';
         }
       });
@@ -287,7 +287,7 @@
           v.style.transform = `translateY(${pseudoH}px)`;
         });
         if (metricDisplay) {
-          metricDisplay.textContent = `PROCEDURAL SEED: 0x${seed.toString(16).slice(-6).toUpperCase()} // RASTER OK`;
+          metricDisplay.textContent = `PROCEDURAL SEED: 0x${seed.toString(16).slice(-6).toUpperCase()} • RASTER OK`;
           metricDisplay.style.color = 'var(--blue-indicator)';
         }
       });
@@ -296,7 +296,7 @@
     previewEl.addEventListener('pointerleave', () => {
       voxels.forEach(v => v.classList.remove('is-active'));
       if (metricDisplay) {
-        metricDisplay.textContent = 'CHUNK [16x16x256] // ISOMETRIC RASTER // 60 FPS';
+        metricDisplay.textContent = 'CHUNK [16x16x256] • ISOMETRIC RASTER • 60 FPS';
         metricDisplay.style.color = 'var(--color-silver)';
       }
     });
