@@ -6,15 +6,15 @@ $localAssetFile = "d:\Education Content\Professional website\assets\portfolio_sh
 $docsAssetFile = "d:\Education Content\Professional website\docs\assets\portfolio_showcase_master.png"
 
 # File paths for feature screenshots (Cinematic Intro + Mobile Upgrade)
-$f1 = Join-Path $artifactDir "intro_metallic_gears_latest_1792225729549.png"
-$f2 = Join-Path $artifactDir "hero_revealed_latest_1792225755620.png"
-$f3 = Join-Path $artifactDir "projects_metallic_cards_latest_1792225881203.png"
-$f4 = Join-Path $artifactDir "apex_modal_latest_1792226091092.png"
-$f5_a = Join-Path $artifactDir "mobile_hero_view_latest_1792226249378.png"
-$f5_b = Join-Path $artifactDir "mobile_drawer_open_latest_1792226262326.png"
-$f6_a = Join-Path $artifactDir "mobile_repo_cards_latest_1792226281519.png"
-$f6_b = Join-Path $artifactDir "mobile_modal_view_latest_1792226366979.png"
-$f7 = Join-Path $artifactDir "contact_section_latest_1792226207935.png"
+$f1 = Join-Path $artifactDir "latest_intro_encoder_1792229424352.png"
+$f2 = Join-Path $artifactDir "latest_hero_desktop_1792229443719.png"
+$f3 = Join-Path $artifactDir "latest_projects_schematics_1792229557013.png"
+$f4 = Join-Path $artifactDir "latest_apex_modal_1792229664597.png"
+$f5_a = Join-Path $artifactDir "latest_mobile_hero_1792229962041.png"
+$f5_b = Join-Path $artifactDir "latest_mobile_drawer_1792230084650.png"
+$f6_a = Join-Path $artifactDir "latest_mobile_repo_cards_1792230170054.png"
+$f6_b = Join-Path $artifactDir "latest_mobile_modal_1792230214200.png"
+$f7 = Join-Path $artifactDir "latest_contact_section_1792229865716.png"
 
 # Canvas Dimensions
 $masterWidth = 2880
@@ -260,4 +260,30 @@ $bmp.Save($docsAssetFile, [System.Drawing.Imaging.ImageFormat]::Png)
 $g.Dispose()
 $bmp.Dispose()
 
+# Create screenshots directory
+$localScreenshotsDir = "d:\Education Content\Professional website\assets\screenshots"
+$docsScreenshotsDir = "d:\Education Content\Professional website\docs\assets\screenshots"
+if (!(Test-Path $localScreenshotsDir)) { New-Item -ItemType Directory -Path $localScreenshotsDir -Force | Out-Null }
+if (!(Test-Path $docsScreenshotsDir)) { New-Item -ItemType Directory -Path $docsScreenshotsDir -Force | Out-Null }
+
+$screenMap = @{
+    "01_intro_encoder.png" = $f1
+    "02_hero_desktop.png" = $f2
+    "03_projects_schematics.png" = $f3
+    "04_apex_modal.png" = $f4
+    "05_mobile_hero.png" = $f5_a
+    "06_mobile_drawer.png" = $f5_b
+    "07_mobile_repo_cards.png" = $f6_a
+    "08_mobile_modal.png" = $f6_b
+    "09_contact_gateway.png" = $f7
+}
+
+foreach ($entry in $screenMap.GetEnumerator()) {
+    if (Test-Path $entry.Value) {
+        Copy-Item $entry.Value (Join-Path $localScreenshotsDir $entry.Key) -Force
+        Copy-Item $entry.Value (Join-Path $docsScreenshotsDir $entry.Key) -Force
+    }
+}
+
 Write-Output "SUCCESS: Master feature showcase composite generated at $outputFile"
+Write-Output "SUCCESS: Individual screenshots mirrored to assets/screenshots/ and docs/assets/screenshots/"
