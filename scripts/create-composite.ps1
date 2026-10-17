@@ -6,15 +6,15 @@ $localAssetFile = "d:\Education Content\Professional website\assets\portfolio_sh
 $docsAssetFile = "d:\Education Content\Professional website\docs\assets\portfolio_showcase_master.png"
 
 # File paths for feature screenshots (Cinematic Intro + Mobile Upgrade)
-$f1 = Join-Path $artifactDir "intro_metallic_gears_1792185000724.png"
-$f2 = Join-Path $artifactDir "hero_revealed_direct_1792185034552.png"
-$f3 = Join-Path $artifactDir "projects_metallic_cards_1792185044592.png"
-$f4 = Join-Path $artifactDir "apex_modal_1792179277386.png"
-$f5_a = Join-Path $artifactDir "mobile_hero_view_1792182098612.png"
-$f5_b = Join-Path $artifactDir "mobile_drawer_open_1792182111231.png"
-$f6_a = Join-Path $artifactDir "mobile_repo_cards_1792182175737.png"
-$f6_b = Join-Path $artifactDir "mobile_modal_view_1792182253083.png"
-$f7 = Join-Path $artifactDir "contact_section_1792179442746.png"
+$f1 = Join-Path $artifactDir "intro_metallic_gears_latest_1792225729549.png"
+$f2 = Join-Path $artifactDir "hero_revealed_latest_1792225755620.png"
+$f3 = Join-Path $artifactDir "projects_metallic_cards_latest_1792225881203.png"
+$f4 = Join-Path $artifactDir "apex_modal_latest_1792226091092.png"
+$f5_a = Join-Path $artifactDir "mobile_hero_view_latest_1792226249378.png"
+$f5_b = Join-Path $artifactDir "mobile_drawer_open_latest_1792226262326.png"
+$f6_a = Join-Path $artifactDir "mobile_repo_cards_latest_1792226281519.png"
+$f6_b = Join-Path $artifactDir "mobile_modal_view_latest_1792226366979.png"
+$f7 = Join-Path $artifactDir "contact_section_latest_1792226207935.png"
 
 # Canvas Dimensions
 $masterWidth = 2880
@@ -219,7 +219,8 @@ $ty += 45
 
 $metrics = @(
     @("ENGINEER IDENTITY", "Mayank Bhatt (CoreShadow) // Systems & AI Security"),
-    @("CINEMATIC INTRO", "2.5s Mechanical Gear Aperture // [ESC] Skip // Session Storage Cache"),
+    @("CINEMATIC INTRO", "3.8s Calibrated Text Encoder (CORESHADOW ➜ MAYANK) // [ESC] Skip // Cache"),
+    @("METALLIC TEXTURE", "Brushed Titanium Gradients // Lathe-Grooved Involute Gears // Specular Bevels"),
     @("MOBILE SMARTPHONE UX", "Deliberate 320px-430px Responsive Layout // Zero Horizontal Overflow"),
     @("REPO ARCHITECTURE", "CSS Table-to-Card Mobile Transformation // Real GitHub Project Links"),
     @("CORE GRAPHICS ENGINE", "Custom 2D Involute Pitch Gear Mesh (Canvas2D, Zero 3D engine deps)"),

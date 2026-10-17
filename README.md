@@ -9,6 +9,10 @@
 > **"Precision. Depth. Restraint. Motion."**  
 > CoreShadow is the professional engineering portfolio and independent research identity of **Mayank Bhatt ([@CodeStrikerMayank](https://github.com/CodeStrikerMayank))**.
 
+<p align="center">
+  <img src="assets/portfolio_showcase_master.png" alt="CoreShadow Engineering Portfolio Feature Showcase" width="100%">
+</p>
+
 ---
 
 ## ⚙️ Architecture & Design Philosophy
