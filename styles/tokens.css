@@ -69,7 +69,7 @@
   /* 4. Spacing & Layout Tokens */
   --container-max-width: 1260px;
   --gutter-desktop: clamp(2.5rem, 5vw, 4.5rem);
-  --gutter-mobile: 1.25rem;
+  --gutter-mobile: clamp(0.85rem, 3.5vw, 1.25rem);
   --section-spacing: clamp(5rem, 8vw, 8.5rem);
 
   /* Border Radii */

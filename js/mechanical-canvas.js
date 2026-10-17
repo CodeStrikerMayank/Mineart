@@ -116,7 +116,7 @@
    * Recalculates canvas dimensions and pitch circle contact coordinates
    */
   function resize() {
-    width = window.innerWidth;
+    width = document.documentElement.clientWidth || window.innerWidth;
     height = window.innerHeight;
     isMobile = width <= 768;
     dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2.0);

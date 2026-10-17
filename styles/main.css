@@ -32,7 +32,6 @@ body {
   background-size: 24px 24px, 100% 100%;
   color: var(--color-primary-text);
   min-height: 100vh;
-  overflow-x: hidden;
   position: relative;
 }
 
@@ -187,8 +186,8 @@ body.intro-finished .hero-telemetry-panel {
 .intro-gear-canvas {
   width: 560px;
   height: 560px;
-  max-width: 90vw;
-  max-height: 90vw;
+  max-width: 90%;
+  max-height: 90%;
   filter: drop-shadow(0 0 30px rgba(0, 0, 0, 0.9));
 }
 
@@ -201,7 +200,7 @@ body.intro-finished .hero-telemetry-panel {
   text-align: center;
   pointer-events: none;
   padding: 1.5rem;
-  max-width: 90vw;
+  max-width: 90%;
 }
 
 .intro-telemetry-badge {
@@ -326,20 +325,26 @@ body.intro-finished .hero-telemetry-panel {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
   z-index: var(--z-canvas);
   pointer-events: none;
   opacity: 0.88;
   will-change: transform;
+  overflow: hidden;
 }
 
 .ambient-gradient {
   position: fixed;
   inset: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
   z-index: var(--z-canvas);
   pointer-events: none;
   background: radial-gradient(circle at 74% 24%, rgba(32, 32, 32, 0.42) 0%, rgba(8, 8, 8, 0.86) 62%, rgba(8, 8, 8, 0.99) 100%);
+  overflow: hidden;
 }
 
 /* 3. Site Header & Navigation */
@@ -528,8 +533,9 @@ body.intro-finished .hero-telemetry-panel {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1100,7 +1106,7 @@ body.all-revealed .github-catalog {
 /* 8. Selected Projects Showcase & Card Architecture */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
 }
 
@@ -1115,6 +1121,8 @@ body.all-revealed .github-catalog {
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  min-width: 0;
+  box-sizing: border-box;
   transition: border-color var(--time-card) var(--ease-cinematic),
               transform var(--time-card) var(--ease-cinematic),
               box-shadow var(--time-card) var(--ease-cinematic),
@@ -1136,6 +1144,8 @@ body.all-revealed .github-catalog {
 /* Project Architectural Schematic Banner & Interactive Previews */
 .project-preview-media {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 115px;
   background: var(--color-void);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1149,6 +1159,7 @@ body.all-revealed .github-catalog {
   position: relative;
   user-select: none;
   cursor: crosshair;
+  box-sizing: border-box;
 }
 
 .project-preview-media:focus-visible {
@@ -1194,6 +1205,7 @@ body.all-revealed .github-catalog {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 65%;
+  min-width: 0;
   transition: color var(--time-micro);
 }
 
@@ -1204,15 +1216,21 @@ body.all-revealed .github-catalog {
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   min-height: 80px;
   padding: 0.25rem 0.5rem;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .preview-schematic-body svg {
   width: 100%;
-  height: 100%;
+  max-width: 100%;
+  height: auto;
   max-height: 85px;
   opacity: 0.88;
+  display: block;
   transition: transform var(--time-card) var(--ease-cinematic), opacity var(--time-card);
 }
 
@@ -2070,32 +2088,140 @@ button:disabled, .btn:disabled {
   color: var(--blue-indicator);
 }
 
-/* 16. Deliberate Smartphone & Responsive Experience System */
-@media (max-width: 1024px) {
+/* 16. Deliberate Dual-Presentation Responsive Architecture */
+
+/* Tier 2: Tablet Presentation (600px to 1023px) */
+@media (min-width: 600px) and (max-width: 1023px) {
+  .container {
+    padding-left: clamp(1.5rem, 3.5vw, 2.5rem);
+    padding-right: clamp(1.5rem, 3.5vw, 2.5rem);
+  }
+
+  .site-header {
+    height: 64px;
+  }
+  .header-inner {
+    height: 64px;
+  }
+  .nav-links {
+    gap: 1.25rem;
+  }
+  .nav-link {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.4rem;
+  }
+
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
   }
+  .hero-content {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .hero-telemetry-badge {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-headline {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(2.35rem, 5.5vw, 3.25rem);
+  }
+  .hero-description {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 52ch;
+  }
+  .hero-cta-group {
+    justify-content: center;
+  }
+  .hero-telemetry-panel {
+    max-width: 560px;
+    margin: 1.5rem auto 0;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    padding: 1.75rem 1.4rem;
+  }
+
   .capabilities-matrix {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
   }
+
   .process-timeline {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
   }
+
   .profile-editorial {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 2.5rem;
+  }
+  .principles-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .github-catalog {
+    padding: 1.5rem 1.25rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+  }
+  .repo-catalog-table-wrap {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--surface-border);
+    box-sizing: border-box;
+  }
+  .repo-table {
+    width: 100%;
+    min-width: 520px;
+  }
+
+  .contact-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+  .contact-info,
+  .contact-card {
+    max-width: 680px;
+    margin: 0 auto;
+    width: 100%;
   }
 }
 
+/* Tablet to Small Screen Header Transition (Under 768px) */
 @media (max-width: 768px) {
-  /* Container & Layout Ergonomics */
-  .container {
-    padding-left: 1.15rem;
-    padding-right: 1.15rem;
+  .nav-links,
+  .header-actions {
+    display: none;
   }
-
-  /* Compact Native-Feel App Header */
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    font-size: 1.25rem;
+    border: 1px solid var(--surface-border-hover);
+    background: var(--color-graphite);
+    color: var(--color-pure-white);
+  }
   .site-header {
     height: 60px;
   }
@@ -2103,42 +2229,105 @@ button:disabled, .btn:disabled {
     height: 60px;
   }
   .brand-avatar {
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
   }
   .brand-name {
     font-size: 1.05rem;
   }
-  .nav-links, .header-actions {
-    display: none;
+  .mobile-drawer {
+    top: 60px;
+    height: calc(100vh - 60px);
+  }
+}
+
+/* Tier 3: Deliberate Smartphone Presentation (Below 600px) */
+@media (max-width: 599px) {
+  /* Ergonomic Smartphone Gutters */
+  .container {
+    padding-left: clamp(0.85rem, 3.8vw, 1.25rem);
+    padding-right: clamp(0.85rem, 3.8vw, 1.25rem);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Compact Native-Feel Smartphone Header */
+  .site-header {
+    height: 58px;
+    border-bottom: 1px solid var(--surface-border);
+  }
+  .header-inner {
+    height: 58px;
+  }
+  .brand-wrapper {
+    gap: 0.6rem;
+    min-width: 0;
+  }
+  .brand-avatar {
+    width: 28px;
+    height: 28px;
+  }
+  .brand-name {
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .brand-tag {
+    display: none; /* Hide secondary tag to protect mobile toggle space */
   }
   .mobile-menu-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
     border-radius: var(--radius-sm);
     font-size: 1.2rem;
     border: 1px solid var(--surface-border-hover);
     background: var(--color-graphite);
     color: var(--color-pure-white);
+    touch-action: manipulation;
   }
-  .mobile-drawer {
-    top: 60px;
-    height: calc(100vh - 60px);
-    padding: 1.5rem 1.25rem 2rem;
-  }
-  .mobile-nav-links li a {
-    min-height: 50px;
-    font-size: 1.05rem;
-    padding: 0.95rem 1rem;
+  .mobile-menu-toggle:active {
+    transform: scale(0.95);
+    background: var(--color-steel);
   }
 
-  /* Centralized Hero Section for Smartphone */
+  /* Smooth Full-Height Mobile Navigation Drawer */
+  .mobile-drawer {
+    top: 58px;
+    height: calc(100vh - 58px);
+    padding: 1.25rem 1rem 2rem;
+    overscroll-behavior: contain;
+  }
+  .mobile-nav-links li a {
+    min-height: 48px;
+    font-size: 1.05rem;
+    padding: 0.95rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    touch-action: manipulation;
+  }
+  .mobile-nav-links li a:active {
+    background: var(--blue-subtle);
+    color: var(--blue-indicator);
+  }
+
+  /* Centralized Single-Column Smartphone Hero */
   .hero-section {
-    padding-top: clamp(2rem, 5vw, 3.5rem);
-    padding-bottom: clamp(3rem, 7vw, 4.5rem);
+    padding-top: clamp(2rem, 6vw, 3.25rem);
+    padding-bottom: clamp(2.75rem, 7vw, 4rem);
+    min-height: auto;
+  }
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    width: 100%;
   }
   .hero-content {
     text-align: center;
@@ -2147,76 +2336,64 @@ button:disabled, .btn:disabled {
     align-items: center;
     margin: 0 auto;
     width: 100%;
-    max-width: 580px;
+    max-width: 100%;
+    min-width: 0;
   }
   .hero-telemetry-badge {
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto 1.25rem;
     display: inline-flex;
     justify-content: center;
     font-size: 0.72rem;
     padding: 0.35rem 0.85rem;
+    max-width: 100%;
+    overflow-wrap: break-word;
   }
   .hero-headline {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    font-size: clamp(2rem, 7vw, 2.75rem);
+    font-size: clamp(1.85rem, 8vw, 2.45rem);
     line-height: 1.15;
+    letter-spacing: -0.02em;
+    width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .hero-description {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    max-width: 40ch;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
+    max-width: 38ch;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 1.75rem;
+    overflow-wrap: break-word;
   }
   .hero-cta-group {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 360px;
-    margin: 0 auto 2.5rem;
-    gap: 0.85rem;
+    max-width: 100%;
+    margin: 0 auto 2rem;
+    gap: 0.75rem;
   }
   .hero-cta-group .btn {
     width: 100%;
     min-height: 48px;
     justify-content: center;
-    font-size: 0.95rem;
-    padding: 0.85rem 1.25rem;
-  }
-
-  /* Centralized Section Headers */
-  .section-kicker {
-    justify-content: center;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 0.75rem;
-  }
-  .section-title {
-    text-align: center;
-    font-size: clamp(1.65rem, 5vw, 2.25rem);
-  }
-  .section-subtitle {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 44ch;
     font-size: 0.92rem;
-    line-height: 1.55;
-    margin-bottom: 2.25rem;
+    padding: 0.85rem 1.25rem;
+    touch-action: manipulation;
   }
 
   /* Centralized Hero Telemetry ID Card */
   .hero-telemetry-panel {
-    margin: 1.5rem auto 0;
+    margin: 1rem auto 0;
     width: 100%;
-    max-width: 480px;
-    padding: 1.35rem 1.15rem;
+    max-width: 100%;
+    min-width: 0;
+    padding: 1.25rem 1rem;
+    box-sizing: border-box;
   }
   .telemetry-profile-header {
     flex-direction: column;
@@ -2227,47 +2404,103 @@ button:disabled, .btn:disabled {
   .profile-identity-info {
     align-items: center;
     text-align: center;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .profile-engineer-name {
+    font-size: 1.1rem;
+  }
+  .profile-engineer-role {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
+  .telemetry-row {
+    font-size: 0.75rem;
+    overflow-wrap: break-word;
   }
 
-  /* Single-Column Smartphone Projects */
+  /* Section Header Sizing */
+  .section-kicker {
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.72rem;
+  }
+  .section-title {
+    text-align: center;
+    font-size: clamp(1.65rem, 6.5vw, 2.15rem);
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+  .section-subtitle {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 40ch;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    overflow-wrap: break-word;
+  }
+
+  /* 1. Projects: Exactly One Full-Width Card Per Row */
   .projects-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+    width: 100%;
   }
   .project-card {
-    padding: 1.35rem 1.15rem;
+    padding: 1.25rem 1rem;
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
   .project-featured-badge {
     position: static;
     display: inline-block;
     align-self: flex-start;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.65rem;
     font-size: 0.68rem;
   }
   .project-title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     line-height: 1.25;
+    margin-bottom: 0.5rem;
+    overflow-wrap: break-word;
   }
   .project-summary {
-    font-size: 0.9rem;
-    line-height: 1.55;
-    margin-bottom: 1.25rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 1.15rem;
+    overflow-wrap: break-word;
   }
+
+  /* Natural Tech Stack Wrapping */
   .project-tech-stack {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.4rem;
   }
   .tech-tag {
     font-size: 0.7rem;
-    padding: 0.2rem 0.55rem;
+    padding: 0.22rem 0.55rem;
+    overflow-wrap: break-word;
   }
+
+  /* Stacked Touch Actions */
   .project-actions {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
     align-items: stretch;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
   .btn-detail {
     width: 100%;
@@ -2277,6 +2510,10 @@ button:disabled, .btn:disabled {
     justify-content: center;
     font-size: 0.85rem;
     padding: 0.65rem 1rem;
+    touch-action: manipulation;
+  }
+  .btn-detail:active {
+    transform: scale(0.98);
   }
   .project-links {
     width: 100%;
@@ -2286,106 +2523,182 @@ button:disabled, .btn:disabled {
   }
   .project-link-item {
     font-size: 0.82rem;
-    padding: 0.35rem 0.5rem;
+    padding: 0.45rem 0.65rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    touch-action: manipulation;
   }
 
-  /* Interactive Schematics Mobile Layout */
+  /* Interactive Schematics: Mobile Header Stacking & Fluid Sizing */
   .project-preview-media {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.15rem;
     border-radius: var(--radius-md);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
   .preview-schematic-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
     padding: 0.55rem 0.75rem;
     font-size: 0.68rem;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .preview-type-badge {
+    font-size: 0.65rem;
+  }
+  .preview-live-metric {
+    max-width: 100%;
+    font-size: 0.68rem;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .preview-schematic-body {
+    min-height: 75px;
+    padding: 0.25rem 0.5rem;
+  }
+  .preview-schematic-body svg {
+    max-height: 75px;
   }
   .preview-schematic-footer {
-    padding: 0.55rem 0.75rem;
+    padding: 0.5rem 0.75rem;
     gap: 0.5rem;
     flex-wrap: wrap;
+    min-width: 0;
   }
   .preview-action-btn {
-    min-height: 38px;
-    padding: 0.4rem 0.75rem;
+    width: 100%;
+    min-height: 44px;
+    padding: 0.45rem 0.75rem;
     font-size: 0.75rem;
     border-radius: var(--radius-sm);
+    justify-content: center;
+    touch-action: manipulation;
   }
 
-  /* Technical Capabilities Section */
+  /* 2. Capabilities & Principles: Vertical Stacking */
   .capabilities-matrix {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.15rem;
+    width: 100%;
   }
   .capability-card {
-    padding: 1.5rem 1.25rem;
+    padding: 1.35rem 1.15rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .capability-icon-badge {
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.85rem;
   }
   .capability-title {
     text-align: center;
+    font-size: 1.15rem;
+    overflow-wrap: break-word;
   }
   .capability-desc {
     text-align: center;
-    font-size: 0.9rem;
-    line-height: 1.55;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    overflow-wrap: break-word;
   }
   .capability-tags {
     justify-content: center;
+    flex-wrap: wrap;
   }
 
-  /* Process Timeline */
+  /* Process Timeline: Vertical Cards */
   .process-timeline {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.15rem;
+    width: 100%;
   }
-  .timeline-step-card {
-    padding: 1.5rem 1.25rem;
+  .process-step {
+    padding: 1.35rem 1.15rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .step-number {
-    margin: 0 auto 0.75rem;
+    margin: 0 auto 0.65rem;
   }
 
-  /* Principles Matrix */
-  .principles-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+  /* Profile & Principles: Vertical Stacking */
+  .profile-editorial {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    width: 100%;
   }
-  .principle-card {
-    padding: 1.5rem 1.25rem;
+  .profile-narrative {
+    min-width: 0;
+    width: 100%;
+  }
+  .principles-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.15rem;
+    width: 100%;
+  }
+  .principle-item {
+    padding: 1.35rem 1.15rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
-  .principle-axiom {
-    margin-left: auto;
-    margin-right: auto;
+  .principle-title {
+    font-size: 1.1rem;
+    overflow-wrap: break-word;
+  }
+  .principle-body {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    overflow-wrap: break-word;
   }
 
-  /* Repository Catalog Smartphone Transformation */
+  /* 3. Repositories: Full Table-to-Card Transformation */
+  .github-catalog {
+    padding: 1.25rem 1rem !important;
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+  }
   .catalog-header {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
   }
   .catalog-header .btn {
     width: 100%;
-    max-width: 320px;
+    max-width: 100%;
     min-height: 46px;
     justify-content: center;
+    touch-action: manipulation;
+  }
+  .repo-catalog-table-wrap {
+    overflow: visible;
+    width: 100%;
   }
   .repo-table thead {
-    display: none;
+    display: none; /* Hide multi-column headers on mobile */
   }
   .repo-table,
   .repo-table tbody,
@@ -2393,24 +2706,27 @@ button:disabled, .btn:disabled {
   .repo-table td {
     display: block;
     width: 100%;
+    box-sizing: border-box;
   }
   .repo-table tr {
     background: var(--metallic-gradient-card);
     border: 1px solid var(--surface-border);
     border-top: 1px solid var(--surface-border-metallic-top);
     border-radius: var(--radius-md);
-    padding: 1.25rem 1.15rem;
+    padding: 1.25rem 1rem;
     margin-bottom: 1.15rem;
     box-shadow: var(--metallic-specular-bevel), 0 6px 16px rgba(0, 0, 0, 0.45);
     text-align: left;
+    min-width: 0;
   }
   .repo-table td {
-    padding: 0.35rem 0;
+    padding: 0.3rem 0;
     border: none;
+    overflow-wrap: break-word;
   }
   .repo-table td.repo-name-cell {
     font-family: var(--font-display);
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--color-pure-white);
     margin-bottom: 0.35rem;
@@ -2419,10 +2735,10 @@ button:disabled, .btn:disabled {
     font-size: 0.88rem;
     color: var(--color-silver);
     line-height: 1.5;
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.75rem;
   }
   .repo-table td:nth-child(3) {
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.75rem;
   }
   .repo-table td:nth-child(4) {
     margin-top: 0.5rem;
@@ -2445,57 +2761,96 @@ button:disabled, .btn:disabled {
     color: var(--color-primary-text);
     text-decoration: none !important;
     min-height: 44px;
+    touch-action: manipulation;
+  }
+  .repo-table td:nth-child(4) a:active {
+    background: var(--color-steel);
+    border-color: var(--blue-border-active);
   }
 
-  /* Contact Section Smartphone Experience */
+  /* 4. Contact: Vertical Stack & Fluid Ergonomics */
   .contact-layout {
-    grid-template-columns: 1fr;
-    gap: 2.25rem;
-  }
-  .contact-editorial {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .contact-methods {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
     width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    display: flex;
+  }
+  .contact-info {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .contact-engineer-card {
+    padding: 1rem 0.85rem;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+  }
+  .contact-avatar-wrapper {
+    width: 48px;
+    height: 48px;
+  }
+  .contact-engineer-name {
+    font-size: 1.05rem;
+  }
+  .contact-engineer-title {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    overflow-wrap: break-word;
+  }
+  .secure-badge {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.45rem;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+  .verified-email-box {
     flex-direction: column;
+    align-items: flex-start;
     gap: 0.75rem;
+    padding: 1rem;
+    box-sizing: border-box;
   }
-  .contact-method-card {
+  .email-address {
+    font-size: 0.8rem;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+  .contact-card {
+    padding: 1.25rem 1rem !important;
+    border-radius: var(--radius-md);
     width: 100%;
-    justify-content: flex-start;
-    padding: 0.95rem 1.15rem;
-    min-height: 54px;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
   }
-  .contact-form-panel {
-    padding: 1.35rem 1.15rem;
+  .form-group {
+    gap: 0.4rem;
   }
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 1.15rem;
+  .form-label {
+    font-size: 0.72rem;
   }
   .form-input,
   .form-textarea {
     font-size: 16px !important; /* Prevents auto-zoom on iOS Safari */
     min-height: 48px;
-    padding: 0.75rem 0.95rem;
+    padding: 0.75rem 0.85rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
   .form-textarea {
     min-height: 120px;
   }
-  .btn-submit {
+  .btn-submit,
+  #dispatch-btn {
     width: 100%;
     min-height: 50px;
     font-size: 0.95rem;
     justify-content: center;
+    touch-action: manipulation;
   }
 
-  /* Mobile Architecture Bottom-Sheet Modal */
+  /* 5. Project-Detail Modal: Smartphone Bottom-Sheet Presentation */
   .modal-overlay {
     padding: 0;
     align-items: flex-end;
@@ -2503,11 +2858,15 @@ button:disabled, .btn:disabled {
   .modal-panel {
     width: 100%;
     max-width: 100%;
-    max-height: 88vh;
-    padding: 1.5rem 1.25rem 2rem;
+    max-height: 90vh;
+    padding: 1.5rem 1.15rem 2rem;
     border-radius: 20px 20px 0 0;
     border-bottom: none;
     box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.9);
+    overscroll-behavior: contain;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
   }
   .modal-panel::before {
     content: '';
@@ -2518,20 +2877,33 @@ button:disabled, .btn:disabled {
     border-radius: 2px;
     margin: 0 auto 1.25rem;
   }
+  .modal-title {
+    font-size: 1.35rem;
+    padding-right: 2.5rem;
+    overflow-wrap: break-word;
+  }
   .modal-specs-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.75rem;
   }
   .modal-close-btn {
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 42px;
-    height: 42px;
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+    touch-action: manipulation;
+  }
+  #modal-repo-link {
+    width: 100%;
+    min-height: 46px;
+    justify-content: center;
+    touch-action: manipulation;
   }
 
-  /* Centered Site Footer */
+  /* Site Footer: Centered & Touch-Friendly */
   .site-footer {
-    padding: 2.75rem 0;
+    padding: 2.5rem 0;
   }
   .footer-inner {
     flex-direction: column;
@@ -2542,36 +2914,57 @@ button:disabled, .btn:disabled {
   .footer-links {
     justify-content: center;
     flex-wrap: wrap;
-    gap: 1.25rem;
+    gap: 1rem;
   }
-}
-
-@media (max-width: 480px) {
-  .hero-headline {
-    font-size: clamp(1.85rem, 8vw, 2.35rem);
-    line-height: 1.15;
-  }
-  .brand-tag {
-    display: none; /* Keep brand mark compact on narrow phone screens */
-  }
-  .hero-telemetry-badge {
-    font-size: 0.68rem;
+  .footer-links a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
     padding: 0.35rem 0.65rem;
+    touch-action: manipulation;
   }
 }
 
-@media (max-width: 360px) {
+/* Micro-Smartphone Ergonomics (320px to 379px) */
+@media (max-width: 379px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
   .hero-headline {
-    font-size: 1.75rem;
+    font-size: clamp(1.65rem, 7.5vw, 1.95rem);
   }
   .hero-description {
-    font-size: 0.88rem;
+    font-size: 0.85rem;
   }
-  .profile-identity-info .profile-engineer-name {
+  .hero-telemetry-badge {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.65rem;
+  }
+  .profile-engineer-name {
     font-size: 1rem;
   }
   .telemetry-row {
     font-size: 0.72rem;
+  }
+  .project-title {
+    font-size: 1.15rem;
+  }
+  .project-summary {
+    font-size: 0.85rem;
+  }
+  .tech-tag {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.45rem;
+  }
+  .repo-table td.repo-name-cell {
+    font-size: 1.1rem;
+  }
+  .repo-table td:nth-child(2) {
+    font-size: 0.82rem;
+  }
+  .contact-card {
+    padding: 1rem 0.75rem !important;
   }
 }
 
