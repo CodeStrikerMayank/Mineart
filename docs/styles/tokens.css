@@ -107,7 +107,15 @@
   --z-base: 1;
   --z-card: 2;
   --z-header: 100;
+  --z-progress: 110;
   --z-drawer: 200;
   --z-modal: 500;
   --z-intro: 1000;
+
+  /* 7. Motion & Interaction Enhancements */
+  --progress-bar-height: 2px;
+  --progress-bar-bg: rgba(255, 255, 255, 0.06);
+  --progress-bar-fill: var(--blue-indicator);
+  --card-tilt-perspective: 1000px;
 }
+

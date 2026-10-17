@@ -260,6 +260,23 @@ body.intro-finished .hero-telemetry-panel {
   animation: introBeamSweep 750ms var(--ease-cinematic) forwards;
 }
 
+.intro-subtitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--blue-indicator);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-top: 0.65rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 400ms var(--ease-cinematic), transform 400ms var(--ease-cinematic);
+}
+
+.intro-subtitle.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .intro-subline {
   display: flex;
   align-items: center;
@@ -358,6 +375,20 @@ body.intro-finished .hero-telemetry-panel {
   border-bottom: 1px solid var(--surface-border);
   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.06), 0 8px 28px rgba(0, 0, 0, 0.6);
   transition: background var(--time-card) var(--ease-cinematic), border-color var(--time-card) var(--ease-cinematic);
+}
+
+/* Subtle, restrained top scroll progress indicator */
+.scroll-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: var(--progress-bar-height);
+  background: var(--progress-bar-fill);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.55);
+  z-index: var(--z-progress);
+  transition: width 60ms linear;
+  pointer-events: none;
 }
 
 .header-inner {
@@ -797,6 +828,42 @@ section {
 .reveal-init.is-revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Masked Heading Reveal */
+.heading-mask {
+  overflow: hidden;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.heading-mask > .section-title {
+  transform: translateY(110%);
+  transition: transform var(--time-section) var(--ease-reveal);
+  margin-bottom: 0;
+}
+
+.is-revealed .heading-mask > .section-title,
+.heading-mask.is-revealed > .section-title,
+body.all-revealed .heading-mask > .section-title {
+  transform: translateY(0);
+}
+
+/* Fine-line diagram drawing transition */
+.is-revealed .interactive-preview svg line.apex-link,
+body.all-revealed .interactive-preview svg line.apex-link {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 0;
+  animation: lineDashDraw 600ms var(--ease-cinematic) forwards;
+}
+
+@keyframes lineDashDraw {
+  from {
+    stroke-dashoffset: 40;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 body.all-revealed .hero-section {

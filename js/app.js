@@ -240,6 +240,24 @@
     }
   }
 
+  // --- Page Scroll Progress Indicator (Native, Restrained & Un-hijacked) ---
+  const scrollProgressBar = document.getElementById('scroll-progress-bar');
+  if (scrollProgressBar) {
+    let progressTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!progressTicking) {
+        requestAnimationFrame(() => {
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? Math.min(Math.max((window.scrollY / docHeight) * 100, 0), 100) : 0;
+          scrollProgressBar.style.width = progress.toFixed(1) + '%';
+          scrollProgressBar.setAttribute('aria-valuenow', Math.round(progress));
+          progressTicking = false;
+        });
+        progressTicking = true;
+      }
+    }, { passive: true });
+  }
+
   // --- Scroll Active Section Spy (Desktop & Mobile Drawer) ---
   const sections = document.querySelectorAll('section[id]');
   const desktopNavLinks = document.querySelectorAll('.nav-link');
@@ -465,11 +483,74 @@
       }
     });
 
+    // Keyboard Focus Trap inside Modal
+    modal.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('open')) return;
+
+      if (e.key === 'Tab') {
+        const focusable = modal.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+        if (focusable.length === 0) return;
+
+        const firstElement = focusable[0];
+        const lastElement = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    });
+
     // Auto-open modal if requested via URL param
     const modalParam = new URLSearchParams(window.location.search).get('modal');
     if (modalParam) {
       setTimeout(() => openProjectModal(modalParam), 200);
     }
+  }
+
+  // --- Subtle Pointer-Responsive Depth for Desktop Project Cards ---
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  if (!isTouchDevice && !prefersReduced) {
+    document.querySelectorAll('.project-card').forEach((card) => {
+      let tiltRaf = null;
+
+      card.addEventListener('pointermove', (e) => {
+        // Skip tilt when interacting with buttons, links, or internal preview controls
+        if (e.target.closest('button, a, .interactive-preview')) {
+          card.style.transform = '';
+          return;
+        }
+
+        const rect = card.getBoundingClientRect();
+        const normX = (e.clientX - rect.left) / rect.width;
+        const normY = (e.clientY - rect.top) / rect.height;
+
+        // Controlled architectural tilt (clamped to subtle ±2.2 degrees)
+        const rotX = (normY - 0.5) * -4.4;
+        const rotY = (normX - 0.5) * 4.4;
+
+        if (tiltRaf) cancelAnimationFrame(tiltRaf);
+        tiltRaf = requestAnimationFrame(() => {
+          card.style.transform = `perspective(var(--card-tilt-perspective)) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-2px)`;
+        });
+      }, { passive: true });
+
+      card.addEventListener('pointerleave', () => {
+        if (tiltRaf) cancelAnimationFrame(tiltRaf);
+        card.style.transition = 'transform 320ms var(--ease-cinematic)';
+        card.style.transform = '';
+        setTimeout(() => {
+          card.style.transition = '';
+        }, 320);
+      });
+    });
   }
 
   // --- Deconstructed email representation (zero plain-text in source) ---

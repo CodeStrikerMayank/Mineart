@@ -55,6 +55,25 @@
   let scrollTargetY = 0;
   let scrollCurrentY = 0;
 
+  // Sparse Atmospheric Particles (Layer 4, Pre-allocated to avoid GC frame drops)
+  const PARTICLE_COUNT = 22;
+  const particles = [];
+
+  function initParticles() {
+    particles.length = 0;
+    if (isMobile) return; // Zero particle overhead on mobile
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 1.6 + 0.8,
+        speedX: (Math.random() - 0.5) * 0.18,
+        speedY: -Math.random() * 0.22 - 0.06,
+        alpha: Math.random() * 0.22 + 0.06
+      });
+    }
+  }
+
   // Kinematic System Definition
   // Module m = 7.5 mm pitch equivalent
   // Primary Drive (Gear 1): 28 teeth, R = 105px
@@ -153,6 +172,8 @@
     tertiary.absX = primary.absX + (r1 + r3) * Math.cos(angTer);
     tertiary.absY = primary.absY + (r1 + r3) * Math.sin(angTer);
     tertiary.phaseOffset = angTer * (1 + primary.teeth / tertiary.teeth) + (Math.PI / tertiary.teeth);
+
+    initParticles();
 
     if (prefersReducedMotion) {
       drawStatic();
@@ -296,27 +317,74 @@
   }
 
   /**
-   * Draws faint technical alignment crosshairs across background
+   * Draws faint technical grid lines and alignment crosshairs across background (Layer 1)
    */
   function drawTechnicalAtmosphere(parallaxX, parallaxY) {
-    if (isMobile) return; // Skip background crosshairs on mobile for optimal efficiency
+    if (isMobile) return; // Skip on mobile for optimal battery & rendering performance
     ctx.save();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
-    ctx.lineWidth = 1;
-    const gridStep = 200;
-    const offX = ((parallaxX * 0.4) % gridStep + gridStep) % gridStep;
-    const offY = ((parallaxY * 0.4) % gridStep + gridStep) % gridStep;
 
+    const gridStep = 180;
+    const offX = ((parallaxX * 0.35) % gridStep + gridStep) % gridStep;
+    const offY = ((parallaxY * 0.35) % gridStep + gridStep) % gridStep;
+
+    // Faint Architectural Grid Lines
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+    ctx.lineWidth = 0.75;
+    ctx.beginPath();
+    for (let x = offX; x < width; x += gridStep) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+    }
+    for (let y = offY; y < height; y += gridStep) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+    }
+    ctx.stroke();
+
+    // Precision Crosshair Intersections
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+    ctx.lineWidth = 1;
     for (let x = offX; x < width; x += gridStep) {
       for (let y = offY; y < height; y += gridStep) {
         ctx.beginPath();
-        ctx.moveTo(x - 5, y);
-        ctx.lineTo(x + 5, y);
-        ctx.moveTo(x, y - 5);
-        ctx.lineTo(x, y + 5);
+        ctx.moveTo(x - 4, y);
+        ctx.lineTo(x + 4, y);
+        ctx.moveTo(x, y - 4);
+        ctx.lineTo(x, y + 4);
         ctx.stroke();
       }
     }
+
+    ctx.restore();
+  }
+
+  /**
+   * Draws sparse atmospheric dust particles with gentle physics drift (Layer 2)
+   */
+  function drawAtmosphericParticles(parallaxX, parallaxY) {
+    if (isMobile || particles.length === 0) return;
+    ctx.save();
+
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.speedX;
+      p.y += p.speedY;
+
+      // Wrap viewport boundaries
+      if (p.x < 0) p.x = width;
+      else if (p.x > width) p.x = 0;
+      if (p.y < 0) p.y = height;
+      else if (p.y > height) p.y = 0;
+
+      const px = p.x + parallaxX * 0.25;
+      const py = p.y + parallaxY * 0.25;
+
+      ctx.beginPath();
+      ctx.arc(px, py, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(160, 195, 220, ${p.alpha})`;
+      ctx.fill();
+    }
+
     ctx.restore();
   }
 
@@ -459,10 +527,13 @@
     const parallaxX = pointerCurrentX * 8;
     const parallaxY = pointerCurrentY * 8 - (scrollCurrentY * 0.07);
 
-    // 1. Draw Technical Atmosphere (Crosshairs & Alignment Marks)
+    // 1. Draw Technical Atmosphere (Grid Lines & Crosshairs)
     drawTechnicalAtmosphere(parallaxX, parallaxY);
 
-    // 2. Draw Housing Ring, Concentric Marks & Ambient Sweep
+    // 2. Draw Sparse Atmospheric Particles (Floating metallic micro-dust)
+    drawAtmosphericParticles(parallaxX, parallaxY);
+
+    // 3. Draw Housing Ring, Concentric Marks & Ambient Sweep
     drawRings(parallaxX, parallaxY, timestamp);
 
     // 3. Draw Mechanical Interlocking Gears (Restrained mobile watermark)

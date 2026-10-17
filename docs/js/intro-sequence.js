@@ -27,14 +27,15 @@
   const mainContent = document.getElementById('main-content');
   const encoderTextEl = document.getElementById('intro-encoder-text');
   const sweepBeamEl = document.getElementById('intro-sweep-beam');
+  const introSubtitleEl = document.getElementById('intro-subtitle');
 
   let startTime = null;
   let rafId = null;
   let isCompleted = false;
   let activeScrambleRaf = null;
   let step1Started = false;
-  let step2Started = false;
-  const DURATION_TOTAL = 3800; // 3.8 seconds calibrated cinematic sequence
+  let sweepStarted = false;
+  const DURATION_TOTAL = 2600; // Calibrated 2.6s cinematic mechanical sequence (2–3s target)
   const GLYPHS = '0123456789ABCDEF#_></[]*+=§%';
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -74,6 +75,7 @@
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1.0);
 
+      // Controlled linear glyph resolution without indefinite random cycling
       const resolvedCount = Math.floor(progress * (maxLen + 1));
 
       let result = '';
@@ -167,11 +169,11 @@
     skipBtn.addEventListener('click', finishIntro);
   }
 
-  // Fail-safe circuit breaker: guaranteed completion within 4.6s (disabled in holdIntro inspection mode)
+  // Fail-safe circuit breaker: guaranteed completion within 3.4s (disabled in holdIntro inspection mode)
   if (!holdIntro) {
     setTimeout(() => {
       if (!isCompleted) finishIntro();
-    }, 4600);
+    }, 3400);
   }
 
   // Setup canvas resolution
@@ -209,7 +211,6 @@
       const a1 = a + step * 0.22;
       const a2 = a + step * 0.52;
       const a3 = a + step * 0.74;
-      const aNext = (i + 1) * step;
 
       const x0 = Math.cos(a) * rInner;
       const y0 = Math.sin(a) * rInner;
@@ -259,10 +260,6 @@
     return 1 - Math.pow(1 - t, 3);
   }
 
-  function easeInOutQuad(t) {
-    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-  }
-
   // Animation Loop
   function render(timestamp) {
     if (isCompleted) return;
@@ -274,14 +271,14 @@
     const center = canvasSize / 2;
     ctx.clearRect(0, 0, canvasSize, canvasSize);
 
-    // 0.0 - 0.6s: Chassis & Pitch Outlines Fade In
-    const phase1Alpha = Math.min(elapsed / 600, 1.0);
+    // 1. Fade in dark instrument-like background & concentric guide rings
+    const phase1Alpha = Math.min(elapsed / 450, 1.0);
 
     ctx.save();
     ctx.globalAlpha = phase1Alpha;
 
     // Outer Chassis Concentric Guide Rings
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.arc(center, center, center * 0.94, 0, Math.PI * 2);
@@ -292,8 +289,8 @@
     ctx.arc(center, center, center * 0.82, 0, Math.PI * 2);
     ctx.stroke();
 
-    // Radial Degree Ticks (36 Ticks around circumference)
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+    // Radial Degree Calibration Marks (36 Ticks around circumference)
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.20)';
     ctx.lineWidth = 1;
     const rTickOuter = center * 0.92;
     const rTickInnerMajor = center * 0.86;
@@ -315,18 +312,20 @@
       ctx.stroke();
     }
 
-    // 0.6s - 1.3s: Coordinated Mechanical Rotation Engages
+    // 2. Coordinated Kinematic Multi-Gear Rotation
     let rotSpeed1 = 0;
     let rotSpeed2 = 0;
+    let rotSpeed3 = 0;
 
-    if (elapsed > 500) {
-      const rotProgress = Math.min((elapsed - 500) / 2700, 1.0);
+    if (elapsed > 400) {
+      const rotProgress = Math.min((elapsed - 400) / 2000, 1.0);
       const easedRot = easeOutCubic(rotProgress);
-      rotSpeed1 = easedRot * 0.68;  // Outer ring rotation
-      rotSpeed2 = -easedRot * 1.36; // Inner pinion rotation (2x counter-rotation)
+      rotSpeed1 = easedRot * 0.72;   // Outer planetary ring (clockwise)
+      rotSpeed2 = -easedRot * 1.44;  // Intermediate ring (counter-clockwise, 2x)
+      rotSpeed3 = easedRot * 2.16;   // Sun pinion (clockwise, 3x)
     }
 
-    // Outer Planetary Ring Gear (Teeth facing inward/outward)
+    // Outer Planetary Ring Gear
     const outerGearR = center * 0.68;
     drawKinematicGear(
       center,
@@ -339,11 +338,11 @@
       'rgba(18, 18, 18, 0.72)'
     );
 
-    // Inner Mechanical Ring
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)'; // Precision silver metallic highlight
+    // Intermediate Pitch Circle Track
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.arc(center, center, center * 0.46, 0, Math.PI * 2);
+    ctx.arc(center, center, center * 0.48, 0, Math.PI * 2);
     ctx.stroke();
 
     // Central Sun Pinion Gear
@@ -359,28 +358,26 @@
       'rgba(24, 24, 24, 0.9)'
     );
 
-    // Lathe Grooves & Central Core Hub
+    // Core Hub & Spline Keyway
     ctx.fillStyle = 'rgba(12, 12, 12, 0.95)';
     ctx.beginPath();
     ctx.arc(center, center, center * 0.20, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
     ctx.stroke();
 
-    // Reticle Crosshairs with Restrained Silver Specular Lines
-    if (elapsed > 700) {
-      const laserAlpha = Math.min((elapsed - 700) / 400, 0.45);
+    // Precision Reticle Crosshairs with restrained silver specular lines
+    if (elapsed > 550) {
+      const laserAlpha = Math.min((elapsed - 550) / 400, 0.45);
       ctx.strokeStyle = `rgba(255, 255, 255, ${laserAlpha})`;
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 6]);
 
-      // Horizontal Reticle
       ctx.beginPath();
       ctx.moveTo(center - center * 0.75, center);
       ctx.lineTo(center + center * 0.75, center);
       ctx.stroke();
 
-      // Vertical Reticle
       ctx.beginPath();
       ctx.moveTo(center, center - center * 0.75);
       ctx.lineTo(center, center + center * 0.75);
@@ -389,38 +386,48 @@
       ctx.setLineDash([]);
     }
 
+    // Radial Metallic Sweep Highlight (occurs when wordmark resolves ~1100ms)
+    if (elapsed > 1100 && elapsed < 2000) {
+      const sweepProgress = (elapsed - 1100) / 900;
+      const sweepAngle = -Math.PI * 0.5 + (sweepProgress * Math.PI * 2);
+      ctx.save();
+      ctx.translate(center, center);
+      ctx.rotate(sweepAngle);
+      const sweepGradient = ctx.createLinearGradient(0, 0, outerGearR * 1.1, 0);
+      sweepGradient.addColorStop(0, 'rgba(56, 189, 248, 0.25)');
+      sweepGradient.addColorStop(0.6, 'rgba(255, 255, 255, 0.4)');
+      sweepGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.strokeStyle = sweepGradient;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(innerGearR * 0.5, 0);
+      ctx.lineTo(outerGearR * 1.05, 0);
+      ctx.stroke();
+      ctx.restore();
+    }
+
     ctx.restore();
 
-    // Mechanical Text Encoder Scramble Sequence
-    // Phase 1: Scramble into CORESHADOW at 500ms -> resolves at ~1050ms
-    if (elapsed >= 500 && !step1Started) {
+    // 3. Controlled Character Scramble & Wordmark Resolution
+    if (elapsed >= 450 && !step1Started) {
       step1Started = true;
       if (encoderTextEl) {
         encoderTextEl.classList.add('is-active');
-        runTextEncoder(encoderTextEl, '__________', 'CORESHADOW', 550, () => {
+        // Resolves cleanly from glyphs into CORESHADOW over 600ms
+        runTextEncoder(encoderTextEl, '__________', 'CORESHADOW', 600, () => {
           if (sweepBeamEl) {
             sweepBeamEl.classList.add('is-sweeping');
+          }
+          if (introSubtitleEl) {
+            introSubtitleEl.classList.add('is-visible');
           }
         });
       }
     }
 
-    // Phase 2: Dwells on CORESHADOW until 1850ms, then scrambles into MAYANK BHATT -> resolves at ~2400ms
-    if (elapsed >= 1850 && !step2Started) {
-      step2Started = true;
-      if (encoderTextEl) {
-        if (sweepBeamEl) {
-          sweepBeamEl.classList.remove('is-sweeping');
-          void sweepBeamEl.offsetWidth; // re-trigger beam sweep
-          sweepBeamEl.classList.add('is-sweeping');
-        }
-        runTextEncoder(encoderTextEl, 'CORESHADOW', 'MAYANK BHATT', 550);
-      }
-    }
-
-    // Phase 3: Dwells on MAYANK BHATT until 3200ms, then iris expands and transitions into hero
+    // 4. Transition into Hero (Visual Continuity Handoff)
     if (!holdIntro) {
-      if (elapsed >= 3200 && !introEl.classList.contains('intro-transitioning')) {
+      if (elapsed >= 2100 && !introEl.classList.contains('intro-transitioning')) {
         introEl.classList.add('intro-transitioning');
       }
 
