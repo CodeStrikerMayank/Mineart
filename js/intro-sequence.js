@@ -4,16 +4,16 @@
  * 
  * Timeline Specifications:
  * - 0.0–0.6s: Mechanical chassis outline, concentric pitch circles, gear teeth outline fade in.
- * - 0.6–1.3s: Dual-ring counter-rotation engages, radial graduation ticks, cyan-blue telemetry sweep.
- * - 1.3–1.9s: CORESHADOW wordmark reveal, technical descriptor, specular light sweep line.
- * - 1.9–2.5s: Cinematic iris transition into hero, handoff to background mechanical canvas, hero stagger reveal.
+ * - 0.6–1.8s: Counter-rotating gear train engages, glyph deciphering resolves CORESHADOW.
+ * - 1.8–3.4s: Full telemetry stabilization, specular metallic sweep, readable subtitle hold.
+ * - 3.4–4.0s: Cinematic iris transition into hero, handoff to background mechanical canvas, hero reveal.
  * 
  * Invariants:
  * - Plays only on first session entry or explicit ?intro=1 override.
  * - Direct hash links (#projects, #contact) bypass immediately without delay.
  * - Prefers-reduced-motion bypasses immediately.
  * - [ESC] key and on-screen button provide accessible instantaneous skip.
- * - 3.2s fail-safe circuit breaker guarantees full page access under all circumstances.
+ * - 4.8s fail-safe circuit breaker guarantees full page access under all circumstances.
  */
 
 (function () {
@@ -35,7 +35,7 @@
   let activeScrambleRaf = null;
   let step1Started = false;
   let sweepStarted = false;
-  const DURATION_TOTAL = 2600; // Calibrated 2.6s cinematic mechanical sequence (2–3s target)
+  const DURATION_TOTAL = 4000; // Calibrated 4.0s cinematic mechanical sequence
   const GLYPHS = '0123456789ABCDEF#_></[]*+=§%';
 
   const urlParams = new URLSearchParams(window.location.search);
@@ -169,11 +169,11 @@
     skipBtn.addEventListener('click', finishIntro);
   }
 
-  // Fail-safe circuit breaker: guaranteed completion within 3.4s (disabled in holdIntro inspection mode)
+  // Fail-safe circuit breaker: guaranteed completion within 4.8s (disabled in holdIntro inspection mode)
   if (!holdIntro) {
     setTimeout(() => {
       if (!isCompleted) finishIntro();
-    }, 3400);
+    }, 4800);
   }
 
   // Setup canvas resolution
@@ -318,7 +318,7 @@
     let rotSpeed3 = 0;
 
     if (elapsed > 400) {
-      const rotProgress = Math.min((elapsed - 400) / 2000, 1.0);
+      const rotProgress = Math.min((elapsed - 400) / 3000, 1.0);
       const easedRot = easeOutCubic(rotProgress);
       rotSpeed1 = easedRot * 0.72;   // Outer planetary ring (clockwise)
       rotSpeed2 = -easedRot * 1.44;  // Intermediate ring (counter-clockwise, 2x)
@@ -387,8 +387,8 @@
     }
 
     // Radial Metallic Sweep Highlight (occurs when wordmark resolves ~1100ms)
-    if (elapsed > 1100 && elapsed < 2000) {
-      const sweepProgress = (elapsed - 1100) / 900;
+    if (elapsed > 1100 && elapsed < 2800) {
+      const sweepProgress = (elapsed - 1100) / 1700;
       const sweepAngle = -Math.PI * 0.5 + (sweepProgress * Math.PI * 2);
       ctx.save();
       ctx.translate(center, center);
@@ -427,7 +427,7 @@
 
     // 4. Transition into Hero (Visual Continuity Handoff)
     if (!holdIntro) {
-      if (elapsed >= 2100 && !introEl.classList.contains('intro-transitioning')) {
+      if (elapsed >= 3450 && !introEl.classList.contains('intro-transitioning')) {
         introEl.classList.add('intro-transitioning');
       }
 
