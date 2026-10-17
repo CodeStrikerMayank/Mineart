@@ -3,10 +3,12 @@
  * Author: Mayank Bhatt (CodeStrikerMayank)
  * 
  * Timeline Specifications:
- * - 0.0–0.6s: Mechanical chassis outline, concentric pitch circles, gear teeth outline fade in.
- * - 0.6–1.8s: Counter-rotating gear train engages, glyph deciphering resolves CORESHADOW.
- * - 1.8–3.4s: Full telemetry stabilization, specular metallic sweep, readable subtitle hold.
- * - 3.4–4.0s: Cinematic iris transition into hero, handoff to background mechanical canvas, hero reveal.
+ * - 0.0–0.5s: Mechanical chassis outline, concentric pitch circles, gear teeth outline fade in.
+ * - 0.5–1.1s: Counter-rotating gear train engages, glyph deciphering resolves CORESHADOW.
+ * - 1.1–1.95s: CORESHADOW hold with specular light sweep and subtitle reveal.
+ * - 1.95–2.65s: Secondary mechanical cipher wave re-encodes CORESHADOW into MAYANK BHATT.
+ * - 2.65–3.45s: MAYANK BHATT identity hold with secondary specular light sweep.
+ * - 3.45–4.0s: Cinematic iris transition into hero, handoff to background mechanical canvas.
  * 
  * Invariants:
  * - Plays only on first session entry or explicit ?intro=1 override.
@@ -34,6 +36,7 @@
   let isCompleted = false;
   let activeScrambleRaf = null;
   let step1Started = false;
+  let step2Started = false;
   let sweepStarted = false;
   const DURATION_TOTAL = 4000; // Calibrated 4.0s cinematic mechanical sequence
   const GLYPHS = '0123456789ABCDEF#_></[]*+=§%';
@@ -75,20 +78,27 @@
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1.0);
 
-      // Controlled linear glyph resolution without indefinite random cycling
-      const resolvedCount = Math.floor(progress * (maxLen + 1));
+      // Controlled mechanical cipher sweep wave:
+      // Characters behind the wave are resolved to toText.
+      // Characters in the active wave window scramble through GLYPHS.
+      // Characters ahead of the wave maintain fromText.
+      const waveHead = progress * (maxLen + 5) - 2.0;
 
       let result = '';
       for (let i = 0; i < maxLen; i++) {
-        if (i < resolvedCount) {
+        if (i < waveHead - 2.0) {
           if (i < toText.length) {
             result += toText[i];
           }
-        } else {
+        } else if (i <= waveHead + 1.0) {
           if (i < toText.length && toText[i] === ' ') {
             result += ' ';
           } else {
             result += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          }
+        } else {
+          if (i < fromText.length) {
+            result += fromText[i];
           }
         }
       }
@@ -408,7 +418,7 @@
 
     ctx.restore();
 
-    // 3. Controlled Character Scramble & Wordmark Resolution
+    // 3. Controlled Character Scramble & Wordmark Resolution (Phase 1: CORESHADOW)
     if (elapsed >= 450 && !step1Started) {
       step1Started = true;
       if (encoderTextEl) {
@@ -420,6 +430,22 @@
           }
           if (introSubtitleEl) {
             introSubtitleEl.classList.add('is-visible');
+          }
+        });
+      }
+    }
+
+    // Phase 2: Cipher wave re-encodes CORESHADOW into MAYANK BHATT
+    if (elapsed >= 1950 && !step2Started) {
+      step2Started = true;
+      if (encoderTextEl) {
+        // High-tech mechanical wave re-encodes into MAYANK BHATT over 650ms
+        runTextEncoder(encoderTextEl, 'CORESHADOW', 'MAYANK BHATT', 650, () => {
+          encoderTextEl.setAttribute('aria-label', 'Mayank Bhatt');
+          if (sweepBeamEl) {
+            sweepBeamEl.classList.remove('is-sweeping');
+            void sweepBeamEl.offsetWidth;
+            sweepBeamEl.classList.add('is-sweeping');
           }
         });
       }

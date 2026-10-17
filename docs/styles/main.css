@@ -236,7 +236,8 @@ body.intro-finished .hero-telemetry-panel {
   transform: scale(0.98);
   transition: opacity 300ms var(--ease-cinematic), transform 300ms var(--ease-cinematic);
   display: inline-block;
-  min-width: 10ch;
+  min-width: 12ch;
+  white-space: nowrap;
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
